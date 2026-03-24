@@ -29,12 +29,12 @@ import lombok.Setter;
 public class Attendance {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "id", nullable = false, updatable = false)
-   private Long id;
+   @Column(name = "attendance_id", nullable = false, updatable = false)
+   private Long attendanceId;
    
 //   @ManyToOne
 //   @JoinColumn(name = "emp_id", nullable = false)
-//   private Employee employee;
+   private Long employeeId;
    
    @Column(name = "work_date", nullable = false)
    private LocalDate workDate;

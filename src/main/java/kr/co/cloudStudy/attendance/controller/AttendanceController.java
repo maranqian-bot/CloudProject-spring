@@ -1,10 +1,13 @@
 package kr.co.cloudStudy.attendance.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceSummaryResponseDTO;
 import kr.co.cloudStudy.attendance.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,13 @@ public class AttendanceController {
 		// 1. 근태 요약 조회
 		// 데이터 가져오려면 서비스 -> 레포 거쳐야함
 		AttendanceSummaryResponseDTO response = attendanceService.getAttendanceSummary();
+		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/history")
+	public ResponseEntity<List<AttendanceHistoryResponseDTO>> getAttendanceHistory() {
+		// 2. 근태 이력 조회
+		List<AttendanceHistoryResponseDTO> response = attendanceService.getAttendanceHistory();
 		return ResponseEntity.ok(response);
 	}
 	
