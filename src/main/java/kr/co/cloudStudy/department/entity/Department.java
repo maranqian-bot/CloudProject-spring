@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,7 +51,7 @@ public class Department {
 	}
 	
 	// 데이터 수정 전 수정일 자동 실행
-	@PrePersist
+	@PreUpdate
 	protected void onUpdate() {
 		this.createdAt = LocalDateTime.now();
 	}
