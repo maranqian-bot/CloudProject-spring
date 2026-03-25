@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface DepartRepository extends JpaRepository<Department, Long> {
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
 	// 부서 코드로 조회
 	Optional<Department> findByDeptCode(String deptCode);

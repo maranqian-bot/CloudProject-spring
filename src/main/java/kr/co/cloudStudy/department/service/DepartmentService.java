@@ -9,7 +9,7 @@ import kr.co.cloudStudy.department.dto.ResDeptDTO;
  * 부서 관리 서비스 인터페이스
  * 표준 CRUD 구성: 등록(register), 목록(getList), 상세(read), 수정(modify), 삭제(remove) 설계
  */
-public interface DepartService {
+public interface DepartmentService {
 	
 	/**
 	 * 신규 부서 등록

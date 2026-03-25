@@ -9,15 +9,15 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import kr.co.cloudStudy.department.dto.ResDeptDTO;
 import kr.co.cloudStudy.department.entity.Department;
-import kr.co.cloudStudy.department.repository.DepartRepository;
-import kr.co.cloudStudy.department.service.DepartService;
+import kr.co.cloudStudy.department.repository.DepartmentRepository;
+import kr.co.cloudStudy.department.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class DepartServiceImpl implements DepartService {
+public class DepartmentServiceImpl implements DepartmentService {
 	
-	private final DepartRepository departRepository;
+	private final DepartmentRepository departRepository;
 	
 	@Override
 	@Transactional 

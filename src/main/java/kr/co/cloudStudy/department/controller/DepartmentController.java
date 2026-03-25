@@ -16,22 +16,22 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import kr.co.cloudStudy.department.dto.ResDeptDTO;
-import kr.co.cloudStudy.department.service.DepartService;
+import kr.co.cloudStudy.department.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/department")
+@RequestMapping("/api/departments")
 @RequiredArgsConstructor
 @Tag(name = "Department", description = "부서 관리 API")
-public class DepartController {
+public class DepartmentController {
 	
-	private final DepartService departService;
+	private final DepartmentService departmentService;
 	
 	// 부서 등록 (POST)
 	@Operation(summary = "부서 등록" , description = "새로운 부서 정보를 시스템에 저장하고 생성된 PK(deptid)를 반환합니다.")
 	@PostMapping
 	public ResponseEntity<Long> register(@RequestBody ReqDeptDTO dto) {
-		Long deptid = departService.register(dto);
+		Long deptid = departmentService.register(dto);
 		return ResponseEntity.ok(deptid);
 	}
 	
@@ -39,7 +39,7 @@ public class DepartController {
 	@Operation(summary = "부서 목록 조회" , description = "등록된 모든 부서의 리스트를 조회합니다.")
 	@GetMapping
 	public ResponseEntity<List<ResDeptDTO>> getList() {
-		List<ResDeptDTO> list = departService.getList();
+		List<ResDeptDTO> list = departmentService.getList();
 		return ResponseEntity.ok(list);
 	}
 	
@@ -47,7 +47,7 @@ public class DepartController {
 	@Operation(summary = "부서 상세 조회", description = "부서 ID(deptid)를 통해 특정 부서 정보를 상세 조회합니다.")
 	@GetMapping("/{deptid}")
 	public ResponseEntity<ResDeptDTO> read(@PathVariable Long deptid) {
-		ResDeptDTO dto = departService.read(deptid);
+		ResDeptDTO dto = departmentService.read(deptid);
 		return ResponseEntity.ok(dto);
 	}
 	
@@ -60,7 +60,7 @@ public class DepartController {
 	) {
 		dto.setDeptid(deptid);					   // 주소에서 받은 ID -> DTO로 세팅하기
 		
-		departService.modify(dto);
+		departmentService.modify(dto);
 		return ResponseEntity.ok().build();
 	}
 	
@@ -68,7 +68,7 @@ public class DepartController {
 	@Operation(summary = "부서 삭제", description = "부서 ID(deptid)를 이용해 해당 부서 데이터를 삭제합니다.")
 	@DeleteMapping("/{deptid}")
 	public ResponseEntity<Void> remove(@PathVariable Long deptid) {
-		departService.remove(deptid);
+		departmentService.remove(deptid);
 		return ResponseEntity.ok().build();
 	}
 	
