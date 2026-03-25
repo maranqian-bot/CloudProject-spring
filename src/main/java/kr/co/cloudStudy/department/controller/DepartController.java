@@ -19,7 +19,7 @@ import kr.co.cloudStudy.department.service.DepartService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/api/department")
 @RequiredArgsConstructor
 @Tag(name = "Department", description = "부서 관리 API")
 public class DepartController {
