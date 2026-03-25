@@ -11,7 +11,6 @@ import lombok.Setter;
 
 //부서 조회용 DTO
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

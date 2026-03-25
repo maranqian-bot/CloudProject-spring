@@ -77,7 +77,6 @@ public class DepartServiceImpl implements DepartService {
 				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 존재하지 않습니다. id=" + dto.getDeptid()));
 		
 		// 수정 시 엔터티 내용 변경 (Dirty Checking 활용)
-		entity.setDeptCode(dto.getDeptCode());
 		entity.setDeptName(dto.getDeptName());
 		entity.setDescription(dto.getDescription());
 	}
