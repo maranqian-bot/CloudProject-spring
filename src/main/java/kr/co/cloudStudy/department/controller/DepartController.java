@@ -53,8 +53,13 @@ public class DepartController {
 	
 	// 부서 정보 수정 (PUT)
 	@Operation(summary = "부서 정보 수정", description = "기존 부서의 정보(내용)를 업데이트합니다.")
-	@PutMapping
-	public ResponseEntity<Void> modify(@RequestBody ReqDeptDTO dto) {
+	@PutMapping("/{deptid}")
+	public ResponseEntity<Void> modify(
+			@PathVariable("deptid") Long deptid,   // 주소의 번호를 꺼내서 deptid 변수 담기
+			@RequestBody ReqDeptDTO dto            // 수정할 내용 DTO로 받기
+	) {
+		dto.setDeptid(deptid);					   // 주소에서 받은 ID -> DTO로 세팅하기
+		
 		departService.modify(dto);
 		return ResponseEntity.ok().build();
 	}
