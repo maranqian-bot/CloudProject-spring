@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+import static kr.co.cloudStudy.global.utils.AttendanceUtils.*;
+
 import org.springframework.stereotype.Service;
 
 import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
@@ -21,32 +23,36 @@ public class AttendanceServiceImpl implements AttendanceService{
 	
 	// 1. summary 계산
 	@Override
-	public AttendanceSummaryResponseDTO getAttendanceSummary() {
+	public AttendanceSummaryResponseDTO getAttendanceSummary(Long employeeId) {
 		// 1. 이번 달 범위
 		YearMonth currentMonth = YearMonth.now();
 		LocalDate startDate = currentMonth.atDay(1);
         LocalDate endDate = currentMonth.atEndOfMonth();
         
-		// 2. 이번 달 데이터 조회
-        List<Attendance> attendanceList = attendanceRepository.findByWorkDateBetween(startDate, endDate);
+		// 2. 특정 직원의 이번 달 summary 조회
+        List<Attendance> attendanceList = attendanceRepository.findByEmployeeIdAndWorkDateBetween(employeeId, startDate, endDate);
 		
-        // 3. 출근 일수
-        int workDays = (int) attendanceList.stream()
-        		.filter(a ->
-        				a.getAttendanceStatus() == AttendanceStatus.NORMAL ||
-        				a.getAttendanceStatus() == AttendanceStatus.LATE ||
-        				a.getAttendanceStatus() == AttendanceStatus.OVERTIME)
-        		.count();
+        int workDays = 0;
+        int lateCount = 0;
+        int absentCount = 0;
         
-		// 4. 지각 횟수
-        int lateCount = (int) attendanceList.stream()
-        		.filter(a -> a.getAttendanceStatus() == AttendanceStatus.LATE)
-        		.count();
+        for (Attendance attendance : attendanceList) {
+        	AttendanceStatus status = attendance.getAttendanceStatus();
+        	
+        	if (isWorkDays(status)) {
+        		workDays++;
+        	}
+        	
+        	if (isLate(status)) {
+        		lateCount++;
+        	}
+        	
+        	if (isAbsent(status)) {
+        		absentCount++;
+        	}
+        }
         
-		// 5. 결근
-        int absentCount = (int) attendanceList.stream()
-        		.filter(a -> a.getAttendanceStatus() == AttendanceStatus.VACATION)
-        		.count();
+        
         
 		// 6. 점수 계산
         double attendanceScore = calculateAttendanceScore(workDays, lateCount, absentCount);
@@ -61,12 +67,13 @@ public class AttendanceServiceImpl implements AttendanceService{
 	}
 	
 	@Override
-	public List<AttendanceHistoryResponseDTO> getAttendanceHistory() {
-		List<Attendance> attendanceList = attendanceRepository.findAll();
-		
+	public List<AttendanceHistoryResponseDTO> getAttendanceHistory(Long employeeId) {
+		List<Attendance> attendanceList = attendanceRepository.findByEmployeeIdOrderByWorkDateDesc(employeeId);
+		// "특정 직원"의 근태 기록을 조회해야 됨
 		return attendanceList.stream()
 				.map(attendance -> AttendanceHistoryResponseDTO.builder()
-						.id(attendance.getAttendanceId())
+						.attendanceId(attendance.getAttendanceId())
+						.employeeId(attendance.getEmployeeId())
 						.workDate(attendance.getWorkDate())
 						.checkInTime(attendance.getCheckInTime())
 						.checkOutTime(attendance.getCheckOutTime())

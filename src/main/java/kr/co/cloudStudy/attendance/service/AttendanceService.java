@@ -6,6 +6,8 @@ import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceSummaryResponseDTO;
 
 public interface AttendanceService {
-	AttendanceSummaryResponseDTO getAttendanceSummary();
-	List<AttendanceHistoryResponseDTO> getAttendanceHistory();
+	
+	AttendanceSummaryResponseDTO getAttendanceSummary(Long employeeId);
+	
+	List<AttendanceHistoryResponseDTO> getAttendanceHistory(Long employeeId);
 }

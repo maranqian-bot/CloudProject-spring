@@ -6,5 +6,6 @@ public enum AttendanceStatus {
 	LATE,
 	EARLYLEAVE,
 	VACATION,
+	ABSENT,
 	OVERTIME
 }

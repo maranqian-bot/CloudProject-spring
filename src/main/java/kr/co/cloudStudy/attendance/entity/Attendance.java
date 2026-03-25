@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -34,7 +33,8 @@ public class Attendance {
    
 //   @ManyToOne
 //   @JoinColumn(name = "emp_id", nullable = false)
-   private Long employeeId;
+   // employee 엔티티와 조인할 예정
+   private Long employeeId; 
    
    @Column(name = "work_date", nullable = false)
    private LocalDate workDate;
