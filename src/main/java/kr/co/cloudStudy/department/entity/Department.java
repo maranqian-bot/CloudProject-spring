@@ -18,7 +18,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor  // JPA를 위한 기본 생성자
 @AllArgsConstructor  // 빌더를 사용하기 위한 전체 생성자
 @Table(name = "department") // DB 테이블명과 매핑
@@ -34,12 +33,14 @@ public class Department {
 	private String deptCode; // 부서 코드
 	
 	@Column(name = "dept_name", nullable = false)
+	@Setter
 	private String deptName; // 부서 이름
 	
 	// Employee 엔터티 완성 후 연관 관계 매핑(@ManyToOne((fetch = FetchType.LAZY))으로 변경 예정 (엔터티명 : manager 수정)
 	@Column(name = "manager_id")   // @JoinColumn(name = "manager_id")
 	private Long managerId; // 부서 관리자 ID
 	
+	@Setter
 	private String description; // 부서 설명
 	
 	@Column(name = "created_at", updatable = false)
