@@ -27,18 +27,19 @@ public class Department {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id; // 부서 ID (PK)
+	@Column(name = "dept_id", nullable = false, updatable = false)
+	private Long deptid; // 부서 ID (PK)
 	
-	@Column(name = "dept_code")
+	@Column(name = "dept_code", nullable = false, unique = true)
 	private String deptCode; // 부서 코드
 	
-	@Column(name = "dept_name")
+	@Column(name = "dept_name", nullable = false)
 	private String deptName; // 부서 이름
 	
 	private Long managerId; // 부서 관리자 ID
 	private String description; // 부서 설명
 	
-	@Column(name = "created_at")
+	@Column(name = "created_at", updatable = false)
 	private LocalDateTime createdAt; // 부서 생성일
 	
 	@Column(name = "updated_at")
@@ -48,12 +49,13 @@ public class Department {
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
 	
 	// 데이터 수정 전 수정일 자동 실행
 	@PreUpdate
 	protected void onUpdate() {
-		this.createdAt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
 
 }
