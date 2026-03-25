@@ -34,7 +34,7 @@ public class DepartServiceImpl implements DepartService {
 		return departRepository.save(entity).getDeptid();
 	}
 
-	
+	@Override
 	public List<ResDeptDTO> getList() {
 		
 		// 모든 엔터티 조회
