@@ -1,7 +1,13 @@
 package kr.co.cloudStudy.attendance.controller;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders; 
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +66,43 @@ public class AttendanceController {
 		List<AttendanceHistoryResponseDTO> response = attendanceService.getAttendanceHistory(employeeId);
 		return ResponseEntity.ok(response);
 	}
+	
+	@Operation(
+            summary = "직원 근태 엑셀 다운로드",
+            description = "특정 직원의 근태 이력을 엑셀 파일로 다운로드합니다."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "엑셀 다운로드 성공"),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청값"),
+            @ApiResponse(responseCode = "404", description = "직원을 찾을 수 없음"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    @GetMapping("/excel")
+    public ResponseEntity<byte[]> downloadAttendanceExcel(
+            @PathVariable("employeeId") Long employeeId) {
+
+        byte[] excelFile = attendanceService.downloadAttendanceExcel(employeeId);
+
+        String fileName = "근태이력_" + LocalDate.now() + ".xlsx";
+        String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
+                .replaceAll("\\+", "%20");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(
+                MediaType.parseMediaType(
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                )
+        );
+        headers.setContentDisposition(
+                ContentDisposition.attachment()
+                        .filename(encodedFileName, StandardCharsets.UTF_8)
+                        .build()
+        );
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelFile);
+    }
 	
 	
 }

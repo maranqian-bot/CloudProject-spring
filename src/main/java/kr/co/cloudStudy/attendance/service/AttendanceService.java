@@ -10,4 +10,6 @@ public interface AttendanceService {
 	AttendanceSummaryResponseDTO getAttendanceSummary(Long employeeId);
 	
 	List<AttendanceHistoryResponseDTO> getAttendanceHistory(Long employeeId);
+	
+	byte[] downloadAttendanceExcel(Long employeeId);
 }

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
-import static kr.co.cloudStudy.global.utils.AttendanceUtils.*;
+import static kr.co.cloudStudy.global.utils.AttendanceStatusUtil.*;
 
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ import kr.co.cloudStudy.attendance.entity.Attendance;
 import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 import kr.co.cloudStudy.attendance.repository.AttendanceRepository;
 import kr.co.cloudStudy.attendance.service.AttendanceService;
+import kr.co.cloudStudy.global.utils.AttendanceExcelUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -94,5 +95,11 @@ public class AttendanceServiceImpl implements AttendanceService{
 		}
 		
 		return score;
+	}
+	
+	@Override
+	public byte[] downloadAttendanceExcel(Long employeeId) {
+		List<AttendanceHistoryResponseDTO> attendanceList = getAttendanceHistory(employeeId);
+		return AttendanceExcelUtil.createAttendanceExcel(attendanceList);
 	}
 }
