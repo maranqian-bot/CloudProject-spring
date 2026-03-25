@@ -1,5 +1,7 @@
 package kr.co.cloudStudy.global.config;
 
+import org.springframework.security.config.Customizer;
+
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -18,9 +20,11 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		//CSRF 비활성화
-		http.csrf(csrf -> csrf.disable())
-				// 모든 요청 허용
-				.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+		http
+			.cors(Customizer.withDefaults())
+			.csrf(csrf -> csrf.disable())
+			// 모든 요청 허용
+			.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 		return http.build();
 	}
 	
@@ -35,7 +39,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		
-		config.setAllowedOrigins(List.of("https:..//")); // 리액트 주소 (배포시 설정)
+		config.setAllowedOrigins(List.of("http://localhost:5173")); // 리액트 주소 (배포시 설정)
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
 		
