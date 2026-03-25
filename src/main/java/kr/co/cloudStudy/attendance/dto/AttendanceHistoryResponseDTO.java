@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.cloudStudy.attendance.entity.AttendanceStatus;
+import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

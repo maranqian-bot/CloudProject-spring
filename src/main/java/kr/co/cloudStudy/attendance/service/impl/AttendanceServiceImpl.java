@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceSummaryResponseDTO;
 import kr.co.cloudStudy.attendance.entity.Attendance;
-import kr.co.cloudStudy.attendance.entity.AttendanceStatus;
+import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 import kr.co.cloudStudy.attendance.repository.AttendanceRepository;
 import kr.co.cloudStudy.attendance.service.AttendanceService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package kr.co.cloudStudy.global.utils;
 
-import kr.co.cloudStudy.attendance.entity.AttendanceStatus;
+import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 
 public class AttendanceUtils {
 
@@ -9,7 +9,7 @@ public class AttendanceUtils {
 	public static boolean isWorkDays(AttendanceStatus status) {
 		return status == AttendanceStatus.NORMAL
 				|| status == AttendanceStatus.LATE
-				|| status == AttendanceStatus.OVERTIME;
+				|| status == AttendanceStatus.OVER_TIME;
 	}
 	
 	// 2. 지각 여부
