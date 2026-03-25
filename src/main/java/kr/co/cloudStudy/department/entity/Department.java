@@ -36,7 +36,10 @@ public class Department {
 	@Column(name = "dept_name", nullable = false)
 	private String deptName; // 부서 이름
 	
+	// Employee 엔터티 완성 후 연관 관계 매핑(@ManyToOne((fetch = FetchType.LAZY))으로 변경 예정 (엔터티명 : manager 수정)
+	@Column(name = "manager_id")   // @JoinColumn(name = "manager_id")
 	private Long managerId; // 부서 관리자 ID
+	
 	private String description; // 부서 설명
 	
 	@Column(name = "created_at", updatable = false)
