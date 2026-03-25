@@ -76,9 +76,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 		Department entity = departRepository.findById(dto.getDeptid())
 				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 존재하지 않습니다. id=" + dto.getDeptid()));
 		
-		// 수정 시 엔터티 내용 변경 (Dirty Checking 활용)
-		entity.setDeptName(dto.getDeptName());
-		entity.setDescription(dto.getDescription());
+		// 수정 시 엔터티 내용 변경 (자동 업데이트 반영)
+		entity.update(dto);
 	}
 	
 	@Override
@@ -86,9 +85,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	public void remove(Long deptid) {
 		
 		// 삭제 할 대상이 있는지 확인하는 장치
-		if(!departRepository.existsById(deptid)) {
-			throw new IllegalArgumentException("삭제할 부서가 존재하지 않습니다. id=" + deptid);
-		}
+		Department
 		
 		// 부서 ID를 이용해 바로 삭제 실행
 		departRepository.deleteById(deptid);

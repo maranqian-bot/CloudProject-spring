@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import kr.co.cloudStudy.department.dto.ReqDeptDTO;
+import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,5 +63,21 @@ public class Department {
 	protected void onUpdate() {
 		this.updatedAt = LocalDateTime.now();
 	}
+	
+	// 정적 팩토리 메서드(from)
+	public static Department from(ReqDeptDTO dto) {
+        return Department.builder()
+                .deptCode(dto.getDeptCode())
+                .deptName(dto.getDeptName())
+                .description(dto.getDescription())
+                .managerId(dto.getManagerId())
+                .build();
+    }
+	
+	// 비즈니스 메서드
+	public void update(ReqDeptDTO dto) {
+        this.deptName = dto.getDeptName();
+        this.description = dto.getDescription();
+    }
 
 }
