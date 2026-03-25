@@ -36,7 +36,7 @@ public class AttendanceController {
 	})
 	@GetMapping("/summary") 
 	public ResponseEntity<AttendanceSummaryResponseDTO> getAttendanceSummary(
-			@PathVariable Long employeeId) {
+			@PathVariable("employeeId") Long employeeId) {
 		// 1. 근태 요약 조회
 		// 데이터 가져오려면 서비스 -> 레포 거쳐야함
 		AttendanceSummaryResponseDTO response = attendanceService.getAttendanceSummary(employeeId);
@@ -55,7 +55,7 @@ public class AttendanceController {
 	})
 	@GetMapping("/history")
 	public ResponseEntity<List<AttendanceHistoryResponseDTO>> getAttendanceHistory(
-			@PathVariable Long employeeId) {
+			@PathVariable("employeeId") Long employeeId) {
 		// 2. 근태 이력 조회
 		List<AttendanceHistoryResponseDTO> response = attendanceService.getAttendanceHistory(employeeId);
 		return ResponseEntity.ok(response);
