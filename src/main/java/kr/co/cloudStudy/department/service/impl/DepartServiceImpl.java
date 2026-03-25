@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)  // 기본 조회 최적화
 public class DepartServiceImpl implements DepartService {
 	
 	private final DepartRepository departRepository;
@@ -35,6 +34,7 @@ public class DepartServiceImpl implements DepartService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ResDeptDTO> getList() {
 		
 		// 모든 엔터티 조회
@@ -53,6 +53,7 @@ public class DepartServiceImpl implements DepartService {
 	}
 			
 	@Override
+	@Transactional(readOnly = true)
 	public ResDeptDTO read(Long id) {
 		
 		// findById(id) : ID로 찾고 없으면 예외 발생 ("해당 부서가 없습니다.")
