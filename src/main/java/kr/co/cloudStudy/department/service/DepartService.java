@@ -5,14 +5,16 @@ import java.util.List;
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import kr.co.cloudStudy.department.dto.ResDeptDTO;
 
-// 표준 CRUD 구성: 
-//   > 등록(register), 목록(getList), 상세(read), 수정(modify), 삭제(remove) 설계
+/**
+ * 부서 관리 서비스 인터페이스
+ * 표준 CRUD 구성: 등록(register), 목록(getList), 상세(read), 수정(modify), 삭제(remove) 설계
+ */
 public interface DepartService {
 	
 	/**
 	 * 신규 부서 등록
 	 * @param dto 등록할 부서정보
-	 * @return 생성된 부서의 PK(ID)
+	 * @return 생성된 부서의 PK(deptid)
 	 */
 	Long register(ReqDeptDTO dto);
 	
@@ -24,21 +26,21 @@ public interface DepartService {
 	
 	/**
 	 * 부서 상세 조회
-	 * @param id 조회할 부서 PK
+	 * @param deptid 조회할 부서 PK
 	 * @return 부서 상세 정보 DTO
 	 */
 	ResDeptDTO read(Long id);
 	
 	/**
 	 * 부서 정보 수정
-	 * @param dto 수정할 부서 정보 (ID포함)
+	 * @param dto 수정할 부서 정보 (deptid 포함)
 	 */
 	void modify(ReqDeptDTO dto);
 	
 	/**
 	 * 부서 삭제
-	 * @param id 삭제할 부서 PK
+	 * @param deptid 삭제할 부서 PK
 	 */
-	void remove(Long id);
+	void remove(Long deptid);
 		
 }

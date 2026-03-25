@@ -31,7 +31,7 @@ public class DepartServiceImpl implements DepartService {
 				.build();
 		
 		// departRepository 저장 후 생성된 ID 반환
-		return departRepository.save(entity).getId();
+		return departRepository.save(entity).getDeptid();
 	}
 
 	
@@ -43,7 +43,7 @@ public class DepartServiceImpl implements DepartService {
 		// 엔터티 리스트를 DTO 리스트로 변환 (Stream 활용)
 		return result.stream()
 				.map(entity -> ResDeptDTO.builder()
-						.id(entity.getId())
+						.deptid(entity.getDeptid())
 						.deptCode(entity.getDeptCode())
 						.deptName(entity.getDeptName())
 						.description(entity.getDescription())
@@ -60,7 +60,7 @@ public class DepartServiceImpl implements DepartService {
 				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 없습니다. id=" + id));
 		
 		return ResDeptDTO.builder()
-				.id(entity.getId())
+				.deptid(entity.getDeptid())
 				.deptCode(entity.getDeptCode())
 				.deptName(entity.getDeptName())
 				.description(entity.getDescription())
@@ -72,8 +72,8 @@ public class DepartServiceImpl implements DepartService {
 	@Transactional 
 	public void modify(ReqDeptDTO dto) {
 		
-		Department entity = departRepository.findById(dto.getId())
-				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 존재하지 않습니다. id=" + dto.getId()));
+		Department entity = departRepository.findById(dto.getDeptid())
+				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 존재하지 않습니다. id=" + dto.getDeptid()));
 		
 		// 수정 시 엔터티 내용 변경 (Dirty Checking 활용)
 		entity.setDeptCode(dto.getDeptCode());
@@ -83,15 +83,15 @@ public class DepartServiceImpl implements DepartService {
 	
 	@Override
 	@Transactional 
-	public void remove(Long id) {
+	public void remove(Long deptid) {
 		
 		// 삭제 할 대상이 있는지 확인하는 장치
-		if(!departRepository.existsById(id)) {
-			throw new IllegalArgumentException("삭제할 부서가 존재하지 않습니다. id=" + id);
+		if(!departRepository.existsById(deptid)) {
+			throw new IllegalArgumentException("삭제할 부서가 존재하지 않습니다. id=" + deptid);
 		}
 		
 		// 부서 ID를 이용해 바로 삭제 실행
-		departRepository.deleteById(id);
+		departRepository.deleteById(deptid);
 	}
 		
 }
