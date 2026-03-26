@@ -64,7 +64,7 @@ public class Department {
 		this.updatedAt = LocalDateTime.now();
 	}
 	
-	// 정적 팩토리 메서드(from)
+	// 정적 팩토리 메서드(from) -> 엔터티 생성 책임을 서비스에서 도메인(Entity)으로 가져옴.
 	public static Department from(ReqDeptDTO dto) {
         return Department.builder()
                 .deptCode(dto.getDeptCode())
@@ -74,7 +74,7 @@ public class Department {
                 .build();
     }
 	
-	// 비즈니스 메서드
+	// 비즈니스 메서드 -> 엔터티 스스로 상태 관리하도록 수정 (Setter 대신)
 	public void update(ReqDeptDTO dto) {
         this.deptName = dto.getDeptName();
         this.description = dto.getDescription();
