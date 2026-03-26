@@ -33,7 +33,10 @@ import lombok.Setter;
 public class EmployeeEntity {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;	// 직원번호
+	private Long id;	// 기본키
+	
+	@Column(name = "employee_number", length = 20)	// 직원번호
+	private String employeeNumber;
 	
 	@Column(name = "name" , nullable = false , length = 50)
 	private String name; // 이름
