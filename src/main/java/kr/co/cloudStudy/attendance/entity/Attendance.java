@@ -59,13 +59,13 @@ public class Attendance {
    @Column(name = "updated_at", nullable = false)
    private LocalDateTime updatedAt;
    
-   @PrePersist // DB에 처음 저장 직전에 실행
+   @PrePersist 
    public void prePersist() {
       this.createdAt = LocalDateTime.now();
       this.updatedAt = LocalDateTime.now();
    }
       
-   @PreUpdate // 수정 직전에 실행
+   @PreUpdate 
    public void preUpdate() {
       this.updatedAt = LocalDateTime.now();
    }
