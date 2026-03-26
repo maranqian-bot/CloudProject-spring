@@ -89,18 +89,6 @@ public class AttendanceServiceImpl implements AttendanceService{
 				.toList();
 	}
 	
-	private double calculateAttendanceScore(long workDays, long lateCount, long absentCount) {
-		double score = 100.0;
-		
-		score -= lateCount * 2;
-		score -= absentCount * 5;
-		
-		if (score < 0) {
-			score = 0;
-		}
-		
-		return score;
-	}
 	
 	@Override
 	public void writeAttendanceExcel(Long employeeId, OutputStream outputStream) {
@@ -109,6 +97,7 @@ public class AttendanceServiceImpl implements AttendanceService{
 		
 		AttendanceExcelUtil.writeAttendanceExcel(excelRows, outputStream);
 	}
+	
 	
 	private List<AttendanceExcelRowDTO> convertToExcelRows(List<AttendanceHistoryResponseDTO> historyList) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -140,6 +129,18 @@ public class AttendanceServiceImpl implements AttendanceService{
 	    };
 	}
 	
+	private double calculateAttendanceScore(long workDays, long lateCount, long absentCount) {
+		double score = 100.0;
+		
+		score -= lateCount * 2;
+		score -= absentCount * 5;
+		
+		if (score < 0) {
+			score = 0;
+		}
+		
+		return score;
+	}
 	
 	
 	

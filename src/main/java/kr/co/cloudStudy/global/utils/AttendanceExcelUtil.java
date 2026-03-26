@@ -12,9 +12,6 @@ import kr.co.cloudStudy.attendance.dto.AttendanceExcelRowDTO;
 
 public class AttendanceExcelUtil {
 	
-	private AttendanceExcelUtil() {
-	}
-	
 //	Workbook = 엑셀 파일 전체
 //	Sheet = 엑셀 안의 시트 1장
 //	Row = 한 줄
