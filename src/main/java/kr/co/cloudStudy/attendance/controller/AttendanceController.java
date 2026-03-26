@@ -36,6 +36,7 @@ public class AttendanceController implements AttendanceControllerDocs {
 	private final AttendanceService attendanceService;
 	
 	@GetMapping("/summary") 
+	@Override
 	public ResponseEntity<ApiResponseDTO<AttendanceSummaryResponseDTO>> getAttendanceSummary(
 			@PathVariable("employeeId") Long employeeId) {
 
@@ -45,6 +46,7 @@ public class AttendanceController implements AttendanceControllerDocs {
 	
 	
 	@GetMapping("/history")
+	@Override
 	public ResponseEntity<ApiResponseDTO<List<AttendanceHistoryResponseDTO>>> getAttendanceHistory(
 			@PathVariable("employeeId") Long employeeId) {
 
@@ -54,6 +56,7 @@ public class AttendanceController implements AttendanceControllerDocs {
 	
 	
     @GetMapping("/excel")
+    @Override
     public ResponseEntity<StreamingResponseBody> downloadAttendanceExcel(
             @PathVariable("employeeId") Long employeeId) {
 
@@ -82,25 +85,7 @@ public class AttendanceController implements AttendanceControllerDocs {
     }
 
 
-	@Override
-	public ResponseEntity<ApiResponseDTO<AttendanceSummaryResponseDTO>> getAttendanceSummary() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public ResponseEntity<ApiResponseDTO<List<AttendanceHistoryResponseDTO>>> getAttendanceHistory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public ResponseEntity<StreamingResponseBody> downloadAttendanceExcel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	
 }

@@ -52,7 +52,7 @@ public interface AttendanceControllerDocs {
 						 
 			)
 	})
-	public ResponseEntity<ApiResponseDTO<AttendanceSummaryResponseDTO>> getAttendanceSummary();
+	public ResponseEntity<ApiResponseDTO<AttendanceSummaryResponseDTO>> getAttendanceSummary(Long employeeId);
 	
 	@Operation(
 			summary = "직원 근태 이력 조회",
@@ -88,7 +88,7 @@ public interface AttendanceControllerDocs {
 						)
 			)
 	})
-	public ResponseEntity<ApiResponseDTO<List<AttendanceHistoryResponseDTO>>> getAttendanceHistory();
+	public ResponseEntity<ApiResponseDTO<List<AttendanceHistoryResponseDTO>>> getAttendanceHistory(Long employeeId);
 	
 	@Operation(
             summary = "직원 근태 엑셀 다운로드",
@@ -100,6 +100,6 @@ public interface AttendanceControllerDocs {
             @ApiResponse(responseCode = "404", description = "직원을 찾을 수 없음"),
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
-	public ResponseEntity<StreamingResponseBody> downloadAttendanceExcel();
+	public ResponseEntity<StreamingResponseBody> downloadAttendanceExcel(Long employeeId);
 }
  
