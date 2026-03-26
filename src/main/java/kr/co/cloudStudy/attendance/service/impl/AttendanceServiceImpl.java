@@ -1,19 +1,26 @@
 package kr.co.cloudStudy.attendance.service.impl;
 
+import static kr.co.cloudStudy.global.utils.AttendanceStatusUtil.isAbsent;
+import static kr.co.cloudStudy.global.utils.AttendanceStatusUtil.isLate;
+import static kr.co.cloudStudy.global.utils.AttendanceStatusUtil.isWorkDays;
+
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static kr.co.cloudStudy.global.utils.AttendanceUtils.*;
 
 import org.springframework.stereotype.Service;
 
+import kr.co.cloudStudy.attendance.dto.AttendanceExcelRowDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceSummaryResponseDTO;
 import kr.co.cloudStudy.attendance.entity.Attendance;
 import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 import kr.co.cloudStudy.attendance.repository.AttendanceRepository;
 import kr.co.cloudStudy.attendance.service.AttendanceService;
+import kr.co.cloudStudy.global.exception.EmployeeNotFoundException;
+import kr.co.cloudStudy.global.utils.AttendanceExcelUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,15 +28,15 @@ import lombok.RequiredArgsConstructor;
 public class AttendanceServiceImpl implements AttendanceService{
 	private final AttendanceRepository attendanceRepository;
 	
-	// 1. summary 계산
+
 	@Override
 	public AttendanceSummaryResponseDTO getAttendanceSummary(Long employeeId) {
-		// 1. 이번 달 범위
+		validateEmployeeId(employeeId);
+		
 		YearMonth currentMonth = YearMonth.now();
 		LocalDate startDate = currentMonth.atDay(1);
         LocalDate endDate = currentMonth.atEndOfMonth();
         
-		// 2. 특정 직원의 이번 달 summary 조회
         List<Attendance> attendanceList = attendanceRepository.findByEmployeeIdAndWorkDateBetween(employeeId, startDate, endDate);
 		
         int workDays = 0;
@@ -38,6 +45,9 @@ public class AttendanceServiceImpl implements AttendanceService{
         
         for (Attendance attendance : attendanceList) {
         	AttendanceStatus status = attendance.getAttendanceStatus();
+        	if (status == null) {
+        		continue;
+        	}
         	
         	if (isWorkDays(status)) {
         		workDays++;
@@ -52,12 +62,8 @@ public class AttendanceServiceImpl implements AttendanceService{
         	}
         }
         
-        
-        
-		// 6. 점수 계산
         double attendanceScore = calculateAttendanceScore(workDays, lateCount, absentCount);
         
-		// 7. dto 반환
 		return AttendanceSummaryResponseDTO.builder()
 										   .workDays(workDays)
 										   .lateCount(lateCount)
@@ -68,8 +74,10 @@ public class AttendanceServiceImpl implements AttendanceService{
 	
 	@Override
 	public List<AttendanceHistoryResponseDTO> getAttendanceHistory(Long employeeId) {
+		validateEmployeeId(employeeId);
+		
 		List<Attendance> attendanceList = attendanceRepository.findByEmployeeIdOrderByWorkDateDesc(employeeId);
-		// "특정 직원"의 근태 기록을 조회해야 됨
+
 		return attendanceList.stream()
 				.map(attendance -> AttendanceHistoryResponseDTO.builder()
 						.attendanceId(attendance.getAttendanceId())
@@ -81,6 +89,48 @@ public class AttendanceServiceImpl implements AttendanceService{
 						.attendanceStatus(attendance.getAttendanceStatus())
 						.build())
 				.toList();
+	}
+	
+	
+	@Override
+	public void writeAttendanceExcel(Long employeeId, OutputStream outputStream) {
+		validateEmployeeId(employeeId);
+		
+		List<AttendanceHistoryResponseDTO> historyList = getAttendanceHistory(employeeId);
+		List<AttendanceExcelRowDTO> excelRows = convertToExcelRows(historyList);
+		
+		AttendanceExcelUtil.writeAttendanceExcel(excelRows, outputStream);
+	}
+	
+	
+	private List<AttendanceExcelRowDTO> convertToExcelRows(List<AttendanceHistoryResponseDTO> historyList) {
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+		
+		return historyList.stream()
+				.map(item -> AttendanceExcelRowDTO.builder()
+						.workDate(item.getWorkDate() != null ? item.getWorkDate().format(dateFormatter) : "")
+						.checkInTime(item.getCheckInTime() != null ? item.getCheckInTime().format(timeFormatter) : "")
+						.checkOutTime(item.getCheckOutTime() != null ? item.getCheckOutTime().format(timeFormatter) : "")
+						.workMinutes(item.getWorkMinutes())
+						.attendanceStatusLabel(toStatusLabel(item.getAttendanceStatus()))
+						.build())
+				.toList();
+	}
+	
+	private String toStatusLabel(AttendanceStatus status) {
+	    if (status == null) {
+	        return "";
+	    }
+
+	    return switch (status) {
+	        case NORMAL -> "정상";
+	        case LATE -> "지각";
+	        case EARLY_LEAVE -> "조퇴";
+	        case VACATION -> "휴가";
+	        case OVER_TIME -> "연장 근무";
+	        default -> throw new IllegalArgumentException("Unexpected value: " + status);
+	    };
 	}
 	
 	private double calculateAttendanceScore(long workDays, long lateCount, long absentCount) {
@@ -95,4 +145,38 @@ public class AttendanceServiceImpl implements AttendanceService{
 		
 		return score;
 	}
+	
+	private void validateEmployeeId(Long employeeId) {
+		if (employeeId == null) {
+			throw new IllegalArgumentException("직원 ID는 필수입니다.");
+		}
+		
+		if (employeeId <= 0) {
+			throw new IllegalArgumentException("직원 ID는 1 이상이어야 합니다.");
+		}
+	}
+	
+//	private List<Attendance> getAttendanceListOrThrow(Long employeeId, LocalDate startDate, LocalDate endDate) {
+//		List<Attendance> attendanceList = 
+//				attendanceRepository.findByEmployeeIdAndWorkDateBetween(employeeId, startDate, endDate);
+//		
+//		if (attendanceList.isEmpty()) {
+//			throw new EmployeeNotFoundException("해당 직원의 이번 달 근태 정보가 없습니다. employeeId=" + employeeId);
+//		}
+//		
+//		return attendanceList;
+//	}
+//	
+//	private List<Attendance> getAttendanceHistoryListOrThrow(Long employeeId) {
+//	    List<Attendance> attendanceList =
+//	            attendanceRepository.findByEmployeeIdOrderByWorkDateDesc(employeeId);
+//
+//	    if (attendanceList.isEmpty()) {
+//	        throw new EmployeeNotFoundException("해당 직원의 근태 이력이 없습니다. employeeId=" + employeeId);
+//	    }
+//
+//	    return attendanceList;
+//	}
+	
+	
 }

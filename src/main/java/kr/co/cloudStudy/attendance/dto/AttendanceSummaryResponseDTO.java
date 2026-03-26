@@ -22,6 +22,9 @@ public class AttendanceSummaryResponseDTO {
 	@Schema(description = "결근 횟수", example = "1")
 	private int absentCount;
 	
+	/**
+	 * 근태 점수 = 100 - (지각 * 2) - (결근 * 5)
+	 */
 	@Schema(description = "근태 점수 (100% 기준, 소수점 포함)", example = "92.5")
 	private double attendanceScore;
 	
