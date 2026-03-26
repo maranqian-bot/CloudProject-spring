@@ -14,11 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.cloudStudy.attendance.controller.docs.AttendanceControllerDocs;
 import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
@@ -27,7 +22,7 @@ import kr.co.cloudStudy.attendance.service.AttendanceService;
 import kr.co.cloudStudy.global.dto.ApiResponseDTO;
 import lombok.RequiredArgsConstructor;
 
-@RestController // api 응답을 보내는 컨트롤러
+@RestController 
 @RequestMapping("/api/employees/{employeeId}/attendance")
 @RequiredArgsConstructor
 @Tag(name = "Attendance", description = "직원 근태 조회 API")
@@ -35,8 +30,8 @@ public class AttendanceController implements AttendanceControllerDocs {
 	
 	private final AttendanceService attendanceService;
 	
-	@GetMapping("/summary") 
 	@Override
+	@GetMapping("/summary") 
 	public ResponseEntity<ApiResponseDTO<AttendanceSummaryResponseDTO>> getAttendanceSummary(
 			@PathVariable("employeeId") Long employeeId) {
 
@@ -45,8 +40,8 @@ public class AttendanceController implements AttendanceControllerDocs {
 	}
 	
 	
-	@GetMapping("/history")
 	@Override
+	@GetMapping("/history")
 	public ResponseEntity<ApiResponseDTO<List<AttendanceHistoryResponseDTO>>> getAttendanceHistory(
 			@PathVariable("employeeId") Long employeeId) {
 
@@ -55,8 +50,8 @@ public class AttendanceController implements AttendanceControllerDocs {
 	}
 	
 	
-    @GetMapping("/excel")
     @Override
+    @GetMapping("/excel")
     public ResponseEntity<StreamingResponseBody> downloadAttendanceExcel(
             @PathVariable("employeeId") Long employeeId) {
 
