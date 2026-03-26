@@ -5,14 +5,15 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.HttpHeaders; 
 import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -49,6 +50,8 @@ public class AttendanceController {
 		return ResponseEntity.ok(response);
 	}
 	
+	
+	
 	@Operation(
 			summary = "직원 근태 이력 조회",
 			description = "특정 직원의 근태 이력 목록을 최신 근무일 기준으로 조회합니다."
@@ -67,6 +70,9 @@ public class AttendanceController {
 		return ResponseEntity.ok(response);
 	}
 	
+	
+	
+	
 	@Operation(
             summary = "직원 근태 엑셀 다운로드",
             description = "특정 직원의 근태 이력을 엑셀 파일로 다운로드합니다."
@@ -78,30 +84,31 @@ public class AttendanceController {
             @ApiResponse(responseCode = "500", description = "서버 내부 오류")
     })
     @GetMapping("/excel")
-    public ResponseEntity<byte[]> downloadAttendanceExcel(
+    public ResponseEntity<StreamingResponseBody> downloadAttendanceExcel(
             @PathVariable("employeeId") Long employeeId) {
-
-        byte[] excelFile = attendanceService.downloadAttendanceExcel(employeeId);
 
         String fileName = "근태이력_" + LocalDate.now() + ".xlsx";
         String encodedFileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8)
                 .replaceAll("\\+", "%20");
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(
-                MediaType.parseMediaType(
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
+        headers.add(
+        		HttpHeaders.CONTENT_TYPE,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         );
         headers.setContentDisposition(
                 ContentDisposition.attachment()
                         .filename(encodedFileName, StandardCharsets.UTF_8)
                         .build()
         );
+        
+        StreamingResponseBody responseBody = outputStream -> {
+        	attendanceService.writeAttendanceExcel(employeeId, outputStream);
+        };
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(excelFile);
+                .body(responseBody);
     }
 	
 	
