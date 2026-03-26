@@ -2,7 +2,7 @@ name: Spring Boot Deploy via SSM
 
 on:
   push:
-    branches: [ "feature/vacation" ]
+    branches: [ "master" ]
 
 jobs:
   deploy:
