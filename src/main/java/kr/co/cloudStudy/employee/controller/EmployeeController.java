@@ -14,7 +14,7 @@ import kr.co.cloudStudy.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/employee")
+@RequestMapping("/api/employee")
 @RequiredArgsConstructor
 @CrossOrigin(origins ="http://localhost:3000")
 public class EmployeeController {
