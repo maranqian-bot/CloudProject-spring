@@ -97,5 +97,5 @@ DB_PASSWORD=your_password
 |------|------|------|
 | 마은재 ([maranqian-bot](https://github.com/maranqian-bot)) | 팀장 | CICD 파이프라인 구축, 대시보드 기능 구현(예시) |
 | 김성원 ([gungang1212-tech](https://github.com/gungang1212-tech)) | 팀원 | 채울 예정 |
-| 이가연 ([ixxveon](https://github.com/ixxveon)) | 팀원 | 채울 예정 |
+| 이가연 ([ixxveon](https://github.com/ixxveon)) | 팀원 | S3 + CloudFront 구축, 근태 관리 및 로그인 기능 구현 |
 | 신보라 ([sbr7518-bit](https://github.com/sbr7518-bit)) | 팀원 | 채울 예정 |
