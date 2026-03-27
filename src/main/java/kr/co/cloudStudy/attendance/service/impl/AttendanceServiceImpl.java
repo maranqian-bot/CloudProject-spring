@@ -19,7 +19,6 @@ import kr.co.cloudStudy.attendance.entity.Attendance;
 import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 import kr.co.cloudStudy.attendance.repository.AttendanceRepository;
 import kr.co.cloudStudy.attendance.service.AttendanceService;
-import kr.co.cloudStudy.global.exception.EmployeeNotFoundException;
 import kr.co.cloudStudy.global.utils.AttendanceExcelUtil;
 import lombok.RequiredArgsConstructor;
 
