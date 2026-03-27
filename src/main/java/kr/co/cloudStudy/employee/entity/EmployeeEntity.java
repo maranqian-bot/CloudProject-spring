@@ -33,7 +33,10 @@ import lombok.Setter;
 public class EmployeeEntity {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;	// 직원번호
+	private Long id;	// 기본키
+	
+	@Column(name = "employee_number",nullable = false , unique = true, length = 20)	// 직원번호
+	private String employeeNumber;
 	
 	@Column(name = "name" , nullable = false , length = 50)
 	private String name; // 이름
@@ -50,6 +53,9 @@ public class EmployeeEntity {
 	@Column(name = "status", length = 20)
 	@Builder.Default
 	private String status = "활성";  // 상태
+	
+	@Column(name = "password", nullable = false, length = 255 )	// 암호화 대비해서 길이 넉넉히...
+	private String password;	//비번
 	
 	@CreatedDate
 	@Column(name = "created_at" , updatable = false,
