@@ -1,7 +1,11 @@
 package kr.co.cloudStudy.department.controller;
 
-import java.util.List;
+import java.util.SortedMap;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,9 +42,11 @@ public class DepartmentController {
 	// 부서 전체 목록 조회 (GET)
 	@Operation(summary = "부서 목록 조회" , description = "등록된 모든 부서의 리스트를 조회합니다.")
 	@GetMapping
-	public ResponseEntity<List<ResDeptDTO>> getList() {
-		List<ResDeptDTO> list = departmentService.getList();
-		return ResponseEntity.ok(list);
+	public ResponseEntity<Page<ResDeptDTO>> getList(
+			@PageableDefault(page = 0, size = 5, sort = "deptid", direction = Sort.Direction.DESC) 
+							 Pageable pageable) {
+		
+		return ResponseEntity.ok(departmentService.getList(pageable));
 	}
 	
 	// 부서 상세 조회(GET)

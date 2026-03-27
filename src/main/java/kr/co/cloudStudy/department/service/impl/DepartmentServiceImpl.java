@@ -1,9 +1,7 @@
 package kr.co.cloudStudy.department.service.impl;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +10,8 @@ import kr.co.cloudStudy.department.dto.ResDeptDTO;
 import kr.co.cloudStudy.department.entity.Department;
 import kr.co.cloudStudy.department.repository.DepartmentRepository;
 import kr.co.cloudStudy.department.service.DepartmentService;
+import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,43 +19,47 @@ import lombok.RequiredArgsConstructor;
 public class DepartmentServiceImpl implements DepartmentService {
 	
 	private final DepartmentRepository departmentRepository;
+	private final EmployeeRepository employeeRepository;
 	
 	@Override
 	@Transactional 
 	public Long register(ReqDeptDTO dto) {
 		// DTO 엔터티 변환 (빌더 사용 -> form() 호출로 변경)
 		Department entity = Department.from(dto);
-				
+		
+		if(dto.getManagerId() != null) {
+			EmployeeEntity manager = employeeRepository.findById(dto.getManagerId())
+					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직원입니다. id=" + dto.getManagerId()));
+			entity.updateManager(manager);
+		}				
 		// departmentRepository 저장 후 생성된 deptid 반환
 		return departmentRepository.save(entity).getDeptid();
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ResDeptDTO> getList() {
+	public Page<ResDeptDTO> getList(Pageable pageable){
 		
-		// 모든 엔터티 조회
-		List<Department> result = departmentRepository.findAll();
+		// 페이지 단위로 엔터티 조회
+		Page<Department> result = departmentRepository.findAll(pageable);
 		
-		// 엔터티 리스트를 DTO 리스트로 변환 (Stream 활용)
-		return result.stream()
-				.map(entity -> ResDeptDTO.builder()
+		// 엔터티 리스트를 DTO 리스트로 변환 (Stream -> map 으로 변경)
+		return result.map(entity -> ResDeptDTO.builder()
 						.deptid(entity.getDeptid())
 						.deptCode(entity.getDeptCode())
 						.deptName(entity.getDeptName())
 						.description(entity.getDescription())
 						.createdAt(entity.getCreatedAt())
-						.build())
-				.collect(Collectors.toList());
+						.build());
 	}
 			
 	@Override
 	@Transactional(readOnly = true)
-	public ResDeptDTO read(Long id) {
+	public ResDeptDTO read(Long deptid) {
 		
 		// findById(id) : ID로 찾고 없으면 예외 발생 ("해당 부서가 없습니다.")
-		Department entity = departmentRepository.findById(id)
-				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 없습니다. id=" + id));
+		Department entity = departmentRepository.findById(deptid)
+				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 없습니다. id=" + deptid));
 		
 		return ResDeptDTO.builder()
 				.deptid(entity.getDeptid())

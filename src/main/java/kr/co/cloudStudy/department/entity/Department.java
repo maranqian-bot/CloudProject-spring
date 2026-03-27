@@ -2,16 +2,22 @@ package kr.co.cloudStudy.department.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
-import kr.co.cloudStudy.department.dto.ReqDeptDTO;
+import kr.co.cloudStudy.employee.entity.EmployeeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,12 +29,13 @@ import lombok.Setter;
 @NoArgsConstructor  // JPA를 위한 기본 생성자
 @AllArgsConstructor  // 빌더를 사용하기 위한 전체 생성자
 @Table(name = "department") // DB 테이블명과 매핑
+@EntityListeners(AuditingEntityListener.class)
 @Builder // 빌더 패턴 적용
 public class Department {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "dept_id", nullable = false, updatable = false)
+	@Column(name = "id", nullable = false, updatable = false)
 	private Long deptid; // 부서 ID (PK)
 	
 	@Column(name = "dept_code", nullable = false, unique = true)
@@ -38,9 +45,10 @@ public class Department {
 	@Setter
 	private String deptName; // 부서 이름
 	
-	// Employee 엔터티 완성 후 연관 관계 매핑(@ManyToOne((fetch = FetchType.LAZY))으로 변경 예정 (엔터티명 : manager 수정)
-	@Column(name = "manager_id")   // @JoinColumn(name = "manager_id")
-	private Long managerId; // 부서 관리자 ID
+	// Employee 엔터티 완성 후 연관 관계 매핑
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "manager_id")
+	private EmployeeEntity manager; // 부서 관리자 ID
 	
 	@Setter
 	private String description; // 부서 설명
@@ -70,9 +78,13 @@ public class Department {
                 .deptCode(dto.getDeptCode())
                 .deptName(dto.getDeptName())
                 .description(dto.getDescription())
-                .managerId(dto.getManagerId())
                 .build();
     }
+	
+	// 단순 ID 값이 아닌 직원 엔터티 객체를 직접 매핑하여 연관 관계 설정. (연관관계 편의 메서드)
+	public void updateManager(EmployeeEntity manager) {
+		this.manager = manager;   
+	}
 	
 	// 비즈니스 메서드 -> 엔터티 스스로 상태 관리하도록 수정 (Setter 대신)
 	public void update(ReqDeptDTO dto) {

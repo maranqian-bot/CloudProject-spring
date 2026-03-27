@@ -1,6 +1,7 @@
 package kr.co.cloudStudy.department.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import kr.co.cloudStudy.department.dto.ResDeptDTO;
@@ -22,14 +23,14 @@ public interface DepartmentService {
 	 * 전제 부서 목록 조회
 	 * @return 부서 응답 DTO 리스트 입니다.
 	 */
-	List<ResDeptDTO> getList();
+	Page<ResDeptDTO> getList(Pageable pageable);
 	
 	/**
 	 * 부서 상세 조회
 	 * @param deptid 조회할 부서 PK
 	 * @return 부서 상세 정보 DTO
 	 */
-	ResDeptDTO read(Long id);
+	ResDeptDTO read(Long deptid);
 	
 	/**
 	 * 부서 정보 수정
