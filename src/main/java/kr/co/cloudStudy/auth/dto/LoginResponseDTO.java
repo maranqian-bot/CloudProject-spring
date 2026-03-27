@@ -14,8 +14,11 @@ import lombok.NoArgsConstructor;
 @Schema(description = "로그인 응답 DTO")
 public class LoginResponseDTO {
 
-	@Schema(description = "토큰", example = "eyJhbGciOiJIUzI1NiJ9...")
+	@Schema(description = "access토큰", example = "eyJhbGciOiJIUzI1NiJ9...")
 	private String accessToken;
+	
+	@Schema(description = "refresh토큰")
+	private String refreshToken;
 	
 	@Schema(description = "사번", example = "EMP-2024-001")
 	private String employeeNumber;

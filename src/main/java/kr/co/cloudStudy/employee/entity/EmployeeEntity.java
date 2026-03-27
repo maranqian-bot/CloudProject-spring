@@ -35,7 +35,7 @@ public class EmployeeEntity {
    @Column(name = "id")
    private Long id;   // 기본키
    
-   @Column(name = "employee_number", length = 20)   // 직원번호
+   @Column(name = "employee_number", nullable = false, unique = true, length = 20)   // 직원번호
    private String employeeNumber;
    
    @Column(name = "name" , nullable = false , length = 50)
