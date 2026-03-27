@@ -24,7 +24,14 @@ public class SecurityConfig {
 			.cors(Customizer.withDefaults())
 			.csrf(csrf -> csrf.disable())
 			// 모든 요청 허용
-			.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
+			.authorizeHttpRequests(auth -> auth
+					.requestMatchers(
+						"/api/auth/**",
+						"/swagger-ui/**",
+						"v3/api-docs/**"
+					).permitAll()
+					.anyRequest().permitAll());
+		
 		return http.build();
 	}
 	
@@ -42,7 +49,6 @@ public class SecurityConfig {
 		config.setAllowedOrigins(List.of("http://localhost:5173")); // 리액트 주소 (배포시 설정)
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
-		
 		// 세션, 쿠키 전달 허용
 		config.setAllowCredentials(true); 
 		

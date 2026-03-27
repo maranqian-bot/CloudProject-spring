@@ -11,16 +11,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "로그인 응답 dto")
+@Schema(description = "로그인 응답 DTO")
 public class LoginResponseDTO {
 
-	@Schema(description = "토큰", example = "")
+	@Schema(description = "토큰", example = "eyJhbGciOiJIUzI1NiJ9...")
 	private String accessToken;
 	
 	@Schema(description = "사번", example = "EMP-2024-001")
 	private String employeeNumber;
 	
-	@Schema(description = "토큰", example = "")
+	@Schema(description = "이름", example = "홍길동")
 	private String name;
 	
 }
