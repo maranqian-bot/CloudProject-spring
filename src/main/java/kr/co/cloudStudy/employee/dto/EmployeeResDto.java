@@ -4,9 +4,8 @@ package kr.co.cloudStudy.employee.dto;
 import kr.co.cloudStudy.employee.entity.EmployeeEntity;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-@Setter
+
 @Getter
 @Builder
 public class EmployeeResDto {
