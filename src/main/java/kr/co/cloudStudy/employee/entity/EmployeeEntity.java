@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import kr.co.cloudStudy.department.entity.Department;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,17 +33,14 @@ import lombok.Setter;
 @Table(name ="employee")
 public class EmployeeEntity {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;	// 기본키
+	@Column(name = "emp_id")
+	private Long empId;	// 기본키
 	
 	@Column(name = "employee_number",nullable = false , unique = true, length = 20)	// 직원번호
 	private String employeeNumber;
 	
 	@Column(name = "name" , nullable = false , length = 50)
 	private String name; // 이름
-	
-	@Column(name = "dept_name", length = 50)
-	private String deptName; // 부서명
 	
 	@Column(name = "position", length = 50)
 	private String position; // 직책
@@ -67,9 +65,8 @@ public class EmployeeEntity {
 			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime updatedAt;	// 수정일		
 
-//	@ManyToOne(fetch = FetchType.LAZY) 
-//    @JoinColumn(name = "dept_id", nullable = false) 
-//	 private Department department;	// 부서 외래키
-	@Column(name = "dept_id", nullable = false)
-    private Long deptId;
-}
+	  @ManyToOne(fetch = FetchType.LAZY) 
+	   @JoinColumn(name = "dept_id", nullable = false) 
+	   private Department deptid;   // 부서 외래키
+	} 
+
