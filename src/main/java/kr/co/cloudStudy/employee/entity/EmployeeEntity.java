@@ -31,41 +31,41 @@ import lombok.Setter;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name ="employee")
 public class EmployeeEntity {
-   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "id")
-   private Long id;   // 기본키
-   
-   @Column(name = "employee_number", nullable = false, unique = true, length = 20)   // 직원번호
-   private String employeeNumber;
-   
-   @Column(name = "name" , nullable = false , length = 50)
-   private String name; // 이름
-   
-   @Column(name = "dept_name", length = 50)
-   private String deptName; // 부서명
-   
-   @Column(name = "position", length = 50)
-   private String position; // 직책
-   
-   @Column(name = "email", length = 100)
-   private String email;   // 이메일
-   
-   @Column(name = "status", length = 20)
-   @Builder.Default
-   private String status = "활성";  // 상태
-   
-   @Column(name = "password", nullable = false, length = 255 )   // 암호화 대비해서 길이 넉넉히...
-   private String password;   //비번
-   
-   @CreatedDate
-   @Column(name = "created_at" , updatable = false,
-         columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")         
-   private LocalDateTime createdAt;   // 생성일
-   
-   @LastModifiedDate
-   @Column(name = "updated_at",
-         columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-   private LocalDateTime updatedAt;   // 수정일      
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;	// 기본키
+	
+	@Column(name = "employee_number",nullable = false , unique = true, length = 20)	// 직원번호
+	private String employeeNumber;
+	
+	@Column(name = "name" , nullable = false , length = 50)
+	private String name; // 이름
+	
+	@Column(name = "dept_name", length = 50)
+	private String deptName; // 부서명
+	
+	@Column(name = "position", length = 50)
+	private String position; // 직책
+	
+	@Column(name = "email", length = 100)
+	private String email;	// 이메일
+	
+	@Column(name = "status", length = 20)
+	@Builder.Default
+	private String status = "활성";  // 상태
+	
+	@Column(name = "password", nullable = false, length = 255 )	// 암호화 대비해서 길이 넉넉히...
+	private String password;	//비번
+	
+	@CreatedDate
+	@Column(name = "created_at" , updatable = false,
+			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")			
+	private LocalDateTime createdAt;	// 생성일
+	
+	@LastModifiedDate
+	@Column(name = "updated_at",
+			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private LocalDateTime updatedAt;	// 수정일		
 
 //   @ManyToOne(fetch = FetchType.LAZY) 
 //    @JoinColumn(name = "dept_id", nullable = false) 
