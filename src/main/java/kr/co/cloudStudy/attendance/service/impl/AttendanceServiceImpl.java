@@ -81,7 +81,7 @@ public class AttendanceServiceImpl implements AttendanceService{
 		return attendanceList.stream()
 				.map(attendance -> AttendanceHistoryResponseDTO.builder()
 						.attendanceId(attendance.getAttendanceId())
-						.employeeId(attendance.getEmpId())
+						.employeeId(attendance.getEmployeeId())
 						.workDate(attendance.getWorkDate())
 						.checkInTime(attendance.getCheckInTime())
 						.checkOutTime(attendance.getCheckOutTime())
