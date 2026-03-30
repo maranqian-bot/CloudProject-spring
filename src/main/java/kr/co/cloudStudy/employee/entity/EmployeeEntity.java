@@ -67,6 +67,6 @@ public class EmployeeEntity {
 
 	  @ManyToOne(fetch = FetchType.LAZY) 
 	   @JoinColumn(name = "dept_id", nullable = false) 
-	   private Department deptid;   // 부서 외래키
+	   private Department deptId;   // 부서 외래키
 	} 
 
