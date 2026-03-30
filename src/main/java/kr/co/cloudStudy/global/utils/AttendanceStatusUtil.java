@@ -2,7 +2,7 @@ package kr.co.cloudStudy.global.utils;
 
 import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 
-public class AttendanceUtils {
+public class AttendanceStatusUtil {
 
 	// 1. 출근일수 판단
 	// - 정상, 지각, 연장 근무
