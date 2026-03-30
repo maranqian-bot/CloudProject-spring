@@ -18,7 +18,7 @@ public class ReqDeptDTO {
 		
 		@Setter
 		@Schema(description = "부서 ID (수정 시 필수)", example = "1")
-		private Long deptid;
+		private Long deptId;
 	
 		@Setter
 		@Schema(description = "부서 코드", example = "DEV-001", requiredMode = Schema.RequiredMode.REQUIRED)	
@@ -29,8 +29,8 @@ public class ReqDeptDTO {
 		private String deptName;			 // 부서 이름
 		
 		@Setter
-		@Schema(description = "부서 관리자 ID", example = "101")
-		private Long managerId;
+		@Schema(description = "매니저 사번", example = "EMP-2024-001")
+		private String managerId;
 		
 		@Setter
 		@Schema(description = "부서 설명", example = "스프링 백엔드 개발 부서")

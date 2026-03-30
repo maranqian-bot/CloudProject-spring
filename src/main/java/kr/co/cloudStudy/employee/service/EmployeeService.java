@@ -29,11 +29,11 @@ public Page<EmployeeResDto> getEmployeeList(Pageable pageable) {
         
         // 1. 실제 DB 대신 사용할 5명의 더미 리스트
         List<EmployeeResDto> dummyList = List.of(
-            EmployeeResDto.builder().id(70224L).name("Julianne Sterling").deptName("전략 및 기획").position("매니저").email("j.sterling@arch.com").status("활성").build(),
-            EmployeeResDto.builder().id(70225L).name("Marcus Kael").deptName("구조 엔지니어링").position("관리자").email("m.kael@arch.com").status("휴가").build(),
-            EmployeeResDto.builder().id(70226L).name("Lana Tesh").deptName("인테리어 디자인").position("팀장").email("l.tesh@arch.com").status("외근").build(),
-            EmployeeResDto.builder().id(70234L).name("Dorian Vance").deptName("기업 재무").position("직원").email("d.vance@arch.com").status("활성").build(),
-            EmployeeResDto.builder().id(70241L).name("Reese Blackwood").deptName("시스템 엔지니어링").position("매니저").email("r.blackwood@arch.com").status("활성").build()
+            EmployeeResDto.builder().empId(70224L).name("Julianne Sterling").deptName("전략 및 기획").position("매니저").email("j.sterling@arch.com").status("활성").build(),
+            EmployeeResDto.builder().empId(70225L).name("Marcus Kael").deptName("구조 엔지니어링").position("관리자").email("m.kael@arch.com").status("휴가").build(),
+            EmployeeResDto.builder().empId(70226L).name("Lana Tesh").deptName("인테리어 디자인").position("팀장").email("l.tesh@arch.com").status("외근").build(),
+            EmployeeResDto.builder().empId(70234L).name("Dorian Vance").deptName("기업 재무").position("직원").email("d.vance@arch.com").status("활성").build(),
+            EmployeeResDto.builder().empId(70241L).name("Reese Blackwood").deptName("시스템 엔지니어링").position("매니저").email("r.blackwood@arch.com").status("활성").build()
         );
 
         // 2. 리스트를 Page 객체로 변환 (리액트가 인식할 수 있는 규격)

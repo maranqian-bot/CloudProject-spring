@@ -18,7 +18,7 @@ import lombok.Setter;
 public class ResDeptDTO {
 	
 	@Schema(description = "부서 ID (PK)", example = "1")
-	private Long deptid;                     // 부서 PK
+	private Long deptId;        // 부서 PK
 	
 	@Schema(description = "부서 코드", example = "DEV-001")
 	private String deptCode;			 // 부서 코드
@@ -29,8 +29,8 @@ public class ResDeptDTO {
 	@Schema(description = "부서 설명", example = "스프링 백엔드 개발 부서")
 	private String description;			 // 부서 설명
 	
-	@Schema(description = "부서 관리자 ID", example = "101")
-	private Long managerId;				 // 관리자 ID
+	@Schema(description = "매니저 사번", example = "EMP-2024-001")
+	private String managerId;				 // 매니저 사번
 	
 	@Schema(description = "생성 일시", example = "2026-03-25T14:00:00")
 	private LocalDateTime createdAt;     // 생성일
