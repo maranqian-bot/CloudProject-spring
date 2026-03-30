@@ -15,6 +15,7 @@ import kr.co.cloudStudy.auth.dto.LoginResponseDTO;
 import kr.co.cloudStudy.auth.dto.LogoutRequestDTO;
 import kr.co.cloudStudy.auth.dto.ReissueRequestDTO;
 import kr.co.cloudStudy.auth.dto.ReissueResponseDTO;
+import kr.co.cloudStudy.auth.jwt.JwtUtil;
 import kr.co.cloudStudy.auth.service.AuthService;
 import kr.co.cloudStudy.employee.entity.EmployeeEntity;
 import kr.co.cloudStudy.employee.repository.EmployeeRepository;
@@ -27,11 +28,13 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "Auth", description = "인증 API")
 public class AuthController {
 	private final EmployeeRepository employeeRepository;
+	private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 	private final AuthService authService;
 	
 	@PostMapping("/login")
 	@Operation(summary = "로그인", description = "사번과 비밀번호를 입력받아 JWT 토큰을 발급합니다.")
-	public ResponseEntity<ApiResponseDTO<LoginResponseDTO>> login(@RequestBody LoginRequestDTO requestDTO) {
+	public ResponseEntity<ApiResponseDTO<LoginResponseDTO>> login(@Valid @RequestBody LoginRequestDTO requestDTO) {
 		
 		LoginResponseDTO responseDTO = authService.login(requestDTO);
 		

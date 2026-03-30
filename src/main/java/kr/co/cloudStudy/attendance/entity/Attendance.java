@@ -34,7 +34,7 @@ public class Attendance {
 //   @ManyToOne
 //   @JoinColumn(name = "emp_id", nullable = false)
    // employee 엔티티와 조인할 예정
-   private Long employeeId; 
+   private Long empId; 
    
    @Column(name = "work_date", nullable = false)
    private LocalDate workDate;

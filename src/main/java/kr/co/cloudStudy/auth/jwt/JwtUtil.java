@@ -84,6 +84,7 @@ public class JwtUtil {
             getClaims(token);
             return true;
         } catch (Exception e) {
+        	System.out.println("JWT 검증 실패: " + e.getMessage());
             return false;
         }
     }

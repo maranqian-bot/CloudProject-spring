@@ -1,6 +1,6 @@
 package kr.co.cloudStudy.auth.service.impl;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -31,31 +31,29 @@ public class AuthServiceImpl implements AuthService{
 	@Override
 	public LoginResponseDTO login(LoginRequestDTO requestDTO) {
 		// 1. 사전으로 직원 조회
-		EmployeeEntity employee = employeeRepository.findByEmployeeNumber(requestDTO.getEmployeeNumber())
+		EmployeeEntity employee = employeeRepository
+				.findByEmployeeNumber(requestDTO.getEmployeeNumber())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사번입니다."));
 				
-		// 2. 비밀번호 비교
 		boolean isMatch = passwordEncoder.matches(requestDTO.getPassword(), employee.getPassword());
 		
-		// 3. 상태 확인
+		if (!isMatch) {
+			throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+		}
+		
 		if (!"활성".equals(employee.getStatus())) {
 			throw new IllegalArgumentException("비활성화된 계정입니다.");
 		}
 		
-		// 4. access 토큰 생성
 		String accessToken = jwtUtil.createAccessToken(employee);
 		
-		// 5. refresh token 생성
 		String refreshToken = jwtUtil.createRefreshToken(employee);
 		
-		// 6. refresh token 만료 시간 추출
-		Date expiration = (Date) jwtUtil.getExpiration(refreshToken);
+		Date expiration = jwtUtil.getExpiration(refreshToken);
 		LocalDateTime expiryDate = expiration.toInstant()
 				.atZone(ZoneId.systemDefault())
 				.toLocalDateTime();
 		
-		// 7. 기존 refresh token이 있으면 수정, 없으면 새로 저장
-		//   RefreshToken
 		RefreshToken savedToken = refreshTokenRepository.findByEmployeeNumber(employee.getEmployeeNumber())
 															.map(existingToken -> {
 																existingToken.updateToken(refreshToken, expiryDate);
@@ -115,7 +113,7 @@ public class AuthServiceImpl implements AuthService{
 		String newRefreshToken = jwtUtil.createRefreshToken(employee);
 		
 		// 8. 새 refresh token 만료 시간 계산
-		Date expiration = (Date) jwtUtil.getExpiration(newRefreshToken);
+		Date expiration = jwtUtil.getExpiration(newRefreshToken);
 		LocalDateTime expiryDate = expiration.toInstant()
 				.atZone(ZoneId.systemDefault())
 				.toLocalDateTime();
