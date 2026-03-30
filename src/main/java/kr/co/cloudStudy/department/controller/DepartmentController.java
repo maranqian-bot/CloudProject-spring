@@ -1,7 +1,5 @@
 package kr.co.cloudStudy.department.controller;
 
-import java.util.SortedMap;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

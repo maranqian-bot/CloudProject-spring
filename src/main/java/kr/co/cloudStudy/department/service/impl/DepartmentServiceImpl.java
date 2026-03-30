@@ -50,6 +50,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 						.deptName(entity.getDeptName())
 						.description(entity.getDescription())
 						.createdAt(entity.getCreatedAt())
+						.managerId(entity.getManager() != null ? entity.getManager().getId() : null)
 						.build());
 	}
 			
@@ -67,6 +68,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 				.deptName(entity.getDeptName())
 				.description(entity.getDescription())
 				.createdAt(entity.getCreatedAt())
+				.managerId(entity.getManager() != null ? entity.getManager().getId() : null)
 				.build();		
 	}
 	
