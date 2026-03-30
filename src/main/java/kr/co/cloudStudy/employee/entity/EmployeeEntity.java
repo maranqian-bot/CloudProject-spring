@@ -1,5 +1,6 @@
 package kr.co.cloudStudy.employee.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -21,7 +22,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Builder
@@ -36,7 +36,7 @@ public class EmployeeEntity {
 	@Column(name = "emp_id")
 	private Long empId;	// 기본키
 	
-	@Column(name = "employee_number",nullable = false , unique = true, length = 20)	// 직원번호
+	@Column(name = "employee_number",nullable = false , unique = true, length = 20)	// 직원사번	
 	private String employeeNumber;
 	
 	@Column(name = "name" , nullable = false , length = 50)
@@ -55,6 +55,13 @@ public class EmployeeEntity {
 	@Column(name = "password", nullable = false, length = 255 )	// 암호화 대비해서 길이 넉넉히...
 	private String password;	//비번
 	
+	@Column(name = "hire_date")
+	private LocalDate hireDate; // 입사일	
+	
+	@Column(name = "role", length = 20)	
+	@Builder.Default
+	private String role = "EMPLOYEE"; // 시스템 역할
+	
 	@CreatedDate
 	@Column(name = "created_at" , updatable = false,
 			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")			
@@ -67,6 +74,8 @@ public class EmployeeEntity {
 
 	  @ManyToOne(fetch = FetchType.LAZY) 
 	   @JoinColumn(name = "dept_id", nullable = false) 
-	   private Department deptId;   // 부서 외래키
+	   private Department department;   // 부서 외래키
+	  
+	  
 	} 
 
