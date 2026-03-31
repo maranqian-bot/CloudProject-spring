@@ -6,10 +6,10 @@ package kr.co.cloudStudy.employee.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.employee.entity.Employee;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<EmployeeEntity,Long>{
+public interface EmployeeRepository extends JpaRepository<Employee,Long>, EmployeeRepositoryCustom{
 	// 필터링 및 검색기능 (보류)
 	/*
 	 * 
@@ -17,7 +17,7 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity,Long>{
 			
 			)
 	Page<EmployeeEntity> findEmployeeByFilters();
-
+ 
 	 * */
 	
 	//부서 목록 조회 (보류)
