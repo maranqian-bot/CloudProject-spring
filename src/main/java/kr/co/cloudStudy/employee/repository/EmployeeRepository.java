@@ -6,25 +6,14 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.employee.entity.Employee;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<EmployeeEntity,Long>{
+public interface EmployeeRepository extends JpaRepository<Employee,Long>, EmployeeRepositoryCustom{
 
-	Optional<EmployeeEntity> findByEmployeeNumber(String employeeNumber);
-	// 필터링 및 검색기능 (보류)
-	/*
-	 * 
-	@Query("Select e FROM EmployeeEntity e"
-			
-			)
-	Page<EmployeeEntity> findEmployeeByFilters();
-
-	 * */
+	Optional<Employee> findByEmployeeNumber(String employeeNumber);
 	
-	//부서 목록 조회 (보류)
 	
-
 }	
 
 

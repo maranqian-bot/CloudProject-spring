@@ -10,7 +10,7 @@ import kr.co.cloudStudy.department.dto.ResDeptDTO;
 import kr.co.cloudStudy.department.entity.Department;
 import kr.co.cloudStudy.department.repository.DepartmentRepository;
 import kr.co.cloudStudy.department.service.DepartmentService;
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.employee.entity.Employee;
 import kr.co.cloudStudy.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		Department entity = Department.from(dto);
 		
 		if(dto.getManagerId() != null) {
-			EmployeeEntity manager = employeeRepository.findByEmployeeNumber(dto.getManagerId().toString())
+			Employee manager = employeeRepository.findByEmployeeNumber(dto.getManagerId().toString())
 					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직원입니다. id=" + dto.getManagerId()));
 			entity.updateManager(manager);
 		}				
@@ -83,7 +83,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		entity.update(dto);
 		
 		if(dto.getManagerId() != null) {
-	        EmployeeEntity manager = employeeRepository.findByEmployeeNumber(dto.getManagerId().toString())
+	        Employee manager = employeeRepository.findByEmployeeNumber(dto.getManagerId().toString())
 	                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직원입니다."));
 	        entity.updateManager(manager);
 	    }
