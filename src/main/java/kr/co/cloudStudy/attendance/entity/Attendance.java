@@ -32,7 +32,7 @@ public class Attendance {
    private Long attendanceId;
    
 //   @ManyToOne
-//   @JoinColumn(name = "emp_id", nullable = false)
+//   @JoinColumn(name = "employee_id", nullable = false)
    // employee 엔티티와 조인할 예정
    private Long employeeId; 
    

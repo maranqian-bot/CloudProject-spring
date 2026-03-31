@@ -35,8 +35,8 @@ public class Department {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "dept_id", nullable = false, updatable = false)
-	private Long deptId; // 부서 ID (PK)
+	@Column(name = "department_id", nullable = false, updatable = false)
+	private Long departmentId; // 부서 ID (PK)
 	
 	@Column(name = "dept_code", nullable = false, unique = true)
 	private String deptCode; // 부서 코드
@@ -47,7 +47,7 @@ public class Department {
 	
 	// Employee 엔터티 완성 후 연관 관계 매핑
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "emp_id")
+	@JoinColumn(name = "employee_number")
 	private EmployeeEntity manager; // 부서 관리자 ID
 	
 	@Setter

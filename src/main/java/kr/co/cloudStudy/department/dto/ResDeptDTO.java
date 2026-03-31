@@ -18,7 +18,7 @@ import lombok.Setter;
 public class ResDeptDTO {
 	
 	@Schema(description = "부서 ID (PK)", example = "1")
-	private Long deptId;        // 부서 PK
+	private Long departmentId;        // 부서 PK
 	
 	@Schema(description = "부서 코드", example = "DEV-001")
 	private String deptCode;			 // 부서 코드

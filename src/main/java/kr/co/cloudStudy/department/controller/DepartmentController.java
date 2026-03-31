@@ -30,49 +30,49 @@ public class DepartmentController {
 	private final DepartmentService departmentService;
 	
 	// 부서 등록 (POST)
-	@Operation(summary = "부서 등록" , description = "새로운 부서 정보를 시스템에 저장하고 생성된 PK(deptId)를 반환합니다.")
+	@Operation(summary = "부서 등록" , description = "새로운 부서 정보를 시스템에 저장하고 생성된 PK(departmentId)를 반환합니다.")
 	@PostMapping
 	public ResponseEntity<Long> register(@RequestBody ReqDeptDTO dto) {
-		Long deptId = departmentService.register(dto);
-		return ResponseEntity.ok(deptId);
+		Long departmentId = departmentService.register(dto);
+		return ResponseEntity.ok(departmentId);
 	}
 	
 	// 부서 전체 목록 조회 (GET)
 	@Operation(summary = "부서 목록 조회" , description = "등록된 모든 부서의 리스트를 조회합니다.")
 	@GetMapping
 	public ResponseEntity<Page<ResDeptDTO>> getList(
-			@PageableDefault(page = 0, size = 5, sort = "deptId", direction = Sort.Direction.DESC) 
+			@PageableDefault(page = 0, size = 5, sort = "departmentId", direction = Sort.Direction.DESC) 
 							 Pageable pageable) {
 		
 		return ResponseEntity.ok(departmentService.getList(pageable));
 	}
 	
 	// 부서 상세 조회(GET)
-	@Operation(summary = "부서 상세 조회", description = "부서 ID(deptId)를 통해 특정 부서 정보를 상세 조회합니다.")
-	@GetMapping("/{deptId}")
-	public ResponseEntity<ResDeptDTO> read(@PathVariable Long deptId) {
-		ResDeptDTO dto = departmentService.read(deptId);
+	@Operation(summary = "부서 상세 조회", description = "부서 ID(departmentId)를 통해 특정 부서 정보를 상세 조회합니다.")
+	@GetMapping("/{departmentId}")
+	public ResponseEntity<ResDeptDTO> read(@PathVariable Long departmentId) {
+		ResDeptDTO dto = departmentService.read(departmentId);
 		return ResponseEntity.ok(dto);
 	}
 	
 	// 부서 정보 수정 (PUT)
 	@Operation(summary = "부서 정보 수정", description = "기존 부서의 정보(내용)를 업데이트합니다.")
-	@PutMapping("/{deptId}")
+	@PutMapping("/{departmentId}")
 	public ResponseEntity<Void> modify(
-			@PathVariable("deptId") Long deptId,   // 주소의 번호를 꺼내서 deptId 변수 담기
+			@PathVariable("departmentId") Long departmentId,   // 주소의 번호를 꺼내서 departmentId 변수 담기
 			@RequestBody ReqDeptDTO dto            // 수정할 내용 DTO로 받기
 	) {
-		dto.setDeptId(deptId);					   // 주소에서 받은 ID -> DTO로 세팅하기
+		dto.setDepartmentId(departmentId);					   // 주소에서 받은 ID -> DTO로 세팅하기
 		
 		departmentService.modify(dto);
 		return ResponseEntity.ok().build();
 	}
 	
 	// 부서 삭제 (DELETE)
-	@Operation(summary = "부서 삭제", description = "부서 ID(deptId)를 이용해 해당 부서 데이터를 삭제합니다.")
-	@DeleteMapping("/{deptId}")
-	public ResponseEntity<Void> remove(@PathVariable Long deptId) {
-		departmentService.remove(deptId);
+	@Operation(summary = "부서 삭제", description = "부서 ID(departmentId)를 이용해 해당 부서 데이터를 삭제합니다.")
+	@DeleteMapping("/{departmentId}")
+	public ResponseEntity<Void> remove(@PathVariable Long departmentId) {
+		departmentService.remove(departmentId);
 		return ResponseEntity.ok().build();
 	}
 	

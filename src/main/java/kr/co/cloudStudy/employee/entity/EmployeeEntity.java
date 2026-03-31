@@ -33,8 +33,8 @@ import lombok.Setter;
 @Table(name ="employee")
 public class EmployeeEntity {
    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-   @Column(name = "emp_id")
-   private Long empId;   // 기본키
+   @Column(name = "employee_id")
+   private Long employeeId;   // 기본키
    
    @Column(name = "employee_number",nullable = false , unique = true, length = 20)   // 직원번호
    private String employeeNumber;
@@ -66,6 +66,6 @@ public class EmployeeEntity {
    private LocalDateTime updatedAt;   // 수정일      
 
    @ManyToOne(fetch = FetchType.LAZY) 
-   @JoinColumn(name = "dept_id", nullable = false) 
-   private Department deptId;   // 부서 외래키
+   @JoinColumn(name = "department_id", nullable = false) 
+   private Department departmentId;   // 부서 외래키
 }

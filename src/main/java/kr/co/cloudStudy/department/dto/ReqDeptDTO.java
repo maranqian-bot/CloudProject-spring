@@ -18,7 +18,7 @@ public class ReqDeptDTO {
 		
 		@Setter
 		@Schema(description = "부서 ID (수정 시 필수)", example = "1")
-		private Long deptId;
+		private Long departmentId;
 	
 		@Setter
 		@Schema(description = "부서 코드", example = "DEV-001", requiredMode = Schema.RequiredMode.REQUIRED)	
