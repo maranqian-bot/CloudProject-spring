@@ -22,7 +22,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
     @Override
     public Page<Employee> searchEmployees(EmployeeSearchDto condition, Pageable pageable) {
         // 1. 기본 쿼리 생성
-        StringBuilder jpql = new StringBuilder("SELECT e FROM EmployeeEntity e WHERE 1=1");
+        StringBuilder jpql = new StringBuilder("SELECT e FROM Employee e WHERE 1=1");
         
         // 2. 동적 조건 추가 (StringUtils로 공백/null 체크)
         if (StringUtils.hasText(condition.getKeyword())) {
@@ -32,7 +32,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
         
         if (StringUtils.hasText(condition.getDepartment())) {
             // 부서(deptName 또는 deptId) 필드 매칭 (엔티티 필드명에 맞춰 수정 필요)
-            jpql.append(" AND e.deptName = :department");
+            jpql.append(" AND e.department.deptName = :department");
         }
         
         if (StringUtils.hasText(condition.getStatus())) {
@@ -53,9 +53,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
         List<Employee> resultList = query.getResultList();
         
         // 6. 전체 개수 조회용 카운트 쿼리 (페이징 처리에 필요)
-        String countJpql = "SELECT COUNT(e) FROM EmployeeEntity e WHERE 1=1";
+        String countJpql = "SELECT COUNT(e) FROM Employee e WHERE 1=1";
         if (StringUtils.hasText(condition.getKeyword())) countJpql += " AND e.name LIKE :keyword";
-        if (StringUtils.hasText(condition.getDepartment())) countJpql += " AND e.deptName = :department";
+        if (StringUtils.hasText(condition.getDepartment())) countJpql += " AND e.department.deptName = :department";
         if (StringUtils.hasText(condition.getStatus())) countJpql += " AND e.status = :status";
         
         TypedQuery<Long> countQuery = em.createQuery(countJpql, Long.class);
