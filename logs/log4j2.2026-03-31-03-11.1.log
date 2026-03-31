@@ -1,0 +1,50 @@
+[2026-03-31 15:11:14.705]  INFO 18228 --- [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+[2026-03-31 15:11:14.712]  INFO 18228 --- [       Thread-5] o.s.b.w.e.t.GracefulShutdown             : Commencing graceful shutdown. Waiting for active requests to complete
+[2026-03-31 15:11:14.713]  INFO 18228 --- [tomcat-shutdown] o.a.c.h.Http11NioProtocol                : Pausing ProtocolHandler ["http-nio-8080"]
+[2026-03-31 15:11:14.717]  INFO 18228 --- [tomcat-shutdown] o.s.b.w.e.t.GracefulShutdown             : Graceful shutdown complete
+[2026-03-31 15:11:14.717]  INFO 18228 --- [       Thread-5] o.a.c.h.Http11NioProtocol                : Stopping ProtocolHandler ["http-nio-8080"]
+[2026-03-31 15:11:14.722]  INFO 18228 --- [       Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+[2026-03-31 15:11:14.724]  INFO 18228 --- [       Thread-5] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+[2026-03-31 15:11:14.728]  INFO 18228 --- [       Thread-5] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+[2026-03-31 15:11:14.802]  INFO 18228 --- [  restartedMain] k.c.c.CloudStudyApplication              : Starting CloudStudyApplication using Java 21.0.9 with PID 18228 (C:\CloudProject-spring\bin\main started by adminn in C:\CloudProject-spring)
+[2026-03-31 15:11:14.802]  INFO 18228 --- [  restartedMain] k.c.c.CloudStudyApplication              : No active profile set, falling back to 1 default profile: "default"
+[2026-03-31 15:11:14.967]  INFO 18228 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2026-03-31 15:11:14.985]  INFO 18228 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 17 ms. Found 4 JPA repository interfaces.
+[2026-03-31 15:11:15.982]  INFO 21464 --- [kground-preinit] o.h.v.i.u.Version                        : HV000001: Hibernate Validator 8.0.3.Final
+[2026-03-31 15:11:16.007]  INFO 21464 --- [  restartedMain] k.c.c.CloudStudyApplication              : Starting CloudStudyApplication using Java 21.0.9 with PID 21464 (C:\CloudProject-spring\bin\main started by adminn in C:\CloudProject-spring)
+[2026-03-31 15:11:16.009]  INFO 21464 --- [  restartedMain] k.c.c.CloudStudyApplication              : No active profile set, falling back to 1 default profile: "default"
+[2026-03-31 15:11:16.035]  INFO 21464 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2026-03-31 15:11:16.035]  INFO 21464 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2026-03-31 15:11:16.521]  INFO 21464 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2026-03-31 15:11:16.574]  INFO 21464 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 45 ms. Found 4 JPA repository interfaces.
+[2026-03-31 15:11:16.914]  INFO 21464 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port 8080 (http)
+[2026-03-31 15:11:16.922]  INFO 21464 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Initializing ProtocolHandler ["http-nio-8080"]
+[2026-03-31 15:11:16.923]  INFO 21464 --- [  restartedMain] o.a.c.c.StandardService                  : Starting service [Tomcat]
+[2026-03-31 15:11:16.923]  INFO 21464 --- [  restartedMain] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/10.1.50]
+[2026-03-31 15:11:16.959]  INFO 21464 --- [  restartedMain] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+[2026-03-31 15:11:16.959]  INFO 21464 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 924 ms
+[2026-03-31 15:11:17.052]  INFO 21464 --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+[2026-03-31 15:11:17.245]  INFO 21464 --- [  restartedMain] c.z.h.p.HikariPool                       : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@43e96e3
+[2026-03-31 15:11:17.246]  INFO 21464 --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+[2026-03-31 15:11:17.269]  INFO 21464 --- [  restartedMain] o.h.j.i.u.LogHelper                      : HHH000204: Processing PersistenceUnitInfo [name: default]
+[2026-03-31 15:11:17.309]  INFO 21464 --- [  restartedMain] o.h.Version                              : HHH000412: Hibernate ORM core version 6.6.41.Final
+[2026-03-31 15:11:17.330]  INFO 21464 --- [  restartedMain] o.h.c.i.RegionFactoryInitiator           : HHH000026: Second-level cache disabled
+[2026-03-31 15:11:17.514]  INFO 21464 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+[2026-03-31 15:11:17.563]  WARN 21464 --- [  restartedMain] o.h.o.deprecation                        : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-03-31 15:11:17.572]  INFO 21464 --- [  restartedMain] o.h.o.c.pooling                          : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.45
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[2026-03-31 15:11:18.143]  INFO 21464 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2026-03-31 15:11:18.145]  INFO 21464 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2026-03-31 15:11:18.418]  WARN 21464 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2026-03-31 15:11:18.437]  INFO 21464 --- [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+[2026-03-31 15:11:18.636]  WARN 21464 --- [  restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+[2026-03-31 15:11:18.771]  INFO 21464 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+[2026-03-31 15:11:18.787]  INFO 21464 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Starting ProtocolHandler ["http-nio-8080"]
+[2026-03-31 15:11:18.804]  INFO 21464 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port 8080 (http) with context path '/'
+[2026-03-31 15:11:18.810]  INFO 21464 --- [  restartedMain] k.c.c.CloudStudyApplication              : Started CloudStudyApplication in 3.068 seconds (process running for 3.657)

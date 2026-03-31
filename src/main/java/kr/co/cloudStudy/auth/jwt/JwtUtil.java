@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -31,7 +32,7 @@ public class JwtUtil {
     }
 	
 	/**
-	 * access token 생성
+	 * Access token 생성
 	 */
 	public String createAccessToken(EmployeeEntity employee) {
 		Date now = new Date();
@@ -39,6 +40,7 @@ public class JwtUtil {
 		
 		return Jwts.builder()
 				.subject(employee.getEmployeeNumber())
+				.claim("type", "access")
 				.claim("employeeId", employee.getId())
 				.claim("name", employee.getName())
 				.issuedAt(now)
@@ -48,7 +50,7 @@ public class JwtUtil {
 	}
 	
 	/**
-	 * refresh token
+	 * Refresh token
 	 */
 	public String createRefreshToken(EmployeeEntity employee) {
 		Date now = new Date();
@@ -56,6 +58,8 @@ public class JwtUtil {
 		
 		return Jwts.builder()
 				.subject(employee.getEmployeeNumber())
+				.claim("type", "refresh")
+				.claim("jti", UUID.randomUUID().toString())
 				.issuedAt(now)
 				.expiration(expiry)
 				.signWith(secretKey)
@@ -67,6 +71,20 @@ public class JwtUtil {
 	 */
 	public String getEmployeeNumber(String token) {
 		return getClaims(token).getSubject();
+	}
+	
+	/**
+	 * 토큰에서 타입 추출
+	 */
+	public String getTokenType(String token) {
+		return getClaims(token).get("type", String.class);
+	}
+	
+	/**
+	 * 토큰에서 jti 추출
+	 */
+	public String getJti(String token) {
+		return getClaims(token).get("jti", String.class);
 	}
 	
 	/**
@@ -87,6 +105,30 @@ public class JwtUtil {
         	System.out.println("JWT 검증 실패: " + e.getMessage());
             return false;
         }
+    }
+    
+    /**
+     * Access Token인지 확인
+     */
+    public boolean isAccessToken(String token) {
+    	try {
+    		String type = getTokenType(token);
+    		return "access".equals(type);
+    	} catch (Exception e) {
+    		return false;
+    	}
+    }
+    
+    /**
+     * Refresh Token인지 확인
+     */
+    public boolean isRefreshToken(String token) {
+    	try {
+    		String type = getTokenType(token);
+    		return "refresh".equals(type);
+    	} catch (Exception e) {
+    		return false;
+    	}
     }
 
     /**

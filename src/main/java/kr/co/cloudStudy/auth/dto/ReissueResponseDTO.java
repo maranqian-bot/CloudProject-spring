@@ -8,11 +8,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @Builder
+@Schema(description = "토큰 재발급 응답 DTO")
 public class ReissueResponseDTO {
 	
-	@Schema(description = "access토큰")
+	@Schema(description = "accessToken", example = "eyJhbGciOiJIUzI1NiJ9...")
 	private String accessToken;
 	
-	@Schema(description = "refresh토큰")
+	@Schema(description = "refreshToken", example = "eyJhbGciOiJIUzI1NiJ9...")
 	private String refreshToken;
 }

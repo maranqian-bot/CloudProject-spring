@@ -15,6 +15,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import kr.co.cloudStudy.auth.jwt.JwtAuthenticationFilter;
 import kr.co.cloudStudy.auth.jwt.JwtUtil;
+import kr.co.cloudStudy.auth.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final JwtUtil jwtUtil;
+	private final CustomUserDetailsService customUserDetailsService;
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -37,7 +39,8 @@ public class SecurityConfig {
 					).permitAll()
 					.anyRequest().authenticated()
 				)
-				.addFilterBefore(new JwtAuthenticationFilter(jwtUtil),
+				.addFilterBefore(
+						new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
 						UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

@@ -1,0 +1,11 @@
+[2026-03-31 16:51:00.052]  WARN 6932 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2026-03-31 16:51:00.087]  INFO 6932 --- [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+[2026-03-31 16:51:00.378]  WARN 6932 --- [  restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+[2026-03-31 16:51:00.604]  INFO 6932 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+[2026-03-31 16:51:00.625]  INFO 6932 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Starting ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:51:00.641]  INFO 6932 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port 8080 (http) with context path '/'
+[2026-03-31 16:51:00.648]  INFO 6932 --- [  restartedMain] k.c.c.CloudStudyApplication              : Started CloudStudyApplication in 4.511 seconds (process running for 5.176)
+[2026-03-31 16:51:32.832]  INFO 6932 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2026-03-31 16:51:32.832]  INFO 6932 --- [nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+[2026-03-31 16:51:32.832]  INFO 6932 --- [nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 0 ms
+[2026-03-31 16:51:32.865]  INFO 6932 --- [nio-8080-exec-2] k.c.c.a.j.JwtAuthenticationFilter        : Authorization Header = null

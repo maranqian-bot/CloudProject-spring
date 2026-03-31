@@ -27,9 +27,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Tag(name = "Auth", description = "인증 API")
 public class AuthController {
-	private final EmployeeRepository employeeRepository;
-	private final BCryptPasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 	private final AuthService authService;
 	
 	@PostMapping("/login")
@@ -58,23 +55,4 @@ public class AuthController {
 		
 		return ResponseEntity.ok(ApiResponseDTO.success("로그아웃 성공", null));
 	}
-	
-	// 테스트용 계정 생성
-	@PostMapping("/test/signup")
-	public String signupTest() {
-		
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        EmployeeEntity employee = EmployeeEntity.builder()
-                .employeeNumber("EMP-2024-002")
-                .password(encoder.encode("Qwer1234!"))
-                .name("홍길동")
-                .deptId(1L)
-                .build();
-
-        employeeRepository.save(employee);
-
-        return "테스트 계정 생성 완료";
-	}
-
 }

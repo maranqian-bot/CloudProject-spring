@@ -1,0 +1,161 @@
+[2026-03-31 16:14:05.331]  INFO 10160 --- [n(12)-127.0.0.1] inMXBeanRegistrar$SpringApplicationAdmin : Application shutdown requested.
+[2026-03-31 16:14:05.334]  INFO 10160 --- [n(12)-127.0.0.1] o.s.b.w.e.t.GracefulShutdown             : Commencing graceful shutdown. Waiting for active requests to complete
+[2026-03-31 16:14:05.335]  INFO 10160 --- [tomcat-shutdown] o.a.c.h.Http11NioProtocol                : Pausing ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:05.338]  INFO 10160 --- [tomcat-shutdown] o.s.b.w.e.t.GracefulShutdown             : Graceful shutdown complete
+[2026-03-31 16:14:05.338]  INFO 10160 --- [n(12)-127.0.0.1] o.a.c.h.Http11NioProtocol                : Stopping ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:05.351]  INFO 10160 --- [n(12)-127.0.0.1] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+[2026-03-31 16:14:05.353]  INFO 10160 --- [n(12)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+[2026-03-31 16:14:05.357]  INFO 10160 --- [n(12)-127.0.0.1] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+[2026-03-31 16:14:07.805]  INFO 20808 --- [kground-preinit] o.h.v.i.u.Version                        : HV000001: Hibernate Validator 8.0.3.Final
+[2026-03-31 16:14:07.831]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : Starting CloudStudyApplication using Java 21.0.9 with PID 20808 (C:\CloudProject-spring\bin\main started by adminn in C:\CloudProject-spring)
+[2026-03-31 16:14:07.834]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : No active profile set, falling back to 1 default profile: "default"
+[2026-03-31 16:14:07.861]  INFO 20808 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+[2026-03-31 16:14:07.861]  INFO 20808 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+[2026-03-31 16:14:08.370]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+[2026-03-31 16:14:08.371]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2026-03-31 16:14:08.474]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 98 ms. Found 4 JPA repository interfaces.
+[2026-03-31 16:14:08.485]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+[2026-03-31 16:14:08.486]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2026-03-31 16:14:08.497]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.attendance.repository.AttendanceRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:08.498]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.auth.repository.RefreshTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:08.498]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.department.repository.DepartmentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:08.498]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.employee.repository.EmployeeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:08.499]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+[2026-03-31 16:14:08.835]  INFO 20808 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port 8080 (http)
+[2026-03-31 16:14:08.843]  INFO 20808 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Initializing ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:08.845]  INFO 20808 --- [  restartedMain] o.a.c.c.StandardService                  : Starting service [Tomcat]
+[2026-03-31 16:14:08.845]  INFO 20808 --- [  restartedMain] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/10.1.50]
+[2026-03-31 16:14:08.878]  INFO 20808 --- [  restartedMain] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+[2026-03-31 16:14:08.878]  INFO 20808 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1016 ms
+[2026-03-31 16:14:08.972]  INFO 20808 --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-1 - Starting...
+[2026-03-31 16:14:09.158]  INFO 20808 --- [  restartedMain] c.z.h.p.HikariPool                       : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@48933ae2
+[2026-03-31 16:14:09.159]  INFO 20808 --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-1 - Start completed.
+[2026-03-31 16:14:09.179]  INFO 20808 --- [  restartedMain] o.h.j.i.u.LogHelper                      : HHH000204: Processing PersistenceUnitInfo [name: default]
+[2026-03-31 16:14:09.210]  INFO 20808 --- [  restartedMain] o.h.Version                              : HHH000412: Hibernate ORM core version 6.6.41.Final
+[2026-03-31 16:14:09.230]  INFO 20808 --- [  restartedMain] o.h.c.i.RegionFactoryInitiator           : HHH000026: Second-level cache disabled
+[2026-03-31 16:14:09.415]  INFO 20808 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+[2026-03-31 16:14:09.467]  WARN 20808 --- [  restartedMain] o.h.o.deprecation                        : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-03-31 16:14:09.476]  INFO 20808 --- [  restartedMain] o.h.o.c.pooling                          : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.45
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[2026-03-31 16:14:10.023]  INFO 20808 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2026-03-31 16:14:10.025]  INFO 20808 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2026-03-31 16:14:10.429]  WARN 20808 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2026-03-31 16:14:10.461]  INFO 20808 --- [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+[2026-03-31 16:14:10.663]  WARN 20808 --- [  restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+[2026-03-31 16:14:10.846]  INFO 20808 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+[2026-03-31 16:14:10.861]  INFO 20808 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Starting ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:10.874]  INFO 20808 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port 8080 (http) with context path '/'
+[2026-03-31 16:14:10.880]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : Started CloudStudyApplication in 3.315 seconds (process running for 3.878)
+[2026-03-31 16:14:12.270]  INFO 20808 --- [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+[2026-03-31 16:14:12.272]  INFO 20808 --- [       Thread-5] o.s.b.w.e.t.GracefulShutdown             : Commencing graceful shutdown. Waiting for active requests to complete
+[2026-03-31 16:14:12.272]  INFO 20808 --- [tomcat-shutdown] o.a.c.h.Http11NioProtocol                : Pausing ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:12.276]  INFO 20808 --- [tomcat-shutdown] o.s.b.w.e.t.GracefulShutdown             : Graceful shutdown complete
+[2026-03-31 16:14:12.277]  INFO 20808 --- [       Thread-5] o.a.c.h.Http11NioProtocol                : Stopping ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:12.289]  INFO 20808 --- [       Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+[2026-03-31 16:14:12.291]  INFO 20808 --- [       Thread-5] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown initiated...
+[2026-03-31 16:14:12.295]  INFO 20808 --- [       Thread-5] c.z.h.HikariDataSource                   : HikariPool-1 - Shutdown completed.
+[2026-03-31 16:14:12.369]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : Starting CloudStudyApplication using Java 21.0.9 with PID 20808 (C:\CloudProject-spring\bin\main started by adminn in C:\CloudProject-spring)
+[2026-03-31 16:14:12.371]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : No active profile set, falling back to 1 default profile: "default"
+[2026-03-31 16:14:12.514]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+[2026-03-31 16:14:12.514]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2026-03-31 16:14:12.531]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 16 ms. Found 4 JPA repository interfaces.
+[2026-03-31 16:14:12.533]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+[2026-03-31 16:14:12.533]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2026-03-31 16:14:12.538]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.attendance.repository.AttendanceRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:12.538]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.auth.repository.RefreshTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:12.538]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.department.repository.DepartmentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:12.538]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.employee.repository.EmployeeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:12.538]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 Redis repository interfaces.
+[2026-03-31 16:14:12.605]  INFO 20808 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port 8080 (http)
+[2026-03-31 16:14:12.606]  INFO 20808 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Initializing ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:12.606]  INFO 20808 --- [  restartedMain] o.a.c.c.StandardService                  : Starting service [Tomcat]
+[2026-03-31 16:14:12.606]  INFO 20808 --- [  restartedMain] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/10.1.50]
+[2026-03-31 16:14:12.619]  INFO 20808 --- [  restartedMain] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+[2026-03-31 16:14:12.619]  INFO 20808 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 247 ms
+[2026-03-31 16:14:12.645]  INFO 20808 --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-2 - Starting...
+[2026-03-31 16:14:12.654]  INFO 20808 --- [  restartedMain] c.z.h.p.HikariPool                       : HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@17455c4
+[2026-03-31 16:14:12.654]  INFO 20808 --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-2 - Start completed.
+[2026-03-31 16:14:12.655]  INFO 20808 --- [  restartedMain] o.h.j.i.u.LogHelper                      : HHH000204: Processing PersistenceUnitInfo [name: default]
+[2026-03-31 16:14:12.657]  INFO 20808 --- [  restartedMain] o.h.c.i.RegionFactoryInitiator           : HHH000026: Second-level cache disabled
+[2026-03-31 16:14:12.661]  INFO 20808 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+[2026-03-31 16:14:12.663]  WARN 20808 --- [  restartedMain] o.h.o.deprecation                        : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-03-31 16:14:12.663]  INFO 20808 --- [  restartedMain] o.h.o.c.pooling                          : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0.45
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[2026-03-31 16:14:12.717]  INFO 20808 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2026-03-31 16:14:12.717]  INFO 20808 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2026-03-31 16:14:12.793]  WARN 20808 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2026-03-31 16:14:12.799]  INFO 20808 --- [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+[2026-03-31 16:14:12.855]  WARN 20808 --- [  restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+[2026-03-31 16:14:12.906]  INFO 20808 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+[2026-03-31 16:14:12.918]  INFO 20808 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Starting ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:12.919]  INFO 20808 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port 8080 (http) with context path '/'
+[2026-03-31 16:14:12.922]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : Started CloudStudyApplication in 0.587 seconds (process running for 5.92)
+[2026-03-31 16:14:12.923]  INFO 20808 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+[2026-03-31 16:14:16.404]  INFO 20808 --- [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+[2026-03-31 16:14:16.405]  INFO 20808 --- [       Thread-7] o.s.b.w.e.t.GracefulShutdown             : Commencing graceful shutdown. Waiting for active requests to complete
+[2026-03-31 16:14:16.406]  INFO 20808 --- [tomcat-shutdown] o.a.c.h.Http11NioProtocol                : Pausing ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:16.408]  INFO 20808 --- [tomcat-shutdown] o.s.b.w.e.t.GracefulShutdown             : Graceful shutdown complete
+[2026-03-31 16:14:16.409]  INFO 20808 --- [       Thread-7] o.a.c.h.Http11NioProtocol                : Stopping ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:16.413]  INFO 20808 --- [       Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+[2026-03-31 16:14:16.413]  INFO 20808 --- [       Thread-7] c.z.h.HikariDataSource                   : HikariPool-2 - Shutdown initiated...
+[2026-03-31 16:14:16.415]  INFO 20808 --- [       Thread-7] c.z.h.HikariDataSource                   : HikariPool-2 - Shutdown completed.
+[2026-03-31 16:14:16.471]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : Starting CloudStudyApplication using Java 21.0.9 with PID 20808 (C:\CloudProject-spring\bin\main started by adminn in C:\CloudProject-spring)
+[2026-03-31 16:14:16.472]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : No active profile set, falling back to 1 default profile: "default"
+[2026-03-31 16:14:16.601]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+[2026-03-31 16:14:16.601]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+[2026-03-31 16:14:16.617]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 4 JPA repository interfaces.
+[2026-03-31 16:14:16.619]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+[2026-03-31 16:14:16.620]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+[2026-03-31 16:14:16.625]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.attendance.repository.AttendanceRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:16.625]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.auth.repository.RefreshTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:16.625]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.department.repository.DepartmentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:16.625]  INFO 20808 --- [  restartedMain] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface kr.co.cloudStudy.employee.repository.EmployeeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+[2026-03-31 16:14:16.625]  INFO 20808 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 Redis repository interfaces.
+[2026-03-31 16:14:16.684]  INFO 20808 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat initialized with port 8080 (http)
+[2026-03-31 16:14:16.685]  INFO 20808 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Initializing ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:16.685]  INFO 20808 --- [  restartedMain] o.a.c.c.StandardService                  : Starting service [Tomcat]
+[2026-03-31 16:14:16.685]  INFO 20808 --- [  restartedMain] o.a.c.c.StandardEngine                   : Starting Servlet engine: [Apache Tomcat/10.1.50]
+[2026-03-31 16:14:16.698]  INFO 20808 --- [  restartedMain] o.a.c.c.C.[.[.[/]                        : Initializing Spring embedded WebApplicationContext
+[2026-03-31 16:14:16.698]  INFO 20808 --- [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 225 ms
+[2026-03-31 16:14:16.720]  INFO 20808 --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-3 - Starting...
+[2026-03-31 16:14:16.728]  INFO 20808 --- [  restartedMain] c.z.h.p.HikariPool                       : HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@13fd08c
+[2026-03-31 16:14:16.728]  INFO 20808 --- [  restartedMain] c.z.h.HikariDataSource                   : HikariPool-3 - Start completed.
+[2026-03-31 16:14:16.729]  INFO 20808 --- [  restartedMain] o.h.j.i.u.LogHelper                      : HHH000204: Processing PersistenceUnitInfo [name: default]
+[2026-03-31 16:14:16.730]  INFO 20808 --- [  restartedMain] o.h.c.i.RegionFactoryInitiator           : HHH000026: Second-level cache disabled
+[2026-03-31 16:14:16.735]  INFO 20808 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+[2026-03-31 16:14:16.736]  WARN 20808 --- [  restartedMain] o.h.o.deprecation                        : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+[2026-03-31 16:14:16.736]  INFO 20808 --- [  restartedMain] o.h.o.c.pooling                          : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 8.0.45
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+[2026-03-31 16:14:16.784]  INFO 20808 --- [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+[2026-03-31 16:14:16.785]  INFO 20808 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+[2026-03-31 16:14:16.856]  WARN 20808 --- [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+[2026-03-31 16:14:16.861]  INFO 20808 --- [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+[2026-03-31 16:14:16.915]  WARN 20808 --- [  restartedMain] ion$DefaultTemplateResolverConfiguration : Cannot find template location: classpath:/templates/ (please add some templates, check your Thymeleaf configuration, or set spring.thymeleaf.check-template-location=false)
+[2026-03-31 16:14:16.968]  INFO 20808 --- [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+[2026-03-31 16:14:16.974]  INFO 20808 --- [  restartedMain] o.a.c.h.Http11NioProtocol                : Starting ProtocolHandler ["http-nio-8080"]
+[2026-03-31 16:14:16.976]  INFO 20808 --- [  restartedMain] o.s.b.w.e.t.TomcatWebServer              : Tomcat started on port 8080 (http) with context path '/'
+[2026-03-31 16:14:16.980]  INFO 20808 --- [  restartedMain] k.c.c.CloudStudyApplication              : Started CloudStudyApplication in 0.533 seconds (process running for 9.977)
+[2026-03-31 16:14:16.981]  INFO 20808 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+[2026-03-31 16:14:29.064]  INFO 20808 --- [nio-8080-exec-2] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2026-03-31 16:14:29.065]  INFO 20808 --- [nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
+[2026-03-31 16:14:29.066]  INFO 20808 --- [nio-8080-exec-2] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
+[2026-03-31 16:14:29.081]  INFO 20808 --- [nio-8080-exec-2] k.c.c.a.j.JwtAuthenticationFilter        : Authorization Header = null
+[2026-03-31 16:14:29.576]  WARN 20808 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.data.redis.RedisConnectionFailureException: Unable to connect to Redis]

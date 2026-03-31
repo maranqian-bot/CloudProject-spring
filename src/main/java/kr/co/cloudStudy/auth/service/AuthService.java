@@ -11,5 +11,5 @@ public interface AuthService {
 	
 	ReissueResponseDTO reissue(ReissueRequestDTO requestDTO);
 	
-	void logout(String refreshToken);
+	void logout(String refreshToken);  
 }

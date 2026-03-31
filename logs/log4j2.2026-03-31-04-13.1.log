@@ -1,0 +1,2 @@
+[2026-03-31 16:13:55.347]  INFO 10160 --- [nio-8080-exec-4] k.c.c.a.j.JwtAuthenticationFilter        : Authorization Header = null
+[2026-03-31 16:13:55.415]  WARN 10160 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.data.redis.RedisConnectionFailureException: Unable to connect to Redis]
