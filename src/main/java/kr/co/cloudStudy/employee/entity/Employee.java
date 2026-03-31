@@ -31,10 +31,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name ="employee")
-public class EmployeeEntity {
+public class Employee {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "emp_id")
-	private Long empId;	// 기본키
+	@Column(name = "employee_id")
+	private Long employeeId;	// 직원Id (기본키)
 	
 	@Column(name = "employee_number",nullable = false , unique = true, length = 20)	// 직원사번	
 	private String employeeNumber;
@@ -48,9 +48,10 @@ public class EmployeeEntity {
 	@Column(name = "email", length = 100)
 	private String email;	// 이메일
 	
-	@Column(name = "status", length = 20)
-	@Builder.Default
-	private String status = "활성";  // 상태
+	// 1. 리액트의 "ACTIVE"와 값을 맞춤 (한글 "활성" 제거)
+    @Column(name = "status", length = 20)
+    @Builder.Default
+    private String status = "ACTIVE"; 
 	
 	@Column(name = "password", nullable = false, length = 255 )	// 암호화 대비해서 길이 넉넉히...
 	private String password;	//비번
@@ -58,9 +59,10 @@ public class EmployeeEntity {
 	@Column(name = "hire_date")
 	private LocalDate hireDate; // 입사일	
 	
-	@Column(name = "role", length = 20)	
-	@Builder.Default
-	private String role = "EMPLOYEE"; // 시스템 역할
+	// 2. 리액트의 "EMPLOYEE"와 값을 맞춤 (초기값 보장)
+    @Column(name = "role", length = 20)	
+    @Builder.Default
+    private String role = "EMPLOYEE";
 	
 	@CreatedDate
 	@Column(name = "created_at" , updatable = false,
@@ -73,7 +75,7 @@ public class EmployeeEntity {
 	private LocalDateTime updatedAt;	// 수정일		
 
 	  @ManyToOne(fetch = FetchType.LAZY) 
-	   @JoinColumn(name = "dept_id", nullable = false) 
+	   @JoinColumn(name = "departmentId", nullable = false) 
 	   private Department department;   // 부서 외래키
 	  
 	  

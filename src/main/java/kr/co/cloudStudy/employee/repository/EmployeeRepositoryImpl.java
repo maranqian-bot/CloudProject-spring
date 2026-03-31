@@ -1,3 +1,4 @@
+
 package kr.co.cloudStudy.employee.repository;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import kr.co.cloudStudy.employee.dto.EmployeeSearchDto;
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.employee.entity.Employee;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 
@@ -19,7 +20,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
     private final EntityManager em;
 
     @Override
-    public Page<EmployeeEntity> searchEmployees(EmployeeSearchDto condition, Pageable pageable) {
+    public Page<Employee> searchEmployees(EmployeeSearchDto condition, Pageable pageable) {
         // 1. 기본 쿼리 생성
         StringBuilder jpql = new StringBuilder("SELECT e FROM EmployeeEntity e WHERE 1=1");
         
@@ -40,7 +41,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
         }
 
         // 3. 메인 데이터 조회용 쿼리 생성
-        TypedQuery<EmployeeEntity> query = em.createQuery(jpql.toString(), EmployeeEntity.class);
+        TypedQuery<Employee> query = em.createQuery(jpql.toString(), Employee.class);
         
         // 4. 파라미터 바인딩
         setParameters(query, condition);
@@ -49,7 +50,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
         query.setFirstResult((int) pageable.getOffset());
         query.setMaxResults(pageable.getPageSize());
 
-        List<EmployeeEntity> resultList = query.getResultList();
+        List<Employee> resultList = query.getResultList();
         
         // 6. 전체 개수 조회용 카운트 쿼리 (페이징 처리에 필요)
         String countJpql = "SELECT COUNT(e) FROM EmployeeEntity e WHERE 1=1";

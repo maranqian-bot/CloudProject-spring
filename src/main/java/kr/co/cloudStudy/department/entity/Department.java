@@ -17,7 +17,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.employee.entity.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -48,7 +48,7 @@ public class Department {
 	// Employee 엔터티 완성 후 연관 관계 매핑
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "manager_id")
-	private EmployeeEntity manager; // 부서 관리자 ID
+	private Employee manager; // 부서 관리자 ID
 	
 	@Setter
 	private String description; // 부서 설명
@@ -82,7 +82,7 @@ public class Department {
     }
 	
 	// 단순 ID 값이 아닌 직원 엔터티 객체를 직접 매핑하여 연관 관계 설정. (연관관계 편의 메서드)
-	public void updateManager(EmployeeEntity manager) {
+	public void updateManager(Employee manager) {
 		this.manager = manager;   
 	}
 	
