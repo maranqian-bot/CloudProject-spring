@@ -1,5 +1,0 @@
-[2026-03-31 16:12:14.277]  INFO 10160 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/]                        : Initializing Spring DispatcherServlet 'dispatcherServlet'
-[2026-03-31 16:12:14.278]  INFO 10160 --- [nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Initializing Servlet 'dispatcherServlet'
-[2026-03-31 16:12:14.279]  INFO 10160 --- [nio-8080-exec-1] o.s.w.s.DispatcherServlet                : Completed initialization in 1 ms
-[2026-03-31 16:12:14.306]  INFO 10160 --- [nio-8080-exec-2] k.c.c.a.j.JwtAuthenticationFilter        : Authorization Header = null
-[2026-03-31 16:12:14.794]  WARN 10160 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.data.redis.RedisConnectionFailureException: Unable to connect to Redis]
