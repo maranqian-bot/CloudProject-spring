@@ -26,7 +26,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Builder
 @Getter
-
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -75,9 +74,8 @@ public class Employee {
 	private LocalDateTime updatedAt;	// 수정일		
 
 	  @ManyToOne(fetch = FetchType.LAZY) 
-	   @JoinColumn(name = "departmentId", nullable = false) 
-	   private Department department;   // 부서 외래키
+	  @JoinColumn(name = "departmentId", nullable = false) 
+	  private Department department;   // 부서 외래키
 	  
 	  
 	} 
-

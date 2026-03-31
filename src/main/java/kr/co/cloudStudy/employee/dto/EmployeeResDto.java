@@ -29,8 +29,7 @@ public class EmployeeResDto {
 	private String email;								// 이메일
 	@Schema(description = "재직상태 (ACTIVE/INACTIVE)", example = "ACTIVE")
 	private String status;								// 상태
-	
-	
+
 	// 조회요청 응답메서드 : fromEntity
 	//	- 엔티티에 있는 데이터를 화면에 띄우기 위함.
 	public static EmployeeResDto fromEntity(Employee entity) {
@@ -47,13 +46,6 @@ public class EmployeeResDto {
 				.status(entity.getStatus())
 				.build();
 	}
-	// 저장요청 응답메서드 : toEntity
-	//	- 	
+	
 }
 
-
-
-
-
-
- 
