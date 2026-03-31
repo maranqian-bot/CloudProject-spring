@@ -7,14 +7,15 @@ import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.department.entity.Department;
+import kr.co.cloudStudy.employee.entity.Employee;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
-	private final EmployeeEntity employee;
+	private final Employee employee;
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -32,7 +33,7 @@ public class CustomUserDetails implements UserDetails {
 	}
 	
 	public Long getId() {
-		return employee.getId();
+		return employee.getEmployeeId();
 	}
 	
 	public String getName() {
@@ -43,8 +44,8 @@ public class CustomUserDetails implements UserDetails {
 		return employee.getEmployeeNumber();
 	}
 	
-	public Long getDeptId() {
-		return employee.getDeptId();
+	public Department getDepartment() {
+		return employee.getDepartment();
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package kr.co.cloudStudy.auth.service.impl;
 
 import java.util.Date;
 
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +14,7 @@ import kr.co.cloudStudy.auth.dto.ReissueResponseDTO;
 import kr.co.cloudStudy.auth.jwt.JwtUtil;
 import kr.co.cloudStudy.auth.service.AuthService;
 import kr.co.cloudStudy.auth.service.RefreshTokenService;
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.employee.entity.Employee;
 import kr.co.cloudStudy.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -30,7 +31,7 @@ public class AuthServiceImpl implements AuthService{
 	@Override
 	public LoginResponseDTO login(LoginRequestDTO requestDTO) {
 
-		EmployeeEntity employee = employeeRepository
+		Employee employee = employeeRepository
 				.findByEmployeeNumber(requestDTO.getEmployeeNumber())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사번입니다."));
 				
@@ -88,7 +89,7 @@ public class AuthServiceImpl implements AuthService{
 			throw new IllegalArgumentException("저장된 직원 정보가 없습니다.");
 		}
 		
-		EmployeeEntity employee = employeeRepository.findByEmployeeNumber(employeeNumber)
+		Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber)
 				.orElseThrow(() -> new IllegalArgumentException("직원 정보를 찾을 수 없습니다."));
 		
 		String newAccessToken = jwtUtil.createAccessToken(employee);

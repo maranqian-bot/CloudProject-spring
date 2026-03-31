@@ -1,7 +1,5 @@
 package kr.co.cloudStudy.auth.jwt;
 
-import io.jsonwebtoken.Claims;
-
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
@@ -11,9 +9,10 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
+import kr.co.cloudStudy.employee.entity.Employee;
 
 @Component
 public class JwtUtil {
@@ -34,14 +33,14 @@ public class JwtUtil {
 	/**
 	 * Access token 생성
 	 */
-	public String createAccessToken(EmployeeEntity employee) {
+	public String createAccessToken(Employee employee) {
 		Date now = new Date();
 		Date expiry = new Date(now.getTime() + accessTokenExpiration);
 		
 		return Jwts.builder()
 				.subject(employee.getEmployeeNumber())
 				.claim("type", "access")
-				.claim("employeeId", employee.getId())
+				.claim("employeeId", employee.getEmployeeId())
 				.claim("name", employee.getName())
 				.issuedAt(now)
 				.expiration(expiry)
@@ -52,7 +51,7 @@ public class JwtUtil {
 	/**
 	 * Refresh token
 	 */
-	public String createRefreshToken(EmployeeEntity employee) {
+	public String createRefreshToken(Employee employee) {
 		Date now = new Date();
 		Date expiry = new Date(now.getTime() + refreshTokenExpiration);
 		

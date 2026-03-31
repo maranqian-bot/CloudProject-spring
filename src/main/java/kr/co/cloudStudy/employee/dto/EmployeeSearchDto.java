@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 @Builder
 @Getter 
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "직원 검색 조건 DTO")

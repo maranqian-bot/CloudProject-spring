@@ -1,7 +1,7 @@
 package kr.co.cloudStudy.auth.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +15,7 @@ import kr.co.cloudStudy.auth.dto.LoginResponseDTO;
 import kr.co.cloudStudy.auth.dto.LogoutRequestDTO;
 import kr.co.cloudStudy.auth.dto.ReissueRequestDTO;
 import kr.co.cloudStudy.auth.dto.ReissueResponseDTO;
-import kr.co.cloudStudy.auth.jwt.JwtUtil;
 import kr.co.cloudStudy.auth.service.AuthService;
-import kr.co.cloudStudy.employee.entity.EmployeeEntity;
-import kr.co.cloudStudy.employee.repository.EmployeeRepository;
 import kr.co.cloudStudy.global.dto.ApiResponseDTO;
 import lombok.RequiredArgsConstructor;
 
