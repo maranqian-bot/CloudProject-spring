@@ -1,7 +1,5 @@
 package kr.co.cloudStudy.attendance.controller.docs;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
@@ -10,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
+import kr.co.cloudStudy.attendance.dto.AttendanceHistoryPageResponseDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceSummaryResponseDTO;
 import kr.co.cloudStudy.global.dto.ApiResponseDTO;
 
@@ -88,7 +86,7 @@ public interface AttendanceControllerDocs {
 						)
 			)
 	})
-	public ResponseEntity<ApiResponseDTO<List<AttendanceHistoryResponseDTO>>> getAttendanceHistory(Long employeeId);
+	public ResponseEntity<ApiResponseDTO<AttendanceHistoryPageResponseDTO>> getAttendanceHistory(Long employeeId, int page, int size);
 	
 	@Operation(
             summary = "직원 근태 엑셀 다운로드",

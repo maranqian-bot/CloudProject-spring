@@ -1,10 +1,8 @@
 package kr.co.cloudStudy.attendance.service;
 
 import java.io.OutputStream;
-import java.util.List;
 
-
-import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
+import kr.co.cloudStudy.attendance.dto.AttendanceHistoryPageResponseDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceSummaryResponseDTO;
 
 public interface AttendanceService {
@@ -26,7 +24,7 @@ public interface AttendanceService {
 	 * @param employeeId 조회할 직원 ID
 	 * @return 근태 이력 리스트 (날짜, 출근 시각, 퇴근 시각, 근무 시간, 상태 포함)
 	 */
-	List<AttendanceHistoryResponseDTO> getAttendanceHistory(Long employeeId);
+	AttendanceHistoryPageResponseDTO getAttendanceHistory(Long employeeId, int page, int size);
 	
 	/**
 	 * 특정 직원의 근태 이력 데이터를 엑셀 파일로 생성하여 출력 스트림에 작성한다.
