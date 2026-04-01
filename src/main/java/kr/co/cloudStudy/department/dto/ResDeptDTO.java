@@ -1,13 +1,11 @@
 package kr.co.cloudStudy.department.dto;
 
 import java.time.LocalDateTime;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 //부서 조회용 DTO
 @Getter
@@ -27,8 +25,7 @@ public class ResDeptDTO {
 	private String deptName;			 // 부서 이름
 	
 	@Schema(description = "부서 설명", example = "스프링 백엔드 개발 부서")
-	private String description;			 // 부서 설명
-	
+	private String description;			 // 부서 설명	
 	
 	// 추가 : 관리자 상세 정보
 	@Schema(description = "관리자 사번", example = "EMP-2024-001")
