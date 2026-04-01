@@ -3,6 +3,7 @@ package kr.co.cloudStudy.vacation.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,12 +13,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "내 휴가 이력 정보 DTO")
 public class MyVacationHistoryDTO {
 
+    @Schema(description = "휴가 요청 ID", example = "1")
     private Long vacationId;
+
+    @Schema(description = "휴가 유형", example = "연차")
     private String vacationType;
+
+    @Schema(description = "휴가 시작일", example = "2026-03-20")
     private LocalDate startDate;
+
+    @Schema(description = "휴가 종료일", example = "2026-03-21")
     private LocalDate endDate;
+
+    @Schema(description = "휴가 일수", example = "2")
     private BigDecimal vacationDays;
+
+    @Schema(description = "휴가 상태", example = "APPROVED")
     private String vacationStatus;
 }
