@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -73,10 +75,9 @@ public class Employee {
 			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime updatedAt;	// 수정일		
 
-
-	@ManyToOne(fetch = FetchType.LAZY) 
-	@JoinColumn(name = "departmentId", nullable = false) 
-	private Department department;   // 부서 외래키
-
+	  @ManyToOne(fetch = FetchType.LAZY) 
+	  @JoinColumn(name = "department_Id", nullable = false) 
+	  private Department department;   // 부서 외래키
+	  
 	  
 	} 

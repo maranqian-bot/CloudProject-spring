@@ -39,10 +39,9 @@ public class DepartmentServiceImpl implements DepartmentService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<ResDeptDTO> getList(Pageable pageable){
-		
 		// 페이지 단위로 엔터티 조회
-		Page<Department> result = departmentRepository.findAll(pageable);
-		
+		Page<Department> result = departmentRepository.findAll(pageable);		
+		  
 		// 엔터티 리스트를 DTO 리스트로 변환 (Stream -> map 으로 변경)
 		return result.map(entity -> ResDeptDTO.builder()
 						.departmentId(entity.getDepartmentId())
