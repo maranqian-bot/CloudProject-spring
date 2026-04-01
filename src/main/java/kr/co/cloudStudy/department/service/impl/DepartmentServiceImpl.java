@@ -57,7 +57,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	@Transactional(readOnly = true)
 	public ResDeptDTO read(Long departmentId) {
 		
-		// findById(id) : ID로 찾고 없으면 예외 발생 ("해당 부서가 없습니다.")
+		// findById(departmentId) : 부서ID로 찾고 없으면 예외 발생 ("해당 부서가 없습니다.")
 		Department entity = departmentRepository.findById(departmentId)
 				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 없습니다. id=" + departmentId));
 		
@@ -68,6 +68,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 				.description(entity.getDescription())
 				.createdAt(entity.getCreatedAt())
 				.managerId(entity.getManager() != null ? entity.getManager().getEmployeeNumber() : null)
+//				.managerName(entity.get)
 				.build();		
 	}
 	
