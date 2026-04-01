@@ -66,6 +66,7 @@ public class Department {
 		this.updatedAt = LocalDateTime.now();
 	}
 	
+	
 	// 데이터 수정 전 수정일 자동 실행
 	@PreUpdate
 	protected void onUpdate() {
