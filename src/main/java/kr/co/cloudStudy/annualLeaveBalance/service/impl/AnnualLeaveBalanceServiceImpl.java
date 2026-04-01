@@ -1,7 +1,5 @@
 package kr.co.cloudStudy.annualLeaveBalance.service.impl;
 
-import java.math.BigDecimal;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,6 +7,7 @@ import kr.co.cloudStudy.annualLeaveBalance.entity.AnnualLeaveBalance;
 import kr.co.cloudStudy.annualLeaveBalance.repository.AnnualLeaveBalanceRepository;
 import kr.co.cloudStudy.annualLeaveBalance.service.AnnualLeaveBalanceService;
 import kr.co.cloudStudy.vacation.dto.VacationManagementSummaryDTO;
+import kr.co.cloudStudy.vacation.entity.VacationStatus;
 import kr.co.cloudStudy.vacation.repository.VacationRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -27,24 +26,16 @@ public class AnnualLeaveBalanceServiceImpl implements AnnualLeaveBalanceService 
 
         AnnualLeaveBalance leaveBalance = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employeeNumber, year)
-                .orElse(null);
-
-        BigDecimal availableVacationDays = leaveBalance != null
-                ? leaveBalance.getRemainingDays()
-                : BigDecimal.ZERO;
-
-        BigDecimal usedVacationDays = leaveBalance != null
-                ? leaveBalance.getUsedDays()
-                : BigDecimal.ZERO;
+                .orElseGet(AnnualLeaveBalance::empty);
 
         long pendingApprovalCount = vacationRepository
-                .countByEmployee_EmployeeNumberAndVacationStatus(employeeNumber, "PENDING");
+                .countByEmployee_EmployeeNumberAndVacationStatus(employeeNumber, VacationStatus.PENDING);
 
-        return VacationManagementSummaryDTO.builder()
-                .availableVacationDays(availableVacationDays)
-                .usedVacationDays(usedVacationDays)
-                .pendingApprovalCount(pendingApprovalCount)
-                .build();
+        return VacationManagementSummaryDTO.of(
+                leaveBalance.getRemainingDays(),
+                leaveBalance.getUsedDays(),
+                pendingApprovalCount
+        );
     }
 
     private void validateEmployeeNumber(String employeeNumber) {

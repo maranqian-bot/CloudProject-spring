@@ -67,5 +67,14 @@ public class AnnualLeaveBalance {
     public void updateLeaveUsage(BigDecimal usedDays, BigDecimal remainingDays) {
         this.usedDays = usedDays;
         this.remainingDays = remainingDays;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public static AnnualLeaveBalance empty() {
+        return AnnualLeaveBalance.builder()
+                .grantedDays(BigDecimal.ZERO)
+                .usedDays(BigDecimal.ZERO)
+                .remainingDays(BigDecimal.ZERO)
+                .build();
     }
 }

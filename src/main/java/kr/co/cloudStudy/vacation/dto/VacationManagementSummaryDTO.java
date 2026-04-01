@@ -23,4 +23,16 @@ public class VacationManagementSummaryDTO {
 
     @Schema(description = "승인 대기 건수", example = "2")
     private long pendingApprovalCount;
+
+    public static VacationManagementSummaryDTO of(
+            BigDecimal availableVacationDays,
+            BigDecimal usedVacationDays,
+            long pendingApprovalCount
+    ) {
+        return VacationManagementSummaryDTO.builder()
+                .availableVacationDays(availableVacationDays)
+                .usedVacationDays(usedVacationDays)
+                .pendingApprovalCount(pendingApprovalCount)
+                .build();
+    }
 }
