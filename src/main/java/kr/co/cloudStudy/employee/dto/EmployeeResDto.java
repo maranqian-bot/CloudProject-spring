@@ -34,17 +34,19 @@ public class EmployeeResDto {
 	//	- 엔티티에 있는 데이터를 화면에 띄우기 위함.
 	public static EmployeeResDto fromEntity(Employee entity) {
 		return EmployeeResDto.builder()
-				.employeeId(entity.getEmployeeId())
-				.name(entity.getName())
-				.employeeNumber(entity.getEmployeeNumber())
-				.position(entity.getPosition())
-				.email(entity.getEmail())
-				.departmentName(entity.getDepartment() != null ?
+				.employeeId(entity.getEmployeeId())								// 직원 Id
+				.name(entity.getName())	// 이름
+				.employeeNumber(entity.getEmployeeNumber()) 					// 사번
+				.position(entity.getPosition())	// 직책
+				.email(entity.getEmail())										//  이메일
+				.departmentName(entity.getDepartment() != null ?				//	**부서명 지정
 						// 나중에 getDepartmentName으로 수정
 						// 아래꺼 연동을 위해 임시로 deptName으로 했음.
-                        entity.getDepartment().getDeptName() : "소속없음")
-				.status(entity.getStatus())
-				.build();
+                        entity.getDepartment().getDeptName() : "소속없음")		//	**
+				
+				.status(entity.getStatus())										// 상태 : 활성,비활성,퇴사
+				
+				.build();														
 	}
 	
 	

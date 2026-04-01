@@ -39,10 +39,14 @@ public class EmployeeReqDto {
 	private String role;			// 시스템 역할
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate hireDate;		// 입사일 
-
+	@Schema(description = "입사일", example = "2023-11-14")
+    private LocalDate hireDate;		
 	
-	// 저장요청 받은것을 위의 필드값에 저장. -> 엔티티의 필드로 전달
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Schema(description = "퇴사일")
+	private LocalDate retireDate;
+	
+	// reqDto를 -> 엔티티로 만들어주는 메서드
 	public Employee toEntity(Department department) {
 		return Employee.builder()
 				.employeeNumber(this.employeeNumber)	
@@ -53,10 +57,12 @@ public class EmployeeReqDto {
 				.password(this.password)
 				.role(this.role)
 				.hireDate(this.hireDate)
+				.retireDate(this.retireDate)
 				.department(department)
 				.build(); 
 	}
 }
+	
 
 
 

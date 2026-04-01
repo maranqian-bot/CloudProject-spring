@@ -7,7 +7,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -45,6 +47,17 @@ public class EmployeeController {
 		
 		EmployeeResDto response = employeeService.saveEmployee(employeeReqDto);	// 저장후에, 응답Dto가 반환값으로 옴.
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);	 
+	}
+	
+	// 직원 수정 처리
+	
+	@Operation(summary = "직원정보 수정", description = "직원정보 수정 후 응답을 반환합니다.")
+	@PutMapping("/edit/{id}")
+	public ResponseEntity<EmployeeResDto> editEmployee(@PathVariable Long id, 
+														@RequestBody EmployeeReqDto reqDto) {
+		EmployeeResDto updateEmployee = employeeService.editEmployee(id, reqDto);	// 갱신된 값
+		return ResponseEntity.ok(updateEmployee);		// 갱신된거 상태 담아서 전달하기..
+		
 	}
 	
 }
