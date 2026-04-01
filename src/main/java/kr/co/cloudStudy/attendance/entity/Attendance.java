@@ -1,7 +1,6 @@
 package kr.co.cloudStudy.attendance.entity;
 
 import java.time.LocalDate;
-
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -17,6 +16,7 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
+import kr.co.cloudStudy.employee.entity.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +36,7 @@ public class Attendance {
    
    @ManyToOne
    @JoinColumn(name = "employee_id", nullable = false)
-   private Long employeeId; 
+   private Employee employee; 
    
    @Column(name = "work_date", nullable = false)
    private LocalDate workDate;

@@ -21,7 +21,7 @@ public class AttendanceHistoryResponseDTO {
 	private Long attendanceId;
 	
 	@Schema(description = "직원 ID", example = "101")
-	private Long employeeId; // fk로 가져올 예정
+	private Long employeeId; 
 	
 	@Schema(description = "근무 날짜", example = "2026-03-25")
 	private LocalDate workDate;
