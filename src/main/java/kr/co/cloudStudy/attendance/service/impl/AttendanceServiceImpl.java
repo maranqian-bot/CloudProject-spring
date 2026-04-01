@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.cloudStudy.attendance.dto.AttendanceExcelRowDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
@@ -24,6 +25,7 @@ import kr.co.cloudStudy.global.utils.AttendanceExcelUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AttendanceServiceImpl implements AttendanceService{
 	private final AttendanceRepository attendanceRepository;

@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository;
 import kr.co.cloudStudy.employee.entity.Employee;
 
 @Repository
+
 public interface EmployeeRepository extends JpaRepository<Employee,Long>, EmployeeRepositoryCustom{
 
 	Optional<Employee> findByEmployeeNumber(String employeeNumber);
 	
+
 	
 }	
 
