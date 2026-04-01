@@ -26,7 +26,7 @@ public class AttendanceHistoryResponseDTO {
 	@Schema(description = "근무 날짜", example = "2026-03-25")
 	private LocalDate workDate;
 	
-	@Schema(description = "출근 시각", example = "09:00:00")
+	@Schema(description = "출근 시각", example = "09:00:00") 
 	private LocalDateTime checkInTime;
 	
 	@Schema(description = "퇴근 시각", example = "18:30:00")
