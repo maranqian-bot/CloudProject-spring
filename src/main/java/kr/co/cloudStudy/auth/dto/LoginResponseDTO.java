@@ -20,6 +20,9 @@ public class LoginResponseDTO {
 	@Schema(description = "refreshToken", example = "eyJhbGciOiJIUzI1NiJ9...")
 	private String refreshToken;
 	
+	@Schema(description = "직원 PK", example = "1")
+	private Long employeeId;
+	
 	@Schema(description = "사번", example = "EMP-2024-001")
 	private String employeeNumber;
 	

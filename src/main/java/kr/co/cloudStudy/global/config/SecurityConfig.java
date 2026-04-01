@@ -13,6 +13,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import jakarta.servlet.DispatcherType;
 import kr.co.cloudStudy.auth.jwt.JwtAuthenticationFilter;
 import kr.co.cloudStudy.auth.jwt.JwtUtil;
 import kr.co.cloudStudy.auth.service.CustomUserDetailsService;
@@ -32,11 +33,14 @@ public class SecurityConfig {
 			.cors(Customizer.withDefaults())
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(auth -> auth
+					.dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
+					
 					.requestMatchers(
 						"/api/auth/**",
 						"/swagger-ui/**",
 						"/v3/api-docs/**"
 					).permitAll()
+					
 					.anyRequest().authenticated()
 				)
 				.addFilterBefore(

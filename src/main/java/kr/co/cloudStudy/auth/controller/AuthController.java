@@ -16,7 +16,7 @@ import kr.co.cloudStudy.auth.dto.LogoutRequestDTO;
 import kr.co.cloudStudy.auth.dto.ReissueRequestDTO;
 import kr.co.cloudStudy.auth.dto.ReissueResponseDTO;
 import kr.co.cloudStudy.auth.service.AuthService;
-import kr.co.cloudStudy.global.dto.ApiResponseDTO;
+import kr.co.cloudStudy.global.dto.ApiResponseDTO; 
 import lombok.RequiredArgsConstructor;
 
 @RestController 

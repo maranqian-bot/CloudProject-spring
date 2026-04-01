@@ -17,6 +17,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
 	Page<Department> findByDeptNameContaining(String deptName, Pageable pageable);
 	
 	// 해당 관리자가 맡은 부서들 조회 
-	Page<Department> findByManagerId(Long managerId, Pageable pageable);
+	Page<Department> findByManagerEmployeeId(Long managerId, Pageable pageable);
 	
 }

@@ -10,17 +10,20 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.cloudStudy.attendance.dto.AttendanceExcelRowDTO;
+import kr.co.cloudStudy.attendance.dto.AttendanceHistoryPageResponseDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
 import kr.co.cloudStudy.attendance.dto.AttendanceSummaryResponseDTO;
 import kr.co.cloudStudy.attendance.entity.Attendance;
 import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 import kr.co.cloudStudy.attendance.repository.AttendanceRepository;
 import kr.co.cloudStudy.attendance.service.AttendanceService;
-import kr.co.cloudStudy.global.exception.EmployeeNotFoundException;
 import kr.co.cloudStudy.global.utils.AttendanceExcelUtil;
 import lombok.RequiredArgsConstructor;
 
@@ -28,8 +31,8 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class AttendanceServiceImpl implements AttendanceService{
-	private final AttendanceRepository attendanceRepository;
 	
+	private final AttendanceRepository attendanceRepository;
 
 	@Override
 	public AttendanceSummaryResponseDTO getAttendanceSummary(Long employeeId) {
@@ -39,7 +42,7 @@ public class AttendanceServiceImpl implements AttendanceService{
 		LocalDate startDate = currentMonth.atDay(1);
         LocalDate endDate = currentMonth.atEndOfMonth();
         
-        List<Attendance> attendanceList = attendanceRepository.findByEmployeeIdAndWorkDateBetween(employeeId, startDate, endDate);
+        List<Attendance> attendanceList = attendanceRepository.findByEmployee_EmployeeIdAndWorkDateBetween(employeeId, startDate, endDate);
 		
         int workDays = 0;
         int lateCount = 0;
@@ -75,22 +78,37 @@ public class AttendanceServiceImpl implements AttendanceService{
 	}
 	
 	@Override
-	public List<AttendanceHistoryResponseDTO> getAttendanceHistory(Long employeeId) {
-		validateEmployeeId(employeeId);
-		
-		List<Attendance> attendanceList = attendanceRepository.findByEmployeeIdOrderByWorkDateDesc(employeeId);
+	public AttendanceHistoryPageResponseDTO getAttendanceHistory(Long employeeId, int page, int size) {
+	    validateEmployeeId(employeeId);
+	    
+	    if (page < 0) {
+	    	throw new IllegalArgumentException("page는 0 이상이어야 합니다.");
+        }
+	    
+	    if (size <= 0) {
+	    	throw new IllegalArgumentException("size는 1 이상이어야 합니다.");
+        }
 
-		return attendanceList.stream()
-				.map(attendance -> AttendanceHistoryResponseDTO.builder()
-						.attendanceId(attendance.getAttendanceId())
-						.employeeId(attendance.getEmployeeId())
-						.workDate(attendance.getWorkDate())
-						.checkInTime(attendance.getCheckInTime())
-						.checkOutTime(attendance.getCheckOutTime())
-						.workMinutes(attendance.getWorkMinutes())
-						.attendanceStatus(attendance.getAttendanceStatus())
-						.build())
-				.toList();
+	    Pageable pageable = PageRequest.of(page, size);
+
+	    Page<Attendance> attendancePage =
+	        attendanceRepository.findByEmployee_EmployeeIdOrderByWorkDateDesc(employeeId, pageable);
+	    
+	    List<AttendanceHistoryResponseDTO> content = attendancePage.getContent()
+                .stream()
+                .map(this::toAttendanceHistoryResponseDTO)
+                .toList();
+	    
+
+	    return AttendanceHistoryPageResponseDTO.builder()
+	            .content(content)
+	            .currentPage(attendancePage.getNumber())
+	            .size(attendancePage.getSize())
+	            .totalPages(attendancePage.getTotalPages())
+	            .totalElements(attendancePage.getTotalElements())
+	            .first(attendancePage.isFirst())
+	            .last(attendancePage.isLast())
+	            .build();
 	}
 	
 	
@@ -98,11 +116,29 @@ public class AttendanceServiceImpl implements AttendanceService{
 	public void writeAttendanceExcel(Long employeeId, OutputStream outputStream) {
 		validateEmployeeId(employeeId);
 		
-		List<AttendanceHistoryResponseDTO> historyList = getAttendanceHistory(employeeId);
+		List<Attendance> attendanceList =
+		        attendanceRepository.findByEmployee_EmployeeIdOrderByWorkDateDesc(employeeId);
+		
+		List<AttendanceHistoryResponseDTO> historyList = attendanceList.stream()
+                .map(this::toAttendanceHistoryResponseDTO)
+                .toList();
+		
 		List<AttendanceExcelRowDTO> excelRows = convertToExcelRows(historyList);
 		
 		AttendanceExcelUtil.writeAttendanceExcel(excelRows, outputStream);
 	}
+	
+	 private AttendanceHistoryResponseDTO toAttendanceHistoryResponseDTO(Attendance attendance) {
+	        return AttendanceHistoryResponseDTO.builder()
+	                .attendanceId(attendance.getAttendanceId())
+	                .employeeId(attendance.getEmployee().getEmployeeId())
+	                .workDate(attendance.getWorkDate())
+	                .checkInTime(attendance.getCheckInTime())
+	                .checkOutTime(attendance.getCheckOutTime())
+	                .workMinutes(attendance.getWorkMinutes())
+	                .attendanceStatus(attendance.getAttendanceStatus())
+	                .build();
+	    }
 	
 	
 	private List<AttendanceExcelRowDTO> convertToExcelRows(List<AttendanceHistoryResponseDTO> historyList) {
@@ -137,7 +173,6 @@ public class AttendanceServiceImpl implements AttendanceService{
 	
 	private double calculateAttendanceScore(long workDays, long lateCount, long absentCount) {
 		double score = 100.0;
-		
 		score -= lateCount * 2;
 		score -= absentCount * 5;
 		
@@ -157,28 +192,7 @@ public class AttendanceServiceImpl implements AttendanceService{
 			throw new IllegalArgumentException("직원 ID는 1 이상이어야 합니다.");
 		}
 	}
-	
-//	private List<Attendance> getAttendanceListOrThrow(Long employeeId, LocalDate startDate, LocalDate endDate) {
-//		List<Attendance> attendanceList = 
-//				attendanceRepository.findByEmployeeIdAndWorkDateBetween(employeeId, startDate, endDate);
-//		
-//		if (attendanceList.isEmpty()) {
-//			throw new EmployeeNotFoundException("해당 직원의 이번 달 근태 정보가 없습니다. employeeId=" + employeeId);
-//		}
-//		
-//		return attendanceList;
-//	}
-//	
-//	private List<Attendance> getAttendanceHistoryListOrThrow(Long employeeId) {
-//	    List<Attendance> attendanceList =
-//	            attendanceRepository.findByEmployeeIdOrderByWorkDateDesc(employeeId);
-//
-//	    if (attendanceList.isEmpty()) {
-//	        throw new EmployeeNotFoundException("해당 직원의 근태 이력이 없습니다. employeeId=" + employeeId);
-//	    }
-//
-//	    return attendanceList;
-//	}
+
 	
 	
 }
