@@ -45,9 +45,9 @@ public class Department {
 	@Setter
 	private String deptName; // 부서 이름
 	
-	// Employee 엔터티 완성 후 연관 관계 매핑
+	// DB의 manager_id 컬럼이 Employee의 PK(employee_id)를 참조하도록 설정
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "employee_id")
+	@JoinColumn(name = "manager_id")
 	private Employee manager; // 부서 관리자 ID
 	
 	@Setter

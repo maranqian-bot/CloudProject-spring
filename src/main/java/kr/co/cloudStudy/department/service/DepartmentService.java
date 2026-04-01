@@ -15,7 +15,7 @@ public interface DepartmentService {
 	/**
 	 * 신규 부서 등록
 	 * @param dto 등록할 부서정보
-	 * @return 생성된 부서의 PK(deptid)
+	 * @return 생성된 부서의 PK(departmentId)
 	 */
 	Long register(ReqDeptDTO dto);
 	
@@ -27,21 +27,21 @@ public interface DepartmentService {
 	
 	/**
 	 * 부서 상세 조회
-	 * @param deptid 조회할 부서 PK
+	 * @param departmentId 조회할 부서 PK
 	 * @return 부서 상세 정보 DTO
 	 */
-	ResDeptDTO read(Long deptid);
+	ResDeptDTO read(Long departmentId);
 	
 	/**
 	 * 부서 정보 수정
-	 * @param dto 수정할 부서 정보 (deptid 포함)
+	 * @param dto 수정할 부서 정보 (departmentId 포함)
 	 */
 	void modify(ReqDeptDTO dto);
 	
 	/**
 	 * 부서 삭제
-	 * @param deptid 삭제할 부서 PK
+	 * @param departmentId 삭제할 부서 PK
 	 */
-	void remove(Long deptid);
+	void remove(Long departmentId);
 		
 }
