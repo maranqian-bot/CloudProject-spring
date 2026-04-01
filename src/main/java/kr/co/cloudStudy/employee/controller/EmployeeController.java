@@ -53,7 +53,7 @@ public class EmployeeController {
 	
 	@Operation(summary = "직원정보 수정", description = "직원정보 수정 후 응답을 반환합니다.")
 	@PutMapping("/edit/{id}")
-	public ResponseEntity<EmployeeResDto> editEmployee(@PathVariable Long id, 
+	public ResponseEntity<EmployeeResDto> editEmployee(@PathVariable(name = "id") Long id, 
 														@RequestBody EmployeeReqDto reqDto) {
 		EmployeeResDto updateEmployee = employeeService.editEmployee(id, reqDto);	// 갱신된 값
 		return ResponseEntity.ok(updateEmployee);		// 갱신된거 상태 담아서 전달하기..

@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Schema(description = "직원 추가 요청(입력란)필드")
 public class EmployeeReqDto {
-	@Schema(description = "직원 사번", example = "20240001")
+	@Schema(description = "직원 사번", example = "2024-10-01")
 	private String employeeNumber; 	// 직원사번
 	@Schema(description = "이름", example = "홍길동")
 	private String name;		   	// 이름

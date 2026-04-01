@@ -56,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Employee employee = employeeRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("직원 없음"));
 		// id 배정받은 부서인지 확인
-		Department department = departmentRepository.findById(id)
+		Department department = departmentRepository.findById(employeeReqDto.getDepartmentId())
 				.orElseThrow(() -> new RuntimeException("부서 없음"));
 		
 		// 위의 거 모두 통과하면? -> 값 갱신해주기 -> 갱신하는역할? employeeUpdate(); <- 요청객체 + 부서객체

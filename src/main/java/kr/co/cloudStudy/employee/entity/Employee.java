@@ -98,7 +98,8 @@ public class Employee {
 			this.hireDate= reqDto.getHireDate();	// 입사일
 			this.status= reqDto.getStatus();		// 상태 : 활성 / 비활성 / 퇴사
 			// 상태관련 (퇴사일 부여될지 조건)
-			this.retireDate = "RESIGNED".equals(reqDto.getStatus()) ? reqDto.getRetireDate() : null;
+			this.retireDate = ("RESIGNED".equals(reqDto.getStatus()) || "퇴사".equals(reqDto.getStatus())) 
+	                  ? reqDto.getRetireDate() : null;
 	}
 		
 }
