@@ -11,6 +11,7 @@ import kr.co.cloudStudy.vacation.dto.PendingVacationApprovalDTO;
 import kr.co.cloudStudy.vacation.dto.VacationManagementResponseDTO;
 import kr.co.cloudStudy.vacation.dto.VacationManagementSummaryDTO;
 import kr.co.cloudStudy.vacation.entity.Vacation;
+import kr.co.cloudStudy.vacation.entity.VacationStatus;
 import kr.co.cloudStudy.vacation.repository.VacationRepository;
 import kr.co.cloudStudy.vacation.service.VacationService;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +32,7 @@ public class VacationServiceImpl implements VacationService {
                 vacationRepository.findByEmployee_EmployeeNumberOrderByCreatedAtDesc(employeeNumber);
 
         return vacationList.stream()
-                .map(vacation -> MyVacationHistoryDTO.builder()
-                        .vacationId(vacation.getVacationId())
-                        .vacationType(vacation.getVacationType())
-                        .startDate(vacation.getStartDate())
-                        .endDate(vacation.getEndDate())
-                        .vacationDays(vacation.getVacationDays())
-                        .vacationStatus(vacation.getVacationStatus())
-                        .build())
+                .map(MyVacationHistoryDTO::from)
                 .toList();
     }
 
@@ -47,21 +41,10 @@ public class VacationServiceImpl implements VacationService {
         validateApproverId(approverId);
 
         List<Vacation> vacationList =
-                vacationRepository.findByApprover_EmployeeIdAndVacationStatusOrderByCreatedAtDesc(approverId, "PENDING");
+                vacationRepository.findPendingApprovalsWithEmployee(approverId, VacationStatus.PENDING);
 
         return vacationList.stream()
-                .map(vacation -> PendingVacationApprovalDTO.builder()
-                        .vacationId(vacation.getVacationId())
-                        .employeeNumber(vacation.getEmployee().getEmployeeNumber())
-                        .employeeName(vacation.getEmployee().getName())
-                        .position(vacation.getEmployee().getPosition())
-                        .vacationType(vacation.getVacationType())
-                        .startDate(vacation.getStartDate())
-                        .endDate(vacation.getEndDate())
-                        .vacationDays(vacation.getVacationDays())
-                        .vacationReason(vacation.getVacationReason())
-                        .vacationStatus(vacation.getVacationStatus())
-                        .build())
+                .map(PendingVacationApprovalDTO::from)
                 .toList();
     }
 
@@ -73,11 +56,11 @@ public class VacationServiceImpl implements VacationService {
         List<MyVacationHistoryDTO> myVacationHistories = getMyVacationHistory(employeeNumber);
         List<PendingVacationApprovalDTO> pendingApprovals = getPendingApprovals(approverId);
 
-        return VacationManagementResponseDTO.builder()
-                .summary(summary)
-                .myVacationHistories(myVacationHistories)
-                .pendingApprovals(pendingApprovals)
-                .build();
+        return VacationManagementResponseDTO.of(
+                summary,
+                myVacationHistories,
+                pendingApprovals
+        );
     }
 
     private void validateEmployeeNumber(String employeeNumber) {

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import kr.co.cloudStudy.vacation.entity.Vacation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -45,4 +46,19 @@ public class PendingVacationApprovalDTO {
 
     @Schema(description = "휴가 상태", example = "PENDING")
     private String vacationStatus;
+
+    public static PendingVacationApprovalDTO from(Vacation vacation) {
+        return PendingVacationApprovalDTO.builder()
+                .vacationId(vacation.getVacationId())
+                .employeeNumber(vacation.getEmployee().getEmployeeNumber())
+                .employeeName(vacation.getEmployee().getName())
+                .position(vacation.getEmployee().getPosition())
+                .vacationType(vacation.getVacationType())
+                .startDate(vacation.getStartDate())
+                .endDate(vacation.getEndDate())
+                .vacationDays(vacation.getVacationDays())
+                .vacationReason(vacation.getVacationReason())
+                .vacationStatus(vacation.getVacationStatus().name())
+                .build();
+    }
 }

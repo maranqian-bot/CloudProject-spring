@@ -23,4 +23,16 @@ public class VacationManagementResponseDTO {
 
     @Schema(description = "승인 대기 중인 휴가 요청 목록")
     private List<PendingVacationApprovalDTO> pendingApprovals;
+
+    public static VacationManagementResponseDTO of(
+            VacationManagementSummaryDTO summary,
+            List<MyVacationHistoryDTO> myVacationHistories,
+            List<PendingVacationApprovalDTO> pendingApprovals
+    ) {
+        return VacationManagementResponseDTO.builder()
+                .summary(summary)
+                .myVacationHistories(myVacationHistories)
+                .pendingApprovals(pendingApprovals)
+                .build();
+    }
 }

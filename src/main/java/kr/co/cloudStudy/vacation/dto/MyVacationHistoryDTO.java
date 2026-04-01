@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import kr.co.cloudStudy.vacation.entity.Vacation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,4 +34,15 @@ public class MyVacationHistoryDTO {
 
     @Schema(description = "휴가 상태", example = "APPROVED")
     private String vacationStatus;
+
+    public static MyVacationHistoryDTO from(Vacation vacation) {
+        return MyVacationHistoryDTO.builder()
+                .vacationId(vacation.getVacationId())
+                .vacationType(vacation.getVacationType())
+                .startDate(vacation.getStartDate())
+                .endDate(vacation.getEndDate())
+                .vacationDays(vacation.getVacationDays())
+                .vacationStatus(vacation.getVacationStatus().name())
+                .build();
+    }
 }
