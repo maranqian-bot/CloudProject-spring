@@ -11,10 +11,12 @@ import kr.co.cloudStudy.employee.entity.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long>, EmployeeRepositoryCustom {
-
-    Optional<Employee> findByEmployeeNumber(String employeeNumber);
-
-    // 휴가 신청 페이지에서는 department 즉시 조회가 필요함
-    @EntityGraph(attributePaths = "department")
-    Optional<Employee> findWithDepartmentByEmployeeNumber(String employeeNumber);
+	Optional<Employee> findByEmployeeNumber(String employeeNumber);
+	
+	Optional<Employee> findByEmail(String email);
+	
+  // 휴가 신청 페이지에서는 department 즉시 조회가 필요함
+  @EntityGraph(attributePaths = "department")
+  Optional<Employee> findWithDepartmentByEmployeeNumber(String employeeNumber);
+  
 }
