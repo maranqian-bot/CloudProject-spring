@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.cloudStudy.vacation.entity.Vacation;
+import kr.co.cloudStudy.vacation.entity.VacationStatus;
+import kr.co.cloudStudy.vacation.entity.VacationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,8 +22,8 @@ public class MyVacationHistoryDTO {
     @Schema(description = "휴가 요청 ID", example = "1")
     private Long vacationId;
 
-    @Schema(description = "휴가 유형", example = "연차")
-    private String vacationType;
+    @Schema(description = "휴가 유형", example = "ANNUAL")
+    private VacationType vacationType;
 
     @Schema(description = "휴가 시작일", example = "2026-03-20")
     private LocalDate startDate;
@@ -33,7 +35,7 @@ public class MyVacationHistoryDTO {
     private BigDecimal vacationDays;
 
     @Schema(description = "휴가 상태", example = "APPROVED")
-    private String vacationStatus;
+    private VacationStatus vacationStatus;
 
     public static MyVacationHistoryDTO from(Vacation vacation) {
         return MyVacationHistoryDTO.builder()
@@ -42,7 +44,7 @@ public class MyVacationHistoryDTO {
                 .startDate(vacation.getStartDate())
                 .endDate(vacation.getEndDate())
                 .vacationDays(vacation.getVacationDays())
-                .vacationStatus(vacation.getVacationStatus().name())
+                .vacationStatus(vacation.getVacationStatus())
                 .build();
     }
 }
