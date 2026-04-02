@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import kr.co.cloudStudy.department.dto.ResDeptDTO;
+import kr.co.cloudStudy.department.dto.ResDeptStatsDTO;
 import kr.co.cloudStudy.department.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 
@@ -45,6 +46,16 @@ public class DepartmentController {
 							 Pageable pageable) {
 		
 		return ResponseEntity.ok(departmentService.getList(pageable));
+	}
+	
+	@Operation(summary = "메인 대시보드 부서 통계 조회", description = "전체 부서 수, 전체 인원 수 등의 통계 데이터를 조회합니다.")
+	@GetMapping("/stats")
+	public ResponseEntity<ResDeptStatsDTO> getDepartmentStats() {
+		// 서비스에서 계산된 통계 데이터 가져오기
+		ResDeptStatsDTO stats = departmentService.getStats();
+		
+		// 200 OK 상태코드와 함께 데이터 반환
+		return ResponseEntity.ok(stats);
 	}
 	
 	// 부서 상세 조회(GET)
@@ -75,5 +86,6 @@ public class DepartmentController {
 		departmentService.remove(departmentId);
 		return ResponseEntity.ok().build();
 	}
+	
 	
 }

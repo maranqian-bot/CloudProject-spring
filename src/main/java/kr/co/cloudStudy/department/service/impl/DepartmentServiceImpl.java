@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import kr.co.cloudStudy.department.dto.ResDeptDTO;
+import kr.co.cloudStudy.department.dto.ResDeptStatsDTO;
 import kr.co.cloudStudy.department.entity.Department;
 import kr.co.cloudStudy.department.repository.DepartmentRepository;
 import kr.co.cloudStudy.department.service.DepartmentService;
@@ -115,6 +116,39 @@ public class DepartmentServiceImpl implements DepartmentService {
 		
 		// 위에서 조회한 부서 객체를 그대로 삭제 처리 (JPA 매커니즘 활용 : 영속화된 엔터티 객체를 전달 -> 삭제 수행)
 		departmentRepository.delete(entity);
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public ResDeptStatsDTO getStats() {
+	    // 부서 수 조회
+		Object[] results = (Object[]) departmentRepository.getDepartmentSummaryStats();
+		
+		// 데이터가 아예 없을 경우(NULL)를 대비한 예외처리
+		if (results == null || results.length == 0) {
+	        return ResDeptStatsDTO.builder()
+	                .totalDepartments(0L)
+	                .totalEmployees(0L)
+	                .growthRate(0.0)
+	                .activeProjects(0)
+	                .build();
+	    }
+
+		// DB 집계 결과가 없을 경우를 대비한 방어적 프로그래밍 (Null-safe 처리)
+	    Long totalDepartments = (results[0] != null) ? (Long) results[0] : 0L;
+	    Long totalEmployees = (results[1] != null) ? ((Number) results[1]).longValue() : 0L;
+
+	    // 성장률 계산 로직 (개발예정: 로직 넣기 전까지는 임시 값 반영)
+	    // 지금은 하드코딩으로 처리 (개발예정: 추 후 데이터 별도 로직 삽입 하기)
+	    Double growthRate = 15.5; 
+
+	    // 빌더로 DTO 조립
+	    return ResDeptStatsDTO.builder()
+	            .totalDepartments(totalDepartments)
+	            .totalEmployees(totalEmployees)
+	            .growthRate(growthRate)
+	            .activeProjects(totalDepartments.intValue()) // 현재 진행 중인 프로젝트 수
+	            .build();
 	}
 		
 }

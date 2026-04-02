@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import kr.co.cloudStudy.department.dto.ResDeptDTO;
+import kr.co.cloudStudy.department.dto.ResDeptStatsDTO;
 
 /**
  * 부서 관리 서비스 인터페이스
@@ -43,5 +44,11 @@ public interface DepartmentService {
 	 * @param departmentId 삭제할 부서 PK
 	 */
 	void remove(Long departmentId);
+	
+	/**
+	 * 부서 통계 정보 조회
+	 * @return 전체 부서수, 전체 인원수 등을 담은 DTO
+	 */
+	ResDeptStatsDTO getStats(); 
 		
 }
