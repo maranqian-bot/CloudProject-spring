@@ -2,10 +2,14 @@ package kr.co.cloudStudy.employee.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.CascadeType;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -18,9 +22,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import kr.co.cloudStudy.attendance.entity.Attendance;
 import kr.co.cloudStudy.department.entity.Department;
 import kr.co.cloudStudy.employee.dto.EmployeeReqDto;
+import kr.co.cloudStudy.vacation.entity.Vacation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -82,9 +89,20 @@ public class Employee {
 			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime updatedAt;	// 수정일		
 
+											
 	@ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name = "department_id", nullable = false) 
 	private Department department;   // 부서 외래키
+	
+	//	근태관리와의 양방향 설정.
+	@Builder.Default
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Attendance> attendances = new ArrayList<>();
+	
+	//	휴가관리와의 양방향 설정 .
+	@Builder.Default
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Vacation> vacation = new ArrayList<>(); 
 	
 	// 직원정보 수정을 위한 메서드
 	public void updateEmployee(EmployeeReqDto reqDto, Department department) {
