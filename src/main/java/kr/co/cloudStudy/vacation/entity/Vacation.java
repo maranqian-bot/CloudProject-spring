@@ -40,8 +40,9 @@ public class Vacation {
     @Column(name = "vacation_reason", nullable = false, length = 255)
     private String vacationReason;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "vacation_status", nullable = false, length = 20)
-    private String vacationStatus;
+    private VacationStatus vacationStatus;
 
     @Column(name = "approved_at")
     private LocalDateTime approvedAt;
@@ -71,18 +72,20 @@ public class Vacation {
     private Employee approver;
 
     public void approve(Employee approver) {
-        this.vacationStatus = "APPROVED";
+        this.vacationStatus = VacationStatus.APPROVED;
         this.approver = approver;
         this.approverName = approver.getName();
         this.approvedAt = LocalDateTime.now();
         this.rejectReason = null;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public void reject(Employee approver, String rejectReason) {
-        this.vacationStatus = "REJECTED";
+        this.vacationStatus = VacationStatus.REJECTED;
         this.approver = approver;
         this.approverName = approver.getName();
         this.rejectReason = rejectReason;
         this.approvedAt = null;
+        this.updatedAt = LocalDateTime.now();
     }
 }
