@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService{
 				.findByEmployeeNumber(requestDTO.getEmployeeNumber())
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사번입니다."));
 				
-		// TODO: 직원 추가 기능 완료될 시 주석 풀 예정(암호화된 비번필요)
+		// TODO: 나중에 반드시 복구
 //		boolean isMatch = passwordEncoder.matches(requestDTO.getPassword(), employee.getPassword());
 //		
 //		if (!isMatch) {

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -62,6 +63,16 @@ public class GlobalExceptionHandler {
 				.status(HttpStatus.NOT_FOUND)
 				.body(ApiResponseDTO.fail(HttpStatus.NOT_FOUND, e.getMessage()));
 	}
+	
+	/**
+     * 권한이 없을 때 처리
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponseDTO<?>> handleAccessDeniedException(AccessDeniedException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(ApiResponseDTO.fail(HttpStatus.FORBIDDEN, "접근 권한이 없습니다."));
+    }
 	
 	/**
 	 * 그 외 모든 예외 처리
