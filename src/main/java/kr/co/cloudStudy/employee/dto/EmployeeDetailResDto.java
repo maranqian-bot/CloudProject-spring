@@ -5,7 +5,9 @@ package kr.co.cloudStudy.employee.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
@@ -100,8 +102,9 @@ public class EmployeeDetailResDto {
 				//응답 객체로 바꾸기	(.attendanceHistory) , 없으면 빈배열을 반환한다.
 				.attendanceHistory(entity.getAttendances() != null ?
 						// 엔티티에 저장된 근태관련 값이 null이 아님을 확인 후 ->
-						entity.getAttendances().stream().map().collect(Collectors.toList());
-						);
+						entity.getAttendances().stream()
+							.map(attendance -> ).collect(Collectors.toList());
+						: new ArrayList<>());
 						
 						
 				
