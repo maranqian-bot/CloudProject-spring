@@ -23,6 +23,7 @@ import kr.co.cloudStudy.vacation.dto.VacationManagementResponseDTO;
 import kr.co.cloudStudy.vacation.dto.VacationManagementSummaryDTO;
 import kr.co.cloudStudy.vacation.dto.VacationRejectRequestDTO;
 import kr.co.cloudStudy.vacation.dto.VacationRequestEmployeeResponseDTO;
+import kr.co.cloudStudy.vacation.dto.VacationRequestListItemDTO;
 import kr.co.cloudStudy.vacation.dto.VacationRequestListResponseDTO;
 import kr.co.cloudStudy.vacation.dto.VacationRequestListSummaryDTO;
 import kr.co.cloudStudy.vacation.entity.Vacation;
@@ -59,7 +60,10 @@ public class VacationServiceImpl implements VacationService {
         validateApproverId(approverId);
 
         List<Vacation> vacationList =
-                vacationRepository.findPendingApprovalsWithEmployee(approverId, VacationStatus.PENDING);
+                vacationRepository.findPendingApprovalsWithEmployee(
+                        approverId,
+                        VacationStatus.PENDING
+                );
 
         return vacationList.stream()
                 .map(PendingVacationApprovalDTO::from)
@@ -93,6 +97,7 @@ public class VacationServiceImpl implements VacationService {
         Employee employee = employeeRepository.findWithDepartmentByEmployeeNumber(employeeNumber)
                 .orElseThrow(() -> new IllegalArgumentException("해당 직원 정보를 찾을 수 없습니다."));
 
+        // 연차 데이터 없음과 잔여 연차 0일 상태를 구분하기 위해 예외 처리
         AnnualLeaveBalance annualLeaveBalance = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employeeNumber, year)
                 .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
@@ -110,6 +115,7 @@ public class VacationServiceImpl implements VacationService {
 
         int targetYear = request.getStartDate().getYear();
 
+        // 연차 데이터가 없는 상태는 정상적인 0일 상태와 다르게 처리
         AnnualLeaveBalance annualLeaveBalance = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employee.getEmployeeNumber(), targetYear)
                 .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
@@ -150,7 +156,19 @@ public class VacationServiceImpl implements VacationService {
 
         VacationRequestListSummaryDTO summary = getVacationRequestListSummary(approverEmployeeNumber);
 
-        return VacationRequestListResponseDTO.of(summary, vacationPage);
+        // Page 의존은 Service에서만 처리
+        List<VacationRequestListItemDTO> list = vacationPage.getContent().stream()
+                .map(VacationRequestListItemDTO::from)
+                .toList();
+
+        return VacationRequestListResponseDTO.of(
+                summary,
+                list,
+                vacationPage.getNumber() + 1,
+                vacationPage.getTotalPages(),
+                vacationPage.getTotalElements(),
+                vacationPage.getSize()
+        );
     }
 
     @Override
@@ -194,6 +212,7 @@ public class VacationServiceImpl implements VacationService {
             throw new IllegalArgumentException("대기 상태인 휴가만 승인할 수 있습니다.");
         }
 
+        // 이미 조회된 approver 객체 사용
         vacation.approve(approver);
 
         return VacationDecisionResponseDTO.from(vacation);
@@ -219,6 +238,7 @@ public class VacationServiceImpl implements VacationService {
             throw new IllegalArgumentException("대기 상태인 휴가만 반려할 수 있습니다.");
         }
 
+        // 이미 조회된 approver 객체 사용
         vacation.reject(approver, request.getRejectReason().trim());
 
         return VacationDecisionResponseDTO.from(vacation);
@@ -304,6 +324,7 @@ public class VacationServiceImpl implements VacationService {
     }
 
     private Employee validateVacationApproverAuthority(Vacation vacation, String approverEmployeeNumber) {
+        // 로그인한 승인자 기준 권한 검증
         if (vacation.getApprover() == null
                 || !vacation.getApprover().getEmployeeNumber().equals(approverEmployeeNumber)) {
             throw new IllegalArgumentException("해당 휴가를 처리할 권한이 없습니다.");
@@ -325,6 +346,7 @@ public class VacationServiceImpl implements VacationService {
     }
 
     private String buildVacationReason(VacationCreateRequestDTO request) {
+        // 기타 휴가는 상세 사유 사용
         if (request.getVacationType() == VacationType.ETC) {
             return request.getReasonDetail().trim();
         }

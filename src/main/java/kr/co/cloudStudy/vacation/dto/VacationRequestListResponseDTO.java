@@ -2,10 +2,7 @@ package kr.co.cloudStudy.vacation.dto;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.cloudStudy.vacation.entity.Vacation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,17 +35,19 @@ public class VacationRequestListResponseDTO {
 
     public static VacationRequestListResponseDTO of(
             VacationRequestListSummaryDTO summary,
-            Page<Vacation> vacationPage
+            List<VacationRequestListItemDTO> list,
+            int currentPage,
+            int totalPages,
+            long totalElements,
+            int pageSize
     ) {
         return VacationRequestListResponseDTO.builder()
                 .summary(summary)
-                .list(vacationPage.getContent().stream()
-                        .map(VacationRequestListItemDTO::from)
-                        .toList())
-                .currentPage(vacationPage.getNumber() + 1)
-                .totalPages(vacationPage.getTotalPages())
-                .totalElements(vacationPage.getTotalElements())
-                .pageSize(vacationPage.getSize())
+                .list(list)
+                .currentPage(currentPage)
+                .totalPages(totalPages)
+                .totalElements(totalElements)
+                .pageSize(pageSize)
                 .build();
     }
 }
