@@ -43,23 +43,36 @@ public class DepartmentServiceImpl implements DepartmentService {
 		Page<Department> result = departmentRepository.findAll(pageable);		
 		  
 		// 엔터티 리스트를 DTO 리스트로 변환 (Stream -> map 으로 변경)
-		return result.map(entity -> ResDeptDTO.builder()
+		return result.map(entity -> {
+				// 부서관리자(Employee) 엔터티 가져오기 (직원 수 계산하기 위해 추가)
+				Employee manager = entity.getManager();
+		
+				return ResDeptDTO.builder()	
 						.departmentId(entity.getDepartmentId())
 						.deptCode(entity.getDeptCode())
 						.deptName(entity.getDeptName())
 						.description(entity.getDescription())
 						.createdAt(entity.getCreatedAt())
+						// 관리자 상세 정보!
 						.managerId(entity.getManager() != null ? entity.getManager().getEmployeeNumber() : null)
-						.build());
-	}
+						.managerName(manager != null ? manager.getName() : "미지정")
+						.managerJobTitle(manager != null ? manager.getPosition() : "-")
+						
+						// employees 리스트로 인원수 계산
+						.employeeCount(entity.getEmployees() != null ? entity.getEmployees().size() : 0)
+						.build();
+	});
+}
 			
 	@Override
 	@Transactional(readOnly = true)
 	public ResDeptDTO read(Long departmentId) {
 		
-		// findById(id) : ID로 찾고 없으면 예외 발생 ("해당 부서가 없습니다.")
+		// findById(departmentId) : 부서ID로 찾고 없으면 예외 발생 ("해당 부서가 없습니다.")
 		Department entity = departmentRepository.findById(departmentId)
 				.orElseThrow(() -> new IllegalArgumentException("해당 부서가 없습니다. id=" + departmentId));
+		
+		Employee manager = entity.getManager();
 		
 		return ResDeptDTO.builder()
 				.departmentId(entity.getDepartmentId())
@@ -67,7 +80,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 				.deptName(entity.getDeptName())
 				.description(entity.getDescription())
 				.createdAt(entity.getCreatedAt())
-				.managerId(entity.getManager() != null ? entity.getManager().getEmployeeNumber() : null)
+				.managerId(manager != null ? manager.getEmployeeNumber() : null) // 관리자 사번
+				.managerName(manager != null ? manager.getName() : "미지정") // 관리자 이름
+				.managerJobTitle(manager != null ? manager.getPosition() : "-")  // 관리자 직책
+				.employeeCount(entity.getEmployees() != null ? entity.getEmployees().size() : 0) // 부서 직원 수
 				.build();		
 	}
 	
