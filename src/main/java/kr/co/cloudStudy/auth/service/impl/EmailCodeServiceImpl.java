@@ -6,7 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.co.cloudStudy.auth.service.EmailCodeRedisService;
+import kr.co.cloudStudy.auth.repository.EmailCodeRedisRepository;
 import kr.co.cloudStudy.auth.service.EmailCodeService;
 import kr.co.cloudStudy.auth.service.MailService;
 import kr.co.cloudStudy.employee.entity.Employee;
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class EmailCodeServiceImpl implements EmailCodeService {
 	
-	private final EmailCodeRedisService emailCodeRedisService;
+	private final EmailCodeRedisRepository emailCodeRedisRepository;
 	private final MailService mailService;
 	private final EmployeeRepository employeeRepository;
 	private final BCryptPasswordEncoder PasswordEncoder;
@@ -27,15 +27,15 @@ public class EmailCodeServiceImpl implements EmailCodeService {
 	public void sendEmailCode(String email) {
 		String code = createRandomCode();
 		
-		emailCodeRedisService.saveEmailCode(email, code);
-		emailCodeRedisService.deleteVerified(email);
+		emailCodeRedisRepository.saveEmailCode(email, code);
+		emailCodeRedisRepository.deleteVerified(email);
 		mailService.sendEmailCode(email, code);
 		
 	}
 	
 	@Override
 	public void verifyEmailCode(String email, String code) {
-		String savedCode = emailCodeRedisService.getEmailCode(email);
+		String savedCode = emailCodeRedisRepository.getEmailCode(email);
 		
 		if (savedCode == null) {
 			throw new IllegalArgumentException("인증코드가 없거나 만료되었습니다.");
@@ -45,21 +45,21 @@ public class EmailCodeServiceImpl implements EmailCodeService {
 			throw new IllegalArgumentException("인증코드가 일치하지 않습니다.");
 		}
 		
-		emailCodeRedisService.saveVerified(email);
-		emailCodeRedisService.deleteEmailCode(email);
+		emailCodeRedisRepository.saveVerified(email);
+		emailCodeRedisRepository.deleteEmailCode(email);
 		
 	}
 	
 	@Override
-	public void resetPassword(String employeeNumber, String email, String newPassword) {
-		Employee employee = employeeRepository.findByEmployeeNumber(employeeNumber)
+	public void resetPassword(String email, String newPassword) {
+		Employee employee = employeeRepository.findByEmail(email)
 				.orElseThrow(() -> new IllegalArgumentException("해당 사번의 사용자를 찾을 수 없습니다."));
 	
 		if (!employee.getEmail().equals(email)) {
 			throw new IllegalArgumentException("사번과 이메일 정보가 일치하지 않습니다.");
 		}
 		
-		if (!emailCodeRedisService.isVerifired(email)) {
+		if (!emailCodeRedisRepository.isVerifired(email)) {
 			throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
 		}
 		
@@ -69,7 +69,7 @@ public class EmailCodeServiceImpl implements EmailCodeService {
 		
         employee.setPassword(newPassword);
         
-        emailCodeRedisService.deleteVerified(email);
+        emailCodeRedisRepository.deleteVerified(email);
 	}
 	
 	private String createRandomCode() {

@@ -15,10 +15,6 @@ import lombok.NoArgsConstructor;
 @Schema(description = "비밀번호 재설정 요청 DTO")
 public class PasswordResetConfirmRequestDTO {
 	
-	@Schema(description = "사번", example = "EMP-2024-001")
-	@NotBlank(message = "사번은 필수입니다.")
-	private String employeeNumber;
-	
 	@Schema(description = "이메일 주소", example = "test@gmail.com")
 	@Email(message = "올바른 이메일형식이어야 합니다.")
 	@NotBlank(message = "이메일은 필수입니다.")

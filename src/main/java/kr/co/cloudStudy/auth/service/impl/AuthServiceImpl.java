@@ -42,6 +42,10 @@ public class AuthServiceImpl implements AuthService{
 //			throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
 //		}
 		
+		if (!employee.getPassword().equals(requestDTO.getPassword())) {
+			throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+		}
+		
 //		if (!"활성".equals(employee.getStatus())) {
 //			throw new IllegalArgumentException("비활성화된 계정입니다.");
 //		}

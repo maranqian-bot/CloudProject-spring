@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import kr.co.cloudStudy.auth.controller.docs.EmailCodeControllerDocs;
 import kr.co.cloudStudy.auth.dto.EmailCodeSendRequestDTO;
 import kr.co.cloudStudy.auth.dto.EmailCodeVerifyRequestDTO;
 import kr.co.cloudStudy.auth.dto.PasswordResetConfirmRequestDTO;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/email")
-public class EmailCodeController {
+public class EmailCodeController implements EmailCodeControllerDocs {
 
 	private final EmailCodeService emailCodeService;
 	
@@ -45,7 +46,6 @@ public class EmailCodeController {
 			@Valid @RequestBody PasswordResetConfirmRequestDTO requestDTO
 	) {
 		emailCodeService.resetPassword(
-				requestDTO.getEmployeeNumber(),
 				requestDTO.getEmail(),
 				requestDTO.getNewPassword()
 		);
