@@ -21,7 +21,7 @@ public class EmailCodeServiceImpl implements EmailCodeService {
 	private final EmailCodeRedisRepository emailCodeRedisRepository;
 	private final MailService mailService;
 	private final EmployeeRepository employeeRepository;
-	private final BCryptPasswordEncoder PasswordEncoder;
+	private final BCryptPasswordEncoder passwordEncoder;
 	
 	@Override
 	public void sendEmailCode(String email) {
@@ -53,18 +53,14 @@ public class EmailCodeServiceImpl implements EmailCodeService {
 	@Override
 	public void resetPassword(String email, String newPassword) {
 		Employee employee = employeeRepository.findByEmail(email)
-				.orElseThrow(() -> new IllegalArgumentException("해당 사번의 사용자를 찾을 수 없습니다."));
-	
-		if (!employee.getEmail().equals(email)) {
-			throw new IllegalArgumentException("사번과 이메일 정보가 일치하지 않습니다.");
-		}
+				.orElseThrow(() -> new IllegalArgumentException("해당 이메일의 사용자를 찾을 수 없습니다."));
 		
 		if (!emailCodeRedisRepository.isVerifired(email)) {
 			throw new IllegalArgumentException("이메일 인증이 완료되지 않았습니다.");
 		}
 		
 //		TODO: 나중에 반드시 복구 (비밀번호 암호화 적용)
-//		String encodedPassword = PasswordEncoder.encode(newPassword);
+//		String encodedPassword = passwordEncoder.encode(newPassword);
 //		employee.setPassword(encodedPassword);
 		
         employee.setPassword(newPassword);
