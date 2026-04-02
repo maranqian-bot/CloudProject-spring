@@ -24,9 +24,10 @@ public class AnnualLeaveBalanceServiceImpl implements AnnualLeaveBalanceService 
         validateEmployeeNumber(employeeNumber);
         validateYear(year);
 
+        // 연차 데이터 없음과 잔여 연차 0일 상태를 구분하기 위해 예외 처리
         AnnualLeaveBalance leaveBalance = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employeeNumber, year)
-                .orElseGet(AnnualLeaveBalance::empty);
+                .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
 
         long pendingApprovalCount = vacationRepository
                 .countByEmployee_EmployeeNumberAndVacationStatus(employeeNumber, VacationStatus.PENDING);

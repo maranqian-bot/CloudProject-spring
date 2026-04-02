@@ -25,8 +25,9 @@ public class Vacation {
     @Column(name = "vacation_id")
     private Long vacationId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "vacation_type", nullable = false, length = 30)
-    private String vacationType;
+    private VacationType vacationType;
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -71,6 +72,32 @@ public class Vacation {
     @JoinColumn(name = "approver_id")
     private Employee approver;
 
+    public static Vacation create(
+            Employee employee,
+            VacationType vacationType,
+            LocalDate startDate,
+            BigDecimal vacationDays,
+            String vacationReason
+    ) {
+        LocalDateTime now = LocalDateTime.now();
+
+        return Vacation.builder()
+                .employee(employee)
+                .vacationType(vacationType)
+                .startDate(startDate)
+                .endDate(calculateEndDate(startDate, vacationDays))
+                .vacationDays(vacationDays)
+                .vacationReason(vacationReason)
+                .vacationStatus(VacationStatus.PENDING)
+                .approvedAt(null)
+                .rejectReason(null)
+                .approver(null)
+                .approverName(null)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
+    }
+
     public void approve(Employee approver) {
         this.vacationStatus = VacationStatus.APPROVED;
         this.approver = approver;
@@ -87,5 +114,15 @@ public class Vacation {
         this.rejectReason = rejectReason;
         this.approvedAt = null;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    private static LocalDate calculateEndDate(LocalDate startDate, BigDecimal vacationDays) {
+        // 반차/1일 휴가는 시작일과 종료일 동일
+        if (startDate == null || vacationDays == null || vacationDays.compareTo(BigDecimal.ONE) <= 0) {
+            return startDate;
+        }
+
+        int daysToAdd = (int) Math.ceil(vacationDays.doubleValue()) - 1;
+        return startDate.plusDays(daysToAdd);
     }
 }

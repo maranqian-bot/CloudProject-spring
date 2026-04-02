@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.cloudStudy.vacation.entity.Vacation;
+import kr.co.cloudStudy.vacation.entity.VacationStatus;
+import kr.co.cloudStudy.vacation.entity.VacationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,13 +16,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Schema(description = "승인 대기 중인 휴가 요청 정보 DTO")
+@Schema(description = "결재 대기 휴가 신청 정보 DTO")
 public class PendingVacationApprovalDTO {
 
     @Schema(description = "휴가 요청 ID", example = "1")
     private Long vacationId;
 
-    @Schema(description = "사원 번호", example = "EMP001")
+    @Schema(description = "사번", example = "EMP001")
     private String employeeNumber;
 
     @Schema(description = "사원명", example = "홍길동")
@@ -29,8 +31,8 @@ public class PendingVacationApprovalDTO {
     @Schema(description = "직급", example = "대리")
     private String position;
 
-    @Schema(description = "휴가 유형", example = "연차")
-    private String vacationType;
+    @Schema(description = "휴가 유형", example = "ANNUAL")
+    private VacationType vacationType;
 
     @Schema(description = "휴가 시작일", example = "2026-04-01")
     private LocalDate startDate;
@@ -45,7 +47,7 @@ public class PendingVacationApprovalDTO {
     private String vacationReason;
 
     @Schema(description = "휴가 상태", example = "PENDING")
-    private String vacationStatus;
+    private VacationStatus vacationStatus;
 
     public static PendingVacationApprovalDTO from(Vacation vacation) {
         return PendingVacationApprovalDTO.builder()
@@ -58,7 +60,7 @@ public class PendingVacationApprovalDTO {
                 .endDate(vacation.getEndDate())
                 .vacationDays(vacation.getVacationDays())
                 .vacationReason(vacation.getVacationReason())
-                .vacationStatus(vacation.getVacationStatus().name())
+                .vacationStatus(vacation.getVacationStatus())
                 .build();
     }
 }
