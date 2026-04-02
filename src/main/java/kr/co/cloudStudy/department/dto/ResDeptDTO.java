@@ -32,11 +32,9 @@ public class ResDeptDTO {
 	
 	// 추가 : 관리자 상세 정보
 	@Schema(description = "관리자 사번", example = "EMP-2024-001")
-	private String managerId;
-	
+	private String managerId;	
 	@Schema(description = "관리자 이름", example = "김철수")
-	private String managerName;      
-	
+	private String managerName;      	
 	@Schema(description = "관리자 직책", example = "부장")
     private String managerJobTitle;
 	
