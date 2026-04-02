@@ -82,9 +82,10 @@ public class VacationServiceImpl implements VacationService {
         Employee employee = employeeRepository.findWithDepartmentByEmployeeNumber(employeeNumber)
                 .orElseThrow(() -> new IllegalArgumentException("해당 직원 정보를 찾을 수 없습니다."));
 
+        // 연차 데이터 없음과 잔여 연차 0일 상태를 구분하기 위해 예외 처리
         AnnualLeaveBalance annualLeaveBalance = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employeeNumber, year)
-                .orElseGet(AnnualLeaveBalance::empty);
+                .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
 
         return VacationRequestEmployeeResponseDTO.of(employee, annualLeaveBalance);
     }
@@ -99,9 +100,10 @@ public class VacationServiceImpl implements VacationService {
 
         int targetYear = request.getStartDate().getYear();
 
+        // 연차 데이터가 없는 상태는 정상적인 0일 상태와 다르게 처리
         AnnualLeaveBalance annualLeaveBalance = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employee.getEmployeeNumber(), targetYear)
-                .orElseGet(AnnualLeaveBalance::empty);
+                .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
 
         if (request.getDays().compareTo(annualLeaveBalance.getRemainingDays()) > 0) {
             throw new IllegalArgumentException("잔여 연차를 초과하여 신청할 수 없습니다.");
