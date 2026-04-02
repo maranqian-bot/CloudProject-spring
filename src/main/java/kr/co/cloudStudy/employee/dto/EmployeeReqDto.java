@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import kr.co.cloudStudy.department.entity.Department;
+import kr.co.cloudStudy.employee.entity.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Schema(description = "직원 추가 요청(입력란)필드")
 public class EmployeeReqDto {
-	@Schema(description = "직원 사번", example = "20240001")
+	@Schema(description = "직원 사번", example = "2024-10-01")
 	private String employeeNumber; 	// 직원사번
 	@Schema(description = "이름", example = "홍길동")
 	private String name;		   	// 이름
@@ -33,14 +35,36 @@ public class EmployeeReqDto {
 	private String password;	   	// 비밀번호
 	@Schema(description = "소속 부서 ID (PK)", example = "1")
 	private Long departmentId;	   	// 부서Id
-	@Schema(description = "시스템 권한", example = "ROLE_USER")
+	@Schema(description = "시스템 역할", example = "ROLE_USER")
 	private String role;			// 시스템 역할
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate hireDate;		// 입사일 
+	@Schema(description = "입사일", example = "2023-11-14")
+    private LocalDate hireDate;		
 	
+	@JsonFormat(pattern = "yyyy-MM-dd")
+	@Schema(description = "퇴사일")
+	private LocalDate retireDate;
+	
+	// reqDto를 -> 엔티티로 만들어주는 메서드
+	public Employee toEntity(Department department) {
+		return Employee.builder()
+				.employeeNumber(this.employeeNumber)	
+				.name(this.name)
+				.position(this.position)
+				.email(this.email)
+				.status(this.status)
+				.password(this.password)
+				.role(this.role)
+				.hireDate(this.hireDate)
+				.retireDate(this.retireDate)
+				.department(department)
+				.build(); 
+	}
 }
+	
 
 
 
 
+ 
