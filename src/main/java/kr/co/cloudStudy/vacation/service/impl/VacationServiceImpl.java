@@ -1,8 +1,11 @@
 package kr.co.cloudStudy.vacation.service.impl;
 
 import java.math.BigDecimal;
+import java.time.YearMonth;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +18,13 @@ import kr.co.cloudStudy.vacation.dto.MyVacationHistoryDTO;
 import kr.co.cloudStudy.vacation.dto.PendingVacationApprovalDTO;
 import kr.co.cloudStudy.vacation.dto.VacationCreateRequestDTO;
 import kr.co.cloudStudy.vacation.dto.VacationCreateResponseDTO;
+import kr.co.cloudStudy.vacation.dto.VacationDecisionResponseDTO;
 import kr.co.cloudStudy.vacation.dto.VacationManagementResponseDTO;
 import kr.co.cloudStudy.vacation.dto.VacationManagementSummaryDTO;
+import kr.co.cloudStudy.vacation.dto.VacationRejectRequestDTO;
 import kr.co.cloudStudy.vacation.dto.VacationRequestEmployeeResponseDTO;
+import kr.co.cloudStudy.vacation.dto.VacationRequestListResponseDTO;
+import kr.co.cloudStudy.vacation.dto.VacationRequestListSummaryDTO;
 import kr.co.cloudStudy.vacation.entity.Vacation;
 import kr.co.cloudStudy.vacation.entity.VacationStatus;
 import kr.co.cloudStudy.vacation.entity.VacationType;
@@ -60,7 +67,11 @@ public class VacationServiceImpl implements VacationService {
     }
 
     @Override
-    public VacationManagementResponseDTO getVacationManagementPage(String employeeNumber, Long approverId, Integer year) {
+    public VacationManagementResponseDTO getVacationManagementPage(
+            String employeeNumber,
+            Long approverId,
+            Integer year
+    ) {
         VacationManagementSummaryDTO summary =
                 annualLeaveBalanceService.getVacationManagementSummary(employeeNumber, year);
 
@@ -82,7 +93,6 @@ public class VacationServiceImpl implements VacationService {
         Employee employee = employeeRepository.findWithDepartmentByEmployeeNumber(employeeNumber)
                 .orElseThrow(() -> new IllegalArgumentException("해당 직원 정보를 찾을 수 없습니다."));
 
-        // 연차 데이터 없음과 잔여 연차 0일 상태를 구분하기 위해 예외 처리
         AnnualLeaveBalance annualLeaveBalance = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employeeNumber, year)
                 .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
@@ -100,7 +110,6 @@ public class VacationServiceImpl implements VacationService {
 
         int targetYear = request.getStartDate().getYear();
 
-        // 연차 데이터가 없는 상태는 정상적인 0일 상태와 다르게 처리
         AnnualLeaveBalance annualLeaveBalance = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employee.getEmployeeNumber(), targetYear)
                 .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
@@ -120,6 +129,99 @@ public class VacationServiceImpl implements VacationService {
         );
 
         return VacationCreateResponseDTO.from(savedVacation);
+    }
+
+    @Override
+    public VacationRequestListResponseDTO getVacationRequestList(
+            String approverEmployeeNumber,
+            Integer page,
+            Integer size,
+            String type
+    ) {
+        validateEmployeeNumber(approverEmployeeNumber);
+        validatePage(page);
+        validateSize(size);
+
+        VacationType vacationType = normalizeVacationType(type);
+
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        Page<Vacation> vacationPage =
+                vacationRepository.findVacationRequestList(approverEmployeeNumber, vacationType, pageRequest);
+
+        VacationRequestListSummaryDTO summary = getVacationRequestListSummary(approverEmployeeNumber);
+
+        return VacationRequestListResponseDTO.of(summary, vacationPage);
+    }
+
+    @Override
+    public VacationRequestListSummaryDTO getVacationRequestListSummary(String approverEmployeeNumber) {
+        validateEmployeeNumber(approverEmployeeNumber);
+
+        long pendingCount = vacationRepository
+                .countByApprover_EmployeeNumberAndVacationStatus(approverEmployeeNumber, VacationStatus.PENDING);
+        long approvedCount = vacationRepository
+                .countByApprover_EmployeeNumberAndVacationStatus(approverEmployeeNumber, VacationStatus.APPROVED);
+        long rejectedCount = vacationRepository
+                .countByApprover_EmployeeNumberAndVacationStatus(approverEmployeeNumber, VacationStatus.REJECTED);
+
+        YearMonth currentMonth = YearMonth.now();
+        long monthlyVacationCount = vacationRepository.countDistinctEmployeesByApproverAndStartDateBetween(
+                approverEmployeeNumber,
+                currentMonth.atDay(1),
+                currentMonth.atEndOfMonth()
+        );
+
+        return VacationRequestListSummaryDTO.of(
+                pendingCount,
+                approvedCount,
+                rejectedCount,
+                monthlyVacationCount
+        );
+    }
+
+    @Override
+    @Transactional
+    public VacationDecisionResponseDTO approveVacationRequest(Long vacationId, String approverEmployeeNumber) {
+        validateVacationId(vacationId);
+        validateEmployeeNumber(approverEmployeeNumber);
+
+        Vacation vacation = vacationRepository.findDetailByVacationId(vacationId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 휴가 신청을 찾을 수 없습니다."));
+
+        Employee approver = validateVacationApproverAuthority(vacation, approverEmployeeNumber);
+
+        if (vacation.getVacationStatus() != VacationStatus.PENDING) {
+            throw new IllegalArgumentException("대기 상태인 휴가만 승인할 수 있습니다.");
+        }
+
+        vacation.approve(approver);
+
+        return VacationDecisionResponseDTO.from(vacation);
+    }
+
+    @Override
+    @Transactional
+    public VacationDecisionResponseDTO rejectVacationRequest(
+            Long vacationId,
+            VacationRejectRequestDTO request,
+            String approverEmployeeNumber
+    ) {
+        validateVacationId(vacationId);
+        validateRejectRequest(request);
+        validateEmployeeNumber(approverEmployeeNumber);
+
+        Vacation vacation = vacationRepository.findDetailByVacationId(vacationId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 휴가 신청을 찾을 수 없습니다."));
+
+        Employee approver = validateVacationApproverAuthority(vacation, approverEmployeeNumber);
+
+        if (vacation.getVacationStatus() != VacationStatus.PENDING) {
+            throw new IllegalArgumentException("대기 상태인 휴가만 반려할 수 있습니다.");
+        }
+
+        vacation.reject(approver, request.getRejectReason().trim());
+
+        return VacationDecisionResponseDTO.from(vacation);
     }
 
     private void validateEmployeeNumber(String employeeNumber) {
@@ -173,8 +275,56 @@ public class VacationServiceImpl implements VacationService {
         }
     }
 
+    private void validatePage(Integer page) {
+        if (page == null || page <= 0) {
+            throw new IllegalArgumentException("페이지 번호는 1 이상이어야 합니다.");
+        }
+    }
+
+    private void validateSize(Integer size) {
+        if (size == null || size <= 0) {
+            throw new IllegalArgumentException("페이지 크기는 1 이상이어야 합니다.");
+        }
+    }
+
+    private void validateVacationId(Long vacationId) {
+        if (vacationId == null || vacationId <= 0) {
+            throw new IllegalArgumentException("휴가 신청 ID는 1 이상이어야 합니다.");
+        }
+    }
+
+    private void validateRejectRequest(VacationRejectRequestDTO request) {
+        if (request == null) {
+            throw new IllegalArgumentException("휴가 반려 요청은 필수입니다.");
+        }
+
+        if (request.getRejectReason() == null || request.getRejectReason().isBlank()) {
+            throw new IllegalArgumentException("반려 사유를 입력해 주세요.");
+        }
+    }
+
+    private Employee validateVacationApproverAuthority(Vacation vacation, String approverEmployeeNumber) {
+        if (vacation.getApprover() == null
+                || !vacation.getApprover().getEmployeeNumber().equals(approverEmployeeNumber)) {
+            throw new IllegalArgumentException("해당 휴가를 처리할 권한이 없습니다.");
+        }
+
+        return vacation.getApprover();
+    }
+
+    private VacationType normalizeVacationType(String type) {
+        if (type == null || type.isBlank() || "ALL".equalsIgnoreCase(type)) {
+            return null;
+        }
+
+        try {
+            return VacationType.valueOf(type.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("올바르지 않은 휴가 유형입니다.");
+        }
+    }
+
     private String buildVacationReason(VacationCreateRequestDTO request) {
-        // 기타 휴가는 상세 사유 사용
         if (request.getVacationType() == VacationType.ETC) {
             return request.getReasonDetail().trim();
         }

@@ -6,8 +6,12 @@ import kr.co.cloudStudy.vacation.dto.MyVacationHistoryDTO;
 import kr.co.cloudStudy.vacation.dto.PendingVacationApprovalDTO;
 import kr.co.cloudStudy.vacation.dto.VacationCreateRequestDTO;
 import kr.co.cloudStudy.vacation.dto.VacationCreateResponseDTO;
+import kr.co.cloudStudy.vacation.dto.VacationDecisionResponseDTO;
 import kr.co.cloudStudy.vacation.dto.VacationManagementResponseDTO;
+import kr.co.cloudStudy.vacation.dto.VacationRejectRequestDTO;
 import kr.co.cloudStudy.vacation.dto.VacationRequestEmployeeResponseDTO;
+import kr.co.cloudStudy.vacation.dto.VacationRequestListResponseDTO;
+import kr.co.cloudStudy.vacation.dto.VacationRequestListSummaryDTO;
 
 public interface VacationService {
 
@@ -63,4 +67,59 @@ public interface VacationService {
      * @return 휴가 신청 생성 응답 DTO
      */
     VacationCreateResponseDTO createVacationRequest(VacationCreateRequestDTO request);
+
+    /**
+     * 휴가 신청 목록 페이지 조회
+     *
+     * 승인자가 확인해야 하는 휴가 신청 목록을 페이지 단위로 반환한다.
+     *
+     * @param approverEmployeeNumber 승인자 사번
+     * @param page 페이지 번호
+     * @param size 페이지 크기
+     * @param type 휴가 유형 필터
+     * @return 휴가 신청 목록 응답 DTO
+     */
+    VacationRequestListResponseDTO getVacationRequestList(
+            String approverEmployeeNumber,
+            Integer page,
+            Integer size,
+            String type
+    );
+
+    /**
+     * 휴가 신청 목록 페이지 상단 요약 정보 조회
+     *
+     * 승인 대상 신청 건수 및 관련 요약 정보를 반환한다.
+     *
+     * @param approverEmployeeNumber 승인자 사번
+     * @return 휴가 신청 목록 요약 DTO
+     */
+    VacationRequestListSummaryDTO getVacationRequestListSummary(String approverEmployeeNumber);
+
+    /**
+     * 휴가 신청 승인 처리
+     *
+     * 승인자가 특정 휴가 신청을 승인한다.
+     *
+     * @param vacationId 휴가 신청 ID
+     * @param approverEmployeeNumber 승인자 사번
+     * @return 승인 처리 결과 DTO
+     */
+    VacationDecisionResponseDTO approveVacationRequest(Long vacationId, String approverEmployeeNumber);
+
+    /**
+     * 휴가 신청 반려 처리
+     *
+     * 승인자가 특정 휴가 신청을 반려한다.
+     *
+     * @param vacationId 휴가 신청 ID
+     * @param request 반려 요청 DTO
+     * @param approverEmployeeNumber 승인자 사번
+     * @return 반려 처리 결과 DTO
+     */
+    VacationDecisionResponseDTO rejectVacationRequest(
+            Long vacationId,
+            VacationRejectRequestDTO request,
+            String approverEmployeeNumber
+    );
 }
