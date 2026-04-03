@@ -20,7 +20,8 @@ public interface EmployeeService {
 	EmployeeResDto saveEmployee(EmployeeReqDto employeeReqDto);
 	
 	// 직원 수정.
-	//	-  반환으로는 응답dto	, 아이디와, 요청객체를 받아서 처리함.
-	public EmployeeResDto editEmployee(Long id, EmployeeReqDto employeeResDto);
+	//	-  반환으로는 응답dto	
+//					: 매개변수로 직원아이디, 부서 아이디와, 요청객체를 받아서 처리함.
+	public EmployeeResDto editEmployee( Long employeeId,Long departmentId, EmployeeReqDto employeeResDto);
 } 
  

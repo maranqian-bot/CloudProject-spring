@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,8 +23,10 @@ import kr.co.cloudStudy.employee.dto.EmployeeSearchDto;
 import kr.co.cloudStudy.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 
+
+
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping("/api/employees")
 @RequiredArgsConstructor
 @Tag(name = "Employee Controller", description = "직원 관리 API")
 public class EmployeeController {
@@ -52,15 +55,19 @@ public class EmployeeController {
 	// 직원 수정 처리
 	
 	@Operation(summary = "직원정보 수정", description = "직원정보 수정 후 응답을 반환합니다.")
-	@PutMapping("/edit/{id}")
-	public ResponseEntity<EmployeeResDto> editEmployee(@PathVariable(name = "id") Long id, 
-														@RequestBody EmployeeReqDto reqDto) {
-		EmployeeResDto updateEmployee = employeeService.editEmployee(id, reqDto);	// 갱신된 값
+	@PutMapping("/edit/{employeeId}")
+	public ResponseEntity<EmployeeResDto> editEmployee(
+			@PathVariable(name = "employeeId") Long employeeId,
+			@RequestParam(name = "departmentId") Long departmentId,
+			@RequestBody EmployeeReqDto reqDto) {
+		EmployeeResDto updateEmployee = employeeService.editEmployee(employeeId, departmentId, reqDto);	// 갱신된 값
 		return ResponseEntity.ok(updateEmployee);		// 갱신된거 상태 담아서 전달하기..
 		
 	}
 	
 }
+
+
  
 
 

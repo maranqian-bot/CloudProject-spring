@@ -1,13 +1,13 @@
 package kr.co.cloudStudy.employee.dto;
 
-
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @Schema(description = "직원정보 응답상세 dto")
-public class EmployeeDetailResDto {
+public class EmployeeResDto {
 	@Schema(description = "직원Id(PK)", example = "1")
 	private Long employeeId;							// 기본키
 	@Schema(description = "직원번호", example = "20240001")
@@ -57,7 +57,7 @@ public class EmployeeDetailResDto {
 	private AttendanceStatus attendanceStatus;
 	
 	@Schema(description = "근태관련 목록", example = "근태 기록")
-	public List<AttendanceHistoryResponseDTO> attendanceHistory;
+	public List<AttendanceHistoryResponseDTO> attendanceHistory;	// 위의 4개의 필드 이외의 값은 허용x
 	// 근태관련 필드 (끝)
 	
 	
@@ -66,51 +66,71 @@ public class EmployeeDetailResDto {
     private String vacationType;
 	
 	// 기간은 리액트에서 조합
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Schema(description = "휴가 시작일", example = "2026-04-01")
     private LocalDate startDate;
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	@Schema(description = "휴가 종료일", example = "2026-04-03")
     private LocalDate endDate;
 	@Schema(description = "휴가 일수", example = "2")
     private BigDecimal vacationDays;
 	@Schema(description = "휴가 상태", example = "APPROVED")
-    private String vacationStatus;
+	private String vacationStatus;
 	
-	@Schema(description = "휴가관련 리스트" ,example = "최근 휴가 신청 내역")
-	public List<PendingVacationApprovalDTO> pendingVacation;
+	@Schema(description = "휴가관리 리스트" ,example = "최근 휴가 신청 내역")	
+	public List<PendingVacationApprovalDTO> pendingVacation;	// 위의 5개의 필드만 리스트에 담겠다는 뜻
 	
 	
 	
-	//휴가관련 필드 (끝)
+	//휴가관련 필드 (끝)	
 	// 조회요청 응답메서드 : fromEntity 
 	//	- 엔티티에 있는 데이터를 화면에 띄우기 위함.
-	public static EmployeeDetailResDto fromEntity(Employee entity) {
-		return EmployeeDetailResDto.builder()
-				.employeeId(entity.getEmployeeId())								// 직원 Id
-				.name(entity.getName())	// 이름
-				.employeeNumber(entity.getEmployeeNumber()) 					// 사번
-				.position(entity.getPosition())	// 직책
-				.email(entity.getEmail())										//  이메일
-				.departmentName(entity.getDepartment() != null ?				//	**부서명 지정
+	//	엔티티 -> 응답객체타입으로 변환 (응답객체의 필드를 사용)
+	public static EmployeeResDto fromEntity(Employee employee) {
+		return EmployeeResDto.builder()
+				.employeeId(employee.getEmployeeId())								// 직원 Id
+				.name(employee.getName())	// 이름
+				.employeeNumber(employee.getEmployeeNumber()) 					// 사번
+				.position(employee.getPosition())	// 직책
+				.email(employee.getEmail())										//  이메일
+				.departmentName(employee.getDepartment() != null ?				//	**부서명 지정
 						// 나중에 getDepartmentName으로 수정
 						// 아래꺼 연동을 위해 임시로 deptName으로 했음.
-                        entity.getDepartment().getDeptName() : "소속없음")		//	**
+						employee.getDepartment().getDeptName() : "소속없음")		//	**
 				
-				.status(entity.getStatus())										// 상태 : 활성,비활성,퇴사
+				.status(employee.getStatus())										// 상태 : 활성,비활성,퇴사
+				 
+				// .attendanceHistory() : 
+				//		근무날짜,출근,퇴근,상태 필드만 응답으로 주겠다, getAttendances()로 모든 필드값을 가져옴 
+				//		근태관련 데이터가 존재하는 경우에 응답dto의 필드값을 채워줌.
+				.attendanceHistory(employee.getAttendance() != null ?
+										employee.getAttendance().stream()
+											.map(attendance -> AttendanceHistoryResponseDTO.builder()
+													.workDate(attendance.getWorkDate())
+													.checkInTime(attendance.getCheckInTime())
+													.checkOutTime(attendance.getCheckOutTime())
+													.attendanceStatus(attendance.getAttendanceStatus())
+													.build())
+											.collect(Collectors.toList()) : new ArrayList<>())
 				
-				// 데이터가  엔티티쪽에 저장된 시점에 실행하는거니깐...
-				// 엔티티에서 휴가관련 리스트 가져와서 -> 
-				//응답 객체로 바꾸기	(.attendanceHistory) , 없으면 빈배열을 반환한다.
-				.attendanceHistory(entity.getAttendances() != null ?
-						// 엔티티에 저장된 근태관련 값이 null이 아님을 확인 후 ->
-						entity.getAttendances().stream()
-							.map(attendance -> ).collect(Collectors.toList());
-						: new ArrayList<>());
-						
-						
-				
-				.build()														
+				.pendingVacation(employee.getVacation() != null ? 
+	                    			employee.getVacation().stream()
+	                    				.map(vacation -> PendingVacationApprovalDTO.builder() // 1. 공백 제거
+	                    							.vacationType(vacation.getVacationType())
+	                    							.startDate(vacation.getStartDate())
+	                    							.endDate(vacation.getEndDate())
+	                    							.vacationDays(vacation.getVacationDays())	
+	                    							.vacationStatus(vacation.getVacationStatus().name()) // 2. () 추가
+	                    							.build())
+	                    				.collect(Collectors.toList()) : new ArrayList<>()) 
+				.build();
+	                    
+	            
 	}
-	
-	
 }
+	
+ 
+	
+	
+
 

@@ -95,16 +95,18 @@ public class Employee {
 	private Department department;   // 부서 외래키
 	
 	//	근태관리와의 양방향 설정.
+	//	직원 한명에 대한 근태기록 관련한 모든 필드를 저장 가능
 	@Builder.Default
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	private List<Attendance> attendances = new ArrayList<>();
+	private List<Attendance> attendance = new ArrayList<>();
 	
 	//	휴가관리와의 양방향 설정 .
+	//	직원 한명에 대한 휴가기록 관련한 모든 필드를 저장 가능
 	@Builder.Default
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
 	private List<Vacation> vacation = new ArrayList<>(); 
 	
-	// 직원정보 수정을 위한 메서드
+	// 직원정보 수정을 위한 메서드  
 	public void updateEmployee(EmployeeReqDto reqDto, Department department) {
 			this.employeeNumber = reqDto.getEmployeeNumber();
 			this.name = reqDto.getName();
