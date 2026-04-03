@@ -30,10 +30,10 @@ public interface VacationService {
      *
      * 해당 승인자가 처리해야 하는 승인 대기 휴가 신청 목록을 최신순으로 반환한다.
      *
-     * @param approverId 승인자 직원 ID
+     * @param approverEmployeeNumber 승인자 사번
      * @return 승인 대기 휴가 신청 DTO 리스트
      */
-    List<PendingVacationApprovalDTO> getPendingApprovals(Long approverId);
+    List<PendingVacationApprovalDTO> getPendingApprovals(String approverEmployeeNumber);
 
     /**
      * 휴가 관리 페이지 전체 데이터 조회
@@ -41,11 +41,15 @@ public interface VacationService {
      * 상단 요약 정보, 내 휴가 신청 이력, 승인 대기 목록을 하나로 묶어 반환한다.
      *
      * @param employeeNumber 조회할 직원 사번
-     * @param approverId 승인자 직원 ID
+     * @param approverEmployeeNumber 승인자 사번
      * @param year 조회할 연도
      * @return 휴가 관리 페이지 응답 DTO
      */
-    VacationManagementResponseDTO getVacationManagementPage(String employeeNumber, Long approverId, Integer year);
+    VacationManagementResponseDTO getVacationManagementPage(
+            String employeeNumber,
+            String approverEmployeeNumber,
+            Integer year
+    );
 
     /**
      * 휴가 신청 페이지 대상자 정보 조회

@@ -2,37 +2,41 @@ package kr.co.cloudStudy.employee.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+
+import jakarta.persistence.CascadeType;
+
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import kr.co.cloudStudy.attendance.entity.Attendance;
 import kr.co.cloudStudy.department.entity.Department;
 import kr.co.cloudStudy.employee.dto.EmployeeReqDto;
+import kr.co.cloudStudy.vacation.entity.Vacation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Builder
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name ="employee")
 public class Employee {
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,21 +77,34 @@ public class Employee {
     @Column(name = "profile_img", length = 255)
     private String profileImg;			// 프로필 이미지
     
-	@CreatedDate
-	@Column(name = "created_at" , updatable = false,
-			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")			
-	private LocalDateTime createdAt;	// 생성일
-	
-	@LastModifiedDate
-	@Column(name = "updated_at",
-			columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	private LocalDateTime updatedAt;	// 수정일		
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false,
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;    // 생성일
 
+    @UpdateTimestamp
+    @Column(name = "updated_at",
+            columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt; 
+
+											
 	@ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name = "department_id", nullable = false) 
 	private Department department;   // 부서 외래키
 	
-	// 직원정보 수정을 위한 메서드
+	//	근태관리와의 양방향 설정.
+	//	직원 한명에 대한 근태기록 관련한 모든 필드를 저장 가능
+	@Builder.Default
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Attendance> attendance = new ArrayList<>();
+	
+	//	휴가관리와의 양방향 설정 .
+	//	직원 한명에 대한 휴가기록 관련한 모든 필드를 저장 가능
+	@Builder.Default
+	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+	private List<Vacation> vacation = new ArrayList<>(); 
+	
+	// 직원정보 수정을 위한 메서드  
 	public void updateEmployee(EmployeeReqDto reqDto, Department department) {
 			this.employeeNumber = reqDto.getEmployeeNumber();
 			this.name = reqDto.getName();

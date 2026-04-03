@@ -25,11 +25,11 @@ public class VacationManagementController implements VacationManagementControlle
     @GetMapping
     public ResponseEntity<ApiResponseDTO<VacationManagementResponseDTO>> getVacationManagementPage(
             @RequestParam String employeeNumber,
-            @RequestParam Long approverId,
+            @RequestParam String approverEmployeeNumber,
             @RequestParam Integer year
     ) {
         VacationManagementResponseDTO response =
-                vacationService.getVacationManagementPage(employeeNumber, approverId, year);
+                vacationService.getVacationManagementPage(employeeNumber, approverEmployeeNumber, year);
 
         return ResponseEntity.ok(
                 ApiResponseDTO.success("휴가 관리 페이지 조회 성공", response)

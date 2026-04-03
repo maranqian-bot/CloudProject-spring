@@ -18,7 +18,7 @@ public interface VacationManagementControllerDocs {
             String employeeNumber,
 
             @Parameter(description = "승인자 직원 ID", example = "1")
-            Long approverId,
+            String approverEmployeeNumber,
 
             @Parameter(description = "조회 연도", example = "2026")
             Integer year

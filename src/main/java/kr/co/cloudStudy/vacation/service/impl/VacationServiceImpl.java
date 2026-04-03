@@ -56,12 +56,12 @@ public class VacationServiceImpl implements VacationService {
     }
 
     @Override
-    public List<PendingVacationApprovalDTO> getPendingApprovals(Long approverId) {
-        validateApproverId(approverId);
+    public List<PendingVacationApprovalDTO> getPendingApprovals(String approverEmployeeNumber) {
+        validateEmployeeNumber(approverEmployeeNumber);
 
         List<Vacation> vacationList =
                 vacationRepository.findPendingApprovalsWithEmployee(
-                        approverId,
+                        approverEmployeeNumber,
                         VacationStatus.PENDING
                 );
 
@@ -73,14 +73,14 @@ public class VacationServiceImpl implements VacationService {
     @Override
     public VacationManagementResponseDTO getVacationManagementPage(
             String employeeNumber,
-            Long approverId,
+            String approverEmployeeNumber,
             Integer year
     ) {
         VacationManagementSummaryDTO summary =
                 annualLeaveBalanceService.getVacationManagementSummary(employeeNumber, year);
 
         List<MyVacationHistoryDTO> myVacationHistories = getMyVacationHistory(employeeNumber);
-        List<PendingVacationApprovalDTO> pendingApprovals = getPendingApprovals(approverId);
+        List<PendingVacationApprovalDTO> pendingApprovals = getPendingApprovals(approverEmployeeNumber);
 
         return VacationManagementResponseDTO.of(
                 summary,
@@ -120,7 +120,9 @@ public class VacationServiceImpl implements VacationService {
                 .findByEmployee_EmployeeNumberAndYear(employee.getEmployeeNumber(), targetYear)
                 .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
 
-        if (request.getDays().compareTo(annualLeaveBalance.getRemainingDays()) > 0) {
+        BigDecimal requestedDays = resolveRequestedDays(request);
+
+        if (requestedDays.compareTo(annualLeaveBalance.getRemainingDays()) > 0) {
             throw new IllegalArgumentException("잔여 연차를 초과하여 신청할 수 없습니다.");
         }
 
@@ -129,7 +131,7 @@ public class VacationServiceImpl implements VacationService {
                         employee,
                         request.getVacationType(),
                         request.getStartDate(),
-                        request.getDays(),
+                        requestedDays,
                         buildVacationReason(request)
                 )
         );
@@ -250,16 +252,6 @@ public class VacationServiceImpl implements VacationService {
         }
     }
 
-    private void validateApproverId(Long approverId) {
-        if (approverId == null) {
-            throw new IllegalArgumentException("승인자 ID는 필수입니다.");
-        }
-
-        if (approverId <= 0) {
-            throw new IllegalArgumentException("승인자 ID는 1 이상이어야 합니다.");
-        }
-    }
-
     private void validateYear(Integer year) {
         if (year == null) {
             throw new IllegalArgumentException("연도는 필수입니다.");
@@ -287,6 +279,12 @@ public class VacationServiceImpl implements VacationService {
 
         if (request.getDays() == null || request.getDays().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("사용 일수는 0보다 커야 합니다.");
+        }
+
+        if ((request.getVacationType() == VacationType.HALF_AM
+                || request.getVacationType() == VacationType.HALF_PM)
+                && request.getDays().compareTo(new BigDecimal("0.5")) != 0) {
+            throw new IllegalArgumentException("반차는 사용 일수가 0.5일이어야 합니다.");
         }
 
         if (request.getVacationType() == VacationType.ETC
@@ -343,6 +341,15 @@ public class VacationServiceImpl implements VacationService {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("올바르지 않은 휴가 유형입니다.");
         }
+    }
+    
+    private BigDecimal resolveRequestedDays(VacationCreateRequestDTO request) {
+        if (request.getVacationType() == VacationType.HALF_AM
+                || request.getVacationType() == VacationType.HALF_PM) {
+            return new BigDecimal("0.5");
+        }
+
+        return request.getDays();
     }
 
     private String buildVacationReason(VacationCreateRequestDTO request) {
