@@ -1,9 +1,10 @@
 package kr.co.cloudStudy.department.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -13,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -66,6 +68,7 @@ public class Department {
 		this.updatedAt = LocalDateTime.now();
 	}
 	
+	
 	// 데이터 수정 전 수정일 자동 실행
 	@PreUpdate
 	protected void onUpdate() {
@@ -91,5 +94,10 @@ public class Department {
         this.deptName = dto.getDeptName();
         this.description = dto.getDescription();
     }
+	
+	// 추가 : 부서 직원 Count 메서드 
+	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+	@Builder.Default 
+	private List<Employee> employees = new ArrayList<>();
 
 }

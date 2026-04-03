@@ -1,16 +1,26 @@
 package kr.co.cloudStudy.vacation.entity;
 
-import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import kr.co.cloudStudy.employee.entity.Employee;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vacation")
@@ -25,8 +35,9 @@ public class Vacation {
     @Column(name = "vacation_id")
     private Long vacationId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "vacation_type", nullable = false, length = 30)
-    private String vacationType;
+    private VacationType vacationType;
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
@@ -71,6 +82,32 @@ public class Vacation {
     @JoinColumn(name = "approver_id")
     private Employee approver;
 
+    public static Vacation create(
+            Employee employee,
+            VacationType vacationType,
+            LocalDate startDate,
+            BigDecimal vacationDays,
+            String vacationReason
+    ) {
+        LocalDateTime now = LocalDateTime.now();
+
+        return Vacation.builder()
+                .employee(employee)
+                .vacationType(vacationType)
+                .startDate(startDate)
+                .endDate(calculateEndDate(startDate, vacationDays))
+                .vacationDays(vacationDays)
+                .vacationReason(vacationReason)
+                .vacationStatus(VacationStatus.PENDING)
+                .approvedAt(null)
+                .rejectReason(null)
+                .approver(null)
+                .approverName(null)
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
+    }
+
     public void approve(Employee approver) {
         this.vacationStatus = VacationStatus.APPROVED;
         this.approver = approver;
@@ -87,5 +124,15 @@ public class Vacation {
         this.rejectReason = rejectReason;
         this.approvedAt = null;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    private static LocalDate calculateEndDate(LocalDate startDate, BigDecimal vacationDays) {
+        // 반차/1일 휴가는 시작일과 종료일 동일
+        if (startDate == null || vacationDays == null || vacationDays.compareTo(BigDecimal.ONE) <= 0) {
+            return startDate;
+        }
+
+        int daysToAdd = (int) Math.ceil(vacationDays.doubleValue()) - 1;
+        return startDate.plusDays(daysToAdd);
     }
 }
