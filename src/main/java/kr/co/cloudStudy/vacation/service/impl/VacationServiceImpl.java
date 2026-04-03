@@ -56,12 +56,12 @@ public class VacationServiceImpl implements VacationService {
     }
 
     @Override
-    public List<PendingVacationApprovalDTO> getPendingApprovals(Long approverId) {
-        validateApproverId(approverId);
+    public List<PendingVacationApprovalDTO> getPendingApprovals(String approverEmployeeNumber) {
+        validateEmployeeNumber(approverEmployeeNumber);
 
         List<Vacation> vacationList =
                 vacationRepository.findPendingApprovalsWithEmployee(
-                        approverId,
+                        approverEmployeeNumber,
                         VacationStatus.PENDING
                 );
 
@@ -73,14 +73,14 @@ public class VacationServiceImpl implements VacationService {
     @Override
     public VacationManagementResponseDTO getVacationManagementPage(
             String employeeNumber,
-            Long approverId,
+            String approverEmployeeNumber,
             Integer year
     ) {
         VacationManagementSummaryDTO summary =
                 annualLeaveBalanceService.getVacationManagementSummary(employeeNumber, year);
 
         List<MyVacationHistoryDTO> myVacationHistories = getMyVacationHistory(employeeNumber);
-        List<PendingVacationApprovalDTO> pendingApprovals = getPendingApprovals(approverId);
+        List<PendingVacationApprovalDTO> pendingApprovals = getPendingApprovals(approverEmployeeNumber);
 
         return VacationManagementResponseDTO.of(
                 summary,
@@ -247,16 +247,6 @@ public class VacationServiceImpl implements VacationService {
     private void validateEmployeeNumber(String employeeNumber) {
         if (employeeNumber == null || employeeNumber.isBlank()) {
             throw new IllegalArgumentException("직원 사번은 필수입니다.");
-        }
-    }
-
-    private void validateApproverId(Long approverId) {
-        if (approverId == null) {
-            throw new IllegalArgumentException("승인자 ID는 필수입니다.");
-        }
-
-        if (approverId <= 0) {
-            throw new IllegalArgumentException("승인자 ID는 1 이상이어야 합니다.");
         }
     }
 
