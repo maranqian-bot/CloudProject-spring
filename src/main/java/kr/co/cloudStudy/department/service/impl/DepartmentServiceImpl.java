@@ -107,8 +107,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	
 	@Override
 	@Transactional 
-	public void remove(Long departmentId) {
-		
+	public void remove(Long departmentId) {		
 		// 삭제하기 전 조회 후 삭제.  (없으면 예외 발생)
 		Department entity = departmentRepository.findById(departmentId)
 				.orElseThrow(() -> new IllegalArgumentException("삭제할 부서가 없습니다. id=" +  departmentId));
