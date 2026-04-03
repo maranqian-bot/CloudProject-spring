@@ -147,6 +147,14 @@ docker rm -f cloudstudy-redis
 docker run -d --name cloudstudy-redis -p 6379:6379 redis
 ```
 
+## Redis 환경변수 설정
+
+예시:
+```
+spring.data.redis.host=localhost
+spring.data.redis.port=6179
+```
+
 ## Gmail 앱 비밀번호 생성
 
 이 프로젝트는 이메일 인증 코드 발송을 위해 Gmail SMTP를 사용합니다.
