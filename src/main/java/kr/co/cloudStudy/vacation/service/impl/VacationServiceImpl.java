@@ -120,7 +120,9 @@ public class VacationServiceImpl implements VacationService {
                 .findByEmployee_EmployeeNumberAndYear(employee.getEmployeeNumber(), targetYear)
                 .orElseThrow(() -> new IllegalArgumentException("해당 연도의 연차 정보가 존재하지 않습니다."));
 
-        if (request.getDays().compareTo(annualLeaveBalance.getRemainingDays()) > 0) {
+        BigDecimal requestedDays = resolveRequestedDays(request);
+
+        if (requestedDays.compareTo(annualLeaveBalance.getRemainingDays()) > 0) {
             throw new IllegalArgumentException("잔여 연차를 초과하여 신청할 수 없습니다.");
         }
 
@@ -129,7 +131,7 @@ public class VacationServiceImpl implements VacationService {
                         employee,
                         request.getVacationType(),
                         request.getStartDate(),
-                        request.getDays(),
+                        requestedDays,
                         buildVacationReason(request)
                 )
         );
@@ -279,6 +281,12 @@ public class VacationServiceImpl implements VacationService {
             throw new IllegalArgumentException("사용 일수는 0보다 커야 합니다.");
         }
 
+        if ((request.getVacationType() == VacationType.HALF_AM
+                || request.getVacationType() == VacationType.HALF_PM)
+                && request.getDays().compareTo(new BigDecimal("0.5")) != 0) {
+            throw new IllegalArgumentException("반차는 사용 일수가 0.5일이어야 합니다.");
+        }
+
         if (request.getVacationType() == VacationType.ETC
                 && (request.getReasonDetail() == null || request.getReasonDetail().isBlank())) {
             throw new IllegalArgumentException("기타 사유를 입력해 주세요.");
@@ -333,6 +341,15 @@ public class VacationServiceImpl implements VacationService {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("올바르지 않은 휴가 유형입니다.");
         }
+    }
+    
+    private BigDecimal resolveRequestedDays(VacationCreateRequestDTO request) {
+        if (request.getVacationType() == VacationType.HALF_AM
+                || request.getVacationType() == VacationType.HALF_PM) {
+            return new BigDecimal("0.5");
+        }
+
+        return request.getDays();
     }
 
     private String buildVacationReason(VacationCreateRequestDTO request) {
