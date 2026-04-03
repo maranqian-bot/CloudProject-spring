@@ -46,7 +46,7 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
     
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    implementation 'com.sun.mail:jakarta.mail'
+	implementation 'com.sun.mail:jakarta.mail:2.0.1'
 
 }
 

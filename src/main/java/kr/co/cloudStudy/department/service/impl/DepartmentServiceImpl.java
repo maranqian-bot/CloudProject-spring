@@ -98,11 +98,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 		entity.update(dto);
 		
 		if(dto.getManagerId() != null) {
-	        Employee manager = employeeRepository.findByEmployeeNumber(dto.getManagerId().toString())
+	        Employee manager = employeeRepository.findByEmployeeNumber(dto.getManagerId())
 	                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 직원입니다."));
+	        
+	        // 전달받은 이름과 DB의 이름이 일치하는지 확인 (데이터 무결성 체크)	        
+	        if (dto.getManagerName() != null && !manager.getName().equals(dto.getManagerName())) {
+	            throw new IllegalArgumentException("사번과 직원 이름이 일치하지 않습니다.");
+	        }
+	        
 	        entity.updateManager(manager);
 	    }
-		
 	}
 	
 	@Override
@@ -114,7 +119,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 		
 		// 위에서 조회한 부서 객체를 그대로 삭제 처리 (JPA 매커니즘 활용 : 영속화된 엔터티 객체를 전달 -> 삭제 수행)
 		departmentRepository.delete(entity);
-	}
-		
+	}		
 }
 	

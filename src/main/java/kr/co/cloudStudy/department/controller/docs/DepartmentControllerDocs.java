@@ -30,7 +30,7 @@ public interface DepartmentControllerDocs {
     );
 
     @Operation(summary = "부서 정보 수정", description = "기존 부서 정보를 업데이트합니다.")
-    ResponseEntity<Void> modify(
+    ResponseEntity<ResDeptDTO> modify(
         @Parameter(description = "수정할 부서 ID") Long departmentId, 
         ReqDeptDTO dto
     );

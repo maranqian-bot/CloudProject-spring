@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import kr.co.cloudStudy.department.controller.docs.DepartmentControllerDocs;
 import kr.co.cloudStudy.department.dto.ReqDeptDTO;
 import kr.co.cloudStudy.department.dto.ResDeptDTO;
@@ -51,7 +51,7 @@ public class DepartmentController implements DepartmentControllerDocs {
 	// 부서 상세 조회(GET)
 	@Override
 	@GetMapping("/{departmentId}")
-	public ResponseEntity<ResDeptDTO> read(@PathVariable Long departmentId) {
+	public ResponseEntity<ResDeptDTO> read(@PathVariable("departmentId") Long departmentId) {
 		ResDeptDTO dto = departmentService.read(departmentId);
 		return ResponseEntity.ok(dto);
 	}
@@ -59,20 +59,21 @@ public class DepartmentController implements DepartmentControllerDocs {
 	// 부서 정보 수정 (PUT)
 	@Override
 	@PutMapping("/{departmentId}")
-	public ResponseEntity<Void> modify(
+	public ResponseEntity<ResDeptDTO> modify(
 			@PathVariable("departmentId") Long departmentId,   // 주소의 번호를 꺼내서 departmentId 변수 담기
-			@RequestBody ReqDeptDTO dto            // 수정할 내용 DTO로 받기
+			@Valid @RequestBody ReqDeptDTO dto            // 수정할 내용 DTO로 받기
 	) {
 		dto.setDepartmentId(departmentId);					   // 주소에서 받은 ID -> DTO로 세팅하기
-		
 		departmentService.modify(dto);
-		return ResponseEntity.ok().build();
+		
+		ResDeptDTO updatedData = departmentService.read(departmentId);
+	    return ResponseEntity.ok(updatedData);
 	}
 	
 	// 부서 삭제 (DELETE)
 	@Override
 	@DeleteMapping("/{departmentId}")
-	public ResponseEntity<Void> remove(@PathVariable Long departmentId) {
+	public ResponseEntity<Void> remove(@PathVariable("departmentId") Long departmentId) {
 		departmentService.remove(departmentId);
 		return ResponseEntity.ok().build();
 	}
