@@ -50,7 +50,7 @@ public class DepartmentController {
 	// 부서 상세 조회(GET)
 	@Operation(summary = "부서 상세 조회", description = "부서 ID(departmentId)를 통해 특정 부서 정보를 상세 조회합니다.")
 	@GetMapping("/{departmentId}")
-	public ResponseEntity<ResDeptDTO> read(@PathVariable Long departmentId) {
+	public ResponseEntity<ResDeptDTO> read(@PathVariable("departmentId") Long departmentId) {
 		ResDeptDTO dto = departmentService.read(departmentId);
 		return ResponseEntity.ok(dto);
 	}
