@@ -1,52 +1,21 @@
 package kr.co.cloudStudy.auth.repository;
 
-import java.util.concurrent.TimeUnit;
+public interface EmailCodeRedisRepository {
+	
+	void saveEmailCode(String email, String code);
+	
+	String getEmailCode(String email);
+	
+	void deleteEmailCode(String email);
 
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Repository;
+	void saveVerified(String email);
+	
+	boolean isVerified(String email);
+	
+	void deleteVerified(String email);
 
-import lombok.RequiredArgsConstructor;
-
-@Repository
-@RequiredArgsConstructor
-public class EmailCodeRedisRepository {
+	void saveSendBlock(String email);
 	
-	private static final String EMAIL_CODE_PREFIX = "emailCode:";
-	private static final String EMAIL_VERIFIED_PREFIX = "emailVerified:";
+	boolean isSendBlocked(String email);
 	
-	private final StringRedisTemplate stringRedisTemplate;
-	
-	public void saveEmailCode(String email, String code) {
-		stringRedisTemplate.opsForValue().set(
-				EMAIL_CODE_PREFIX + email,
-				code,
-				3,
-				TimeUnit.MINUTES);
-	}
-	
-	public String getEmailCode(String email) {
-		return stringRedisTemplate.opsForValue().get(EMAIL_CODE_PREFIX + email);
-	}
-	
-	public void deleteEmailCode(String email) {
-		stringRedisTemplate.delete(EMAIL_CODE_PREFIX + email);
-	}
-	
-	public void saveVerified(String email) {
-		stringRedisTemplate.opsForValue().set(
-				EMAIL_VERIFIED_PREFIX + email,
-				"true",
-				10,
-				TimeUnit.MINUTES
-		);
-	}
-	
-	public boolean isVerifired(String email) {
-		String value = stringRedisTemplate.opsForValue().get(EMAIL_VERIFIED_PREFIX + email);
-		return "true".equals(value);
-	}
-	
-	public void deleteVerified(String email) {
-		stringRedisTemplate.delete(EMAIL_VERIFIED_PREFIX + email);
-	}
 }
