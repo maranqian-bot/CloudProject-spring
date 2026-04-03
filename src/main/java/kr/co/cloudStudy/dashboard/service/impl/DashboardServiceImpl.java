@@ -7,6 +7,7 @@ import java.time.YearMonth;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -74,11 +75,10 @@ public class DashboardServiceImpl implements DashboardService {
         Employee employee = getEmployeeWithDepartment(employeeNumber);
         LocalDate today = LocalDate.now();
 
-        Attendance attendance = attendanceRepository
-                .findByEmployee_EmployeeIdAndWorkDate(employee.getEmployeeId(), today)
-                .orElse(null);
+        Optional<Attendance> attendanceOptional = attendanceRepository
+                .findByEmployee_EmployeeIdAndWorkDate(employee.getEmployeeId(), today);
 
-        return DashboardTodayAttendanceResponseDTO.of(today, attendance);
+        return DashboardTodayAttendanceResponseDTO.of(today, attendanceOptional);
     }
 
     @Override
@@ -118,16 +118,17 @@ public class DashboardServiceImpl implements DashboardService {
         LocalDate today = LocalDate.now();
         LocalDateTime now = LocalDateTime.now();
 
-        Attendance attendance = attendanceRepository
-                .findByEmployee_EmployeeIdAndWorkDate(employee.getEmployeeId(), today)
-                .orElse(null);
+        Optional<Attendance> attendanceOptional = attendanceRepository
+                .findByEmployee_EmployeeIdAndWorkDate(employee.getEmployeeId(), today);
 
-        if (attendance == null) {
+        if (attendanceOptional.isEmpty()) {
             Attendance savedAttendance = attendanceRepository.save(
                     Attendance.createCheckIn(employee, now, AttendanceStatus.NORMAL)
             );
-            return DashboardTodayAttendanceResponseDTO.of(today, savedAttendance);
+            return DashboardTodayAttendanceResponseDTO.of(today, Optional.of(savedAttendance));
         }
+
+        Attendance attendance = attendanceOptional.get();
 
         if (attendance.getAttendanceStatus() == AttendanceStatus.VACATION
                 || attendance.getAttendanceStatus() == AttendanceStatus.ABSENT) {
@@ -141,7 +142,7 @@ public class DashboardServiceImpl implements DashboardService {
         // 기존 기록이 있으면 출근 정보만 갱신
         attendance.markCheckIn(now, AttendanceStatus.NORMAL);
 
-        return DashboardTodayAttendanceResponseDTO.of(today, attendance);
+        return DashboardTodayAttendanceResponseDTO.of(today, Optional.of(attendance));
     }
 
     @Override
@@ -179,7 +180,7 @@ public class DashboardServiceImpl implements DashboardService {
 
         attendance.checkOut(now, workMinutes, attendanceStatus);
 
-        return DashboardTodayAttendanceResponseDTO.of(today, attendance);
+        return DashboardTodayAttendanceResponseDTO.of(today, Optional.of(attendance));
     }
 
     private Employee getEmployeeWithDepartment(String employeeNumber) {

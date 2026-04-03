@@ -2,6 +2,7 @@ package kr.co.cloudStudy.dashboard.dto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.cloudStudy.attendance.entity.Attendance;
@@ -37,8 +38,11 @@ public class DashboardTodayAttendanceResponseDTO {
     @Schema(description = "근태 기록 ID", example = "15")
     private Long historyId;
 
-    public static DashboardTodayAttendanceResponseDTO of(LocalDate workDate, Attendance attendance) {
-        if (attendance == null) {
+    public static DashboardTodayAttendanceResponseDTO of(
+            LocalDate workDate,
+            Optional<Attendance> attendanceOptional
+    ) {
+        if (attendanceOptional.isEmpty()) {
             return DashboardTodayAttendanceResponseDTO.builder()
                     .workDate(workDate)
                     .isCheckedIn(false)
@@ -48,6 +52,8 @@ public class DashboardTodayAttendanceResponseDTO {
                     .historyId(null)
                     .build();
         }
+
+        Attendance attendance = attendanceOptional.get();
 
         return DashboardTodayAttendanceResponseDTO.builder()
                 .workDate(workDate)
