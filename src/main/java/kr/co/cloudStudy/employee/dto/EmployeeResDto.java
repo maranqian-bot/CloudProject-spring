@@ -1,11 +1,10 @@
 package kr.co.cloudStudy.employee.dto;
-
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -14,6 +13,7 @@ import kr.co.cloudStudy.attendance.dto.AttendanceHistoryResponseDTO;
 import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
 import kr.co.cloudStudy.employee.entity.Employee;
 import kr.co.cloudStudy.vacation.dto.PendingVacationApprovalDTO;
+import kr.co.cloudStudy.vacation.entity.VacationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -75,7 +75,7 @@ public class EmployeeResDto {
 	@Schema(description = "휴가 일수", example = "2")
     private BigDecimal vacationDays;
 	@Schema(description = "휴가 상태", example = "APPROVED")
-	private String vacationStatus;
+	public String vacationStatus;
 	
 	@Schema(description = "휴가관리 리스트" ,example = "최근 휴가 신청 내역")	
 	public List<PendingVacationApprovalDTO> pendingVacation;	// 위의 5개의 필드만 리스트에 담겠다는 뜻
@@ -111,19 +111,19 @@ public class EmployeeResDto {
 													.checkOutTime(attendance.getCheckOutTime())
 													.attendanceStatus(attendance.getAttendanceStatus())
 													.build())
-											.collect(Collectors.toList()) : new ArrayList<>())
+											.collect(Collectors.toList()) : new ArrayList<AttendanceHistoryResponseDTO>())
 				
 				.pendingVacation(employee.getVacation() != null ? 
 	                    			employee.getVacation().stream()
-	                    				.map(vacation -> PendingVacationApprovalDTO.builder() // 1. 공백 제거
-	                    							.vacationType(vacation.getVacationType())
+	                    				.map( vacation -> PendingVacationApprovalDTO.builder() // 1. 공백 제거
+	                    						.vacationType(vacation.getVacationType())
 	                    							.startDate(vacation.getStartDate())
 	                    							.endDate(vacation.getEndDate())
 	                    							.vacationDays(vacation.getVacationDays())	
-	                    							.vacationStatus(vacation.getVacationStatus().name()) // 2. () 추가
+	                    							.vacationStatus(vacation.getVacationStatus())
 	                    							.build())
-	                    				.collect(Collectors.toList()) : new ArrayList<>()) 
-				.build();
+	                    				.collect(Collectors.toList()) : new ArrayList<PendingVacationApprovalDTO>()) 
+				.build(); 
 	                    
 	            
 	}
