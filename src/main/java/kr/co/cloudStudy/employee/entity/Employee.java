@@ -8,7 +8,6 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-
 import jakarta.persistence.CascadeType;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -31,9 +30,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Builder
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
