@@ -82,6 +82,14 @@ public class EmailCodeServiceImpl implements EmailCodeService {
 	}
 	
 	private void validatePassword(String password) {
+		if (password == null) {
+		    throw new IllegalArgumentException("비밀번호는 필수 입력값입니다.");
+		}
+		
+		if (password.trim().isEmpty()) {
+	        throw new IllegalArgumentException("비밀번호는 공백일 수 없습니다.");
+	    }
+		
 	    String regex = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&]).{8,}$";
 
 	    if (!password.matches(regex)) {
