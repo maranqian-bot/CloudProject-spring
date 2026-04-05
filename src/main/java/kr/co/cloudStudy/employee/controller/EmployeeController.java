@@ -32,18 +32,26 @@ import lombok.RequiredArgsConstructor;
 public class EmployeeController {
 	
 	private final EmployeeService employeeService;	// 서비스 호출용
+
+	@Operation(summary = "직원 조회", description = "직원 한명의 모든 정보를 조회(근태,휴가 포함)")
+	@GetMapping("/{employeeId}")
+	public ResponseEntity<EmployeeResDto> getEmployeeDetail(@PathVariable("employeeId") Long employeeId) {
+		EmployeeResDto employeeDetail = employeeService.getEmployeeDetail(employeeId);
+		return ResponseEntity.ok(employeeDetail);
+	}
 	
 	@Operation(summary = "직원 목록 조회", description = "검색 조건과 페이징 처리를 적용하여 직원 목록을 조회합니다.")
 	@GetMapping
-	public Page<EmployeeResDto> getEmployeeList(	// 검색조건과, 페이징처리 해서 응답dto 반환해주는 메서드
+	public ResponseEntity<Page<EmployeeResDto>> getEmployeeList(	// 검색조건과, 페이징처리 해서 응답dto 반환해주는 메서드
 	        EmployeeSearchDto condition, 																				// 검색조건과,
 	        @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {		// 페이징처리
-
+		
+		Page<EmployeeResDto> list = employeeService.getEmployeeList(condition, pageable);
 	    
-	    return employeeService.getEmployeeList(condition, pageable);	
+	    return ResponseEntity.ok(list);
 	}
 	@Operation(summary = "새로운 직원 추가", description = "직원 추가후 응답을 반환합니다.")
-	@PostMapping("/post")
+	@PostMapping
 	public ResponseEntity<EmployeeResDto> postEmployee(@RequestBody EmployeeReqDto employeeReqDto) {	
 
 		
@@ -51,11 +59,11 @@ public class EmployeeController {
 		EmployeeResDto response = employeeService.saveEmployee(employeeReqDto);	// 저장후에, 응답Dto가 반환값으로 옴.
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);	 
 	}
-	
+	 
 	// 직원 수정 처리
 	
 	@Operation(summary = "직원정보 수정", description = "직원정보 수정 후 응답을 반환합니다.")
-	@PutMapping("/edit/{employeeId}")
+	@PutMapping("/{employeeId}")
 	public ResponseEntity<EmployeeResDto> editEmployee(
 			@PathVariable(name = "employeeId") Long employeeId,
 			@RequestParam(name = "departmentId") Long departmentId,
