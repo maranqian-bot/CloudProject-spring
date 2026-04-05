@@ -38,10 +38,7 @@ public class SecurityConfig {
 					.requestMatchers(
 						"/api/auth/**",
 						"/swagger-ui/**", 
-						"/v3/api-docs/**",
-						// 아래 두줄 원복하기 (v3 뒤의 쉼표도 제거)
-						"/api/employees/**", 
-					    "/api/departments/**"
+						"/v3/api-docs/**"
 					).permitAll()
 					
 					.anyRequest().authenticated()
@@ -75,4 +72,3 @@ public class SecurityConfig {
 	}
 
 }
-
