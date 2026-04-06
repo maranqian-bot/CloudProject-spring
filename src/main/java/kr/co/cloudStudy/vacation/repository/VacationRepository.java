@@ -97,4 +97,8 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
 
     // 기본 조회
     Optional<Vacation> findByVacationId(Long vacationId);
+   
+    Page<Vacation> findByEmployee_EmployeeNumberOrderByStartDateDesc(String employeeNumber, Pageable pageable);
+    
+    
 }

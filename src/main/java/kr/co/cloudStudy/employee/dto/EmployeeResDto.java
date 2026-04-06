@@ -5,9 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.cloudStudy.employee.entity.Employee;
 import lombok.AllArgsConstructor;
@@ -74,29 +72,8 @@ public class EmployeeResDto {
                 .departmentName(employee.getDepartment() != null ? 
                                 employee.getDepartment().getDeptName() : "소속없음")
                 .status(employee.getStatus())
-                
-                // ✅ 근태 기록: 에러가 나면 "데이터확인"이라는 글자로 치환해서 통과시킴
-                .attendanceHistory(employee.getAttendance() != null ?
-                        employee.getAttendance().stream()
-                            .map(attendance -> {
-                                String statusLabel = "데이터확인"; 
-                                try {
-                                    // 💡 여기서 Enum 변환 에러가 나도 catch가 잡아줌
-                                    statusLabel = String.valueOf(attendance.getAttendanceStatus());
-                                } catch (Exception e) {
-                                    statusLabel = "변환오류"; 
-                                }
-                                
-                                return AttendanceDetail.builder()
-                                        .workDate(attendance.getWorkDate())
-                                        .checkInTime(attendance.getCheckInTime())
-                                        .checkOutTime(attendance.getCheckOutTime())
-                                        .attendanceStatus(statusLabel)
-                                        .build();
-                            })
-                            .collect(Collectors.toList()) : new ArrayList<>())
-
-                // ⚠️ 휴가 내역: 테스트를 위해 빈 리스트 유지 (가장 안전)
+                // ✅ 리스트는 여기서 채우지 않고, 서비스에서 채울 수 있도록 빈 리스트로 초기화만 함
+                .attendanceHistory(new ArrayList<>())
                 .pendingVacation(new ArrayList<>()) 
                 .build();
     }
