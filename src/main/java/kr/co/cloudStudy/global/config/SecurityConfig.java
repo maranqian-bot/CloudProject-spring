@@ -29,30 +29,23 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
-		// 여기부터...
 		http
-        .cors(Customizer.withDefaults())
-        .csrf(csrf -> csrf.disable())
-        // --- [임시 수정 시작: 모든 요청 허용] ---
-        .authorizeHttpRequests(auth -> auth
-            .anyRequest().permitAll() // 모든 요청을 인증 없이 허용 (403 방지)
-        );	/// 여기까지 삭제하고,  아래 주석 원복하기
-        
-        /* 기존 보안 설정 주석 처리 (원복용)
-        .authorizeHttpRequests(auth -> auth
-            .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
-            .requestMatchers(
-                "/api/auth/**",
-                "/swagger-ui/**",
-                "/v3/api-docs/**"
-            ).permitAll()
-            .anyRequest().authenticated()
-        )
-        .addFilterBefore(
-            new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
-            UsernamePasswordAuthenticationFilter.class);
-        */
-        // --- [임시 수정 끝] ---
+			.cors(Customizer.withDefaults())
+			.csrf(csrf -> csrf.disable())
+			.authorizeHttpRequests(auth -> auth
+					.dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
+					
+					.requestMatchers(
+						"/api/auth/**",
+						"/swagger-ui/**", 
+						"/v3/api-docs/**"
+					).permitAll()
+					
+					.anyRequest().authenticated()
+				)
+				.addFilterBefore(
+						new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
+						UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
