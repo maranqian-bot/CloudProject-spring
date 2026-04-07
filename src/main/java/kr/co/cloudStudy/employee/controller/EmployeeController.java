@@ -67,7 +67,7 @@ public class EmployeeController {
 	public ResponseEntity<EmployeeResDto> editEmployee(
 			@PathVariable(name = "employeeId") Long employeeId,
 			@RequestParam(name = "departmentId") Long departmentId,
-			@RequestBody EmployeeReqDto reqDto) {
+			@Valid @RequestBody EmployeeReqDto reqDto) {
 		EmployeeResDto updateEmployee = employeeService.editEmployee(employeeId, departmentId, reqDto);	// 갱신된 값
 		return ResponseEntity.ok(updateEmployee);		// 갱신된거 상태 담아서 전달하기..
 		

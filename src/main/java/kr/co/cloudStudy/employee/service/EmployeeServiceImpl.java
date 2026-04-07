@@ -20,6 +20,8 @@ import kr.co.cloudStudy.employee.repository.EmployeeRepository;
 import kr.co.cloudStudy.vacation.repository.VacationRepository;
 import lombok.RequiredArgsConstructor;
 
+
+
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
@@ -52,18 +54,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	     // 3. 휴가 데이터 주입 (최신 5건)
 	     dto.pendingVacation = vacationRepository
-	             .findByEmployee_EmployeeNumberOrderByStartDateDesc(employee.getEmployeeNumber(), PageRequest.of(0, 5))
-	             .getContent().stream()
-	             .map(v -> EmployeeResDto.VacationDetail.builder()
-	                     .vacationType(String.valueOf(v.getVacationType()))
-	                     .startDate(v.getStartDate())
-	                     .endDate(v.getEndDate())
-	                     .vacationDays(v.getVacationDays())
-	                     .vacationStatus(String.valueOf(v.getVacationStatus()))
-	                     .build())
-	             .collect(Collectors.toList());
+	    		    .findByEmployee_EmployeeNumberOrderByCreatedAtDesc(employee.getEmployeeNumber())
+	    		    .stream()
+	    		    .limit(5)
+	    		    .map(v -> EmployeeResDto.VacationDetail.builder()
+	    		        .vacationType(String.valueOf(v.getVacationType()))
+	    		        .startDate(v.getStartDate())
+	    		        .endDate(v.getEndDate())
+	    		        .vacationDays(v.getVacationDays())
+	    		        .vacationStatus(String.valueOf(v.getVacationStatus()))
+	    		        .build())
+	    		    .collect(Collectors.toList());
 
-	     return dto;
+	     return dto; 
 	 }
 	// 직원 목록 조회 구현부 (가장 빈번한 400 에러 발생 지점 방어)
 	@Override
@@ -89,7 +92,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			}
 		});
 	}
-	
+	 
 	// 저장 구현부
 	@Override
 	@Transactional
