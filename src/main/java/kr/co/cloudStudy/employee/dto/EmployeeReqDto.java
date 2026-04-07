@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import kr.co.cloudStudy.department.entity.Department;
 import kr.co.cloudStudy.employee.entity.Employee;
 import lombok.AllArgsConstructor;
@@ -31,8 +33,15 @@ public class EmployeeReqDto {
 	private String email;		   	// 이메일
 	@Schema(description = "재직 상태", example = "활성")
 	private String status;		   	// 상태
+	
 	@Schema(description = "비밀번호", example = "password123!")
-	private String password;	   	// 비밀번호
+	@NotBlank(message = "비밀번호는 필수 입력 값입니다.")
+	@Pattern(
+	    regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+	    message = "비밀번호는 8자 이상이며, 영문, 숫자, 특수문자를 모두 포함해야 합니다."
+	)
+	private String password;	// 비밀번호
+		   	
 	@Schema(description = "소속 부서 ID (PK)", example = "1")
 	private Long departmentId;	   	// 부서Id
 	@Schema(description = "시스템 역할", example = "ROLE_USER")
