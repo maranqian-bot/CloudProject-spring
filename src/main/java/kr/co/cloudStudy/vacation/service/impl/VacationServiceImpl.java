@@ -48,7 +48,7 @@ public class VacationServiceImpl implements VacationService {
         validateEmployeeNumber(employeeNumber);
 
         List<Vacation> vacationList =
-                vacationRepository.findByEmployee_EmployeeNumberOrderByCreatedAtDesc(employeeNumber);
+                vacationRepository.findByEmployee_EmployeeNumberOrderByStartDateDesc(employeeNumber);
 
         return vacationList.stream()
                 .map(MyVacationHistoryDTO::from)
