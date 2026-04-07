@@ -19,4 +19,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>, Emplo
   @EntityGraph(attributePaths = "department")
   Optional<Employee> findWithDepartmentByEmployeeNumber(String employeeNumber);
   
+  // 대시보드 / 인증 사용자 조회용
+  @EntityGraph(attributePaths = "department")
+  Optional<Employee> findWithDepartmentByEmail(String email);
+  
 }

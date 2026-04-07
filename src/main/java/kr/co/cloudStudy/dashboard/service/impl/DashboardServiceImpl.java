@@ -34,10 +34,12 @@ import kr.co.cloudStudy.vacation.entity.VacationStatus;
 import kr.co.cloudStudy.vacation.repository.VacationRepository;
 import lombok.RequiredArgsConstructor;
 
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class DashboardServiceImpl implements DashboardService {
+	
 
     private final EmployeeRepository employeeRepository;
     private final AnnualLeaveBalanceRepository annualLeaveBalanceRepository;
@@ -45,15 +47,16 @@ public class DashboardServiceImpl implements DashboardService {
     private final VacationRepository vacationRepository;
 
     @Override
-    public DashboardResponseDTO getDashboard(String employeeNumber) {
-        validateEmployeeNumber(employeeNumber);
+    public DashboardResponseDTO getDashboard(String loginIdentifier) {
+        validateEmployeeNumber(loginIdentifier);
+        Employee employee = employeeRepository.findByEmployeeNumber(loginIdentifier)
+                .orElseThrow(() -> new IllegalArgumentException("해당 직원 정보를 찾을 수 없습니다."));
 
-        Employee employee = getEmployeeWithDepartment(employeeNumber);
+        String employeeNumber = employee.getEmployeeNumber();
 
         BigDecimal availableVacationDays = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employeeNumber, LocalDate.now().getYear())
                 .map(AnnualLeaveBalance::getRemainingDays)
-                // 연차 정보가 없으면 대시보드에서는 0으로 표시
                 .orElse(BigDecimal.ZERO);
 
         long absentCount = getAbsentTeamMemberCount(employee);
@@ -67,7 +70,8 @@ public class DashboardServiceImpl implements DashboardService {
 
         return DashboardResponseDTO.of(summary, currentEmployee, vacationRequests);
     }
-
+    
+    
     @Override
     public DashboardTodayAttendanceResponseDTO getTodayAttendance(String employeeNumber) {
         validateEmployeeNumber(employeeNumber);
@@ -189,6 +193,10 @@ public class DashboardServiceImpl implements DashboardService {
     }
 
     private long getAbsentTeamMemberCount(Employee employee) {
+        if (employee.getDepartment() == null) {
+            return 0L;
+        }
+
         return attendanceRepository.countDistinctByDepartmentAndWorkDateAndStatusInExcludingEmployee(
                 employee.getDepartment().getDepartmentId(),
                 LocalDate.now(),

@@ -1,5 +1,4 @@
 package kr.co.cloudStudy.employee.entity;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,7 +6,6 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 
 import jakarta.persistence.CascadeType;
 
@@ -31,7 +29,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
+import lombok.Setter;
+@Setter
 @Entity
 @Builder
 @Getter
