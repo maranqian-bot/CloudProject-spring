@@ -17,7 +17,7 @@ import kr.co.cloudStudy.vacation.entity.VacationType;
 public interface VacationRepository extends JpaRepository<Vacation, Long> {
 
     // 특정 직원의 휴가 신청 이력 조회 (최신순)
-    List<Vacation> findByEmployee_EmployeeNumberOrderByCreatedAtDesc(String employeeNumber);
+    List<Vacation> findByEmployee_EmployeeNumberOrderByStartDateDesc(String employeeNumber);
 
     // 특정 직원의 대기 중인 휴가 신청 건수 조회
     long countByEmployee_EmployeeNumberAndVacationStatus(String employeeNumber, VacationStatus vacationStatus);

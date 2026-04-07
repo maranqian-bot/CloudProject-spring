@@ -54,7 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	     // 3. 휴가 데이터 주입 (최신 5건)
 	     dto.pendingVacation = vacationRepository
-	    		    .findByEmployee_EmployeeNumberOrderByCreatedAtDesc(employee.getEmployeeNumber())
+	    		    .findByEmployee_EmployeeNumberOrderByStartDateDesc(employee.getEmployeeNumber())
 	    		    .stream()
 	    		    .limit(5)
 	    		    .map(v -> EmployeeResDto.VacationDetail.builder()
@@ -67,7 +67,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	    		    .collect(Collectors.toList());
 
 	     return dto; 
-	 }
+	 } 
 	// 직원 목록 조회 구현부 (가장 빈번한 400 에러 발생 지점 방어)
 	@Override
 	@Transactional(readOnly = true)
