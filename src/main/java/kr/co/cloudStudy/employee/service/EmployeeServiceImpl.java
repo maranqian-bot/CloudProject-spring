@@ -15,6 +15,7 @@ import kr.co.cloudStudy.department.repository.DepartmentRepository;
 import kr.co.cloudStudy.employee.dto.EmployeeReqDto;
 import kr.co.cloudStudy.employee.dto.EmployeeResDto;
 import kr.co.cloudStudy.employee.dto.EmployeeSearchDto;
+import kr.co.cloudStudy.employee.dto.EmployeeStatsDto;
 import kr.co.cloudStudy.employee.entity.Employee;
 import kr.co.cloudStudy.employee.repository.EmployeeRepository;
 import kr.co.cloudStudy.vacation.repository.VacationRepository;
@@ -39,6 +40,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	     Employee employee = employeeRepository.findById(employeeId)
 	             .orElseThrow(() -> new EntityNotFoundException("직원 없음"));
 	     EmployeeResDto dto = EmployeeResDto.fromEntity(employee);
+	     
+	     
 
 	     // 2. 근태 데이터 주입 (최신 10건)
 	     dto.attendanceHistory = attendanceRepository
@@ -68,7 +71,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	     return dto; 
 	 } 
-	// 직원 목록 조회 구현부 (가장 빈번한 400 에러 발생 지점 방어)
+	 // 통계 데이터 불러오는 메서드
+	 @Override
+	 @Transactional(readOnly = true)
+		public EmployeeStatsDto getEmployeeStats() {
+			
+			return employeeRepository.getEmployeeStats();
+		}
+	 
+	// 직원 목록 조회 구현부 
 	@Override
 	@Transactional(readOnly = true)
 	public Page<EmployeeResDto> getEmployeeList(EmployeeSearchDto condition, Pageable pageable) {
@@ -142,4 +153,5 @@ public class EmployeeServiceImpl implements EmployeeService {
 					.build();
 		}
 	}
+	
 }
