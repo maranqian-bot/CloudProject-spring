@@ -84,7 +84,6 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
             // DB 필드 타입이 Integer라면 Integer.parseInt() 사용
             query.setParameter("status", condition.getStatus());
         }
-           // 부서ID 파라미터 로직 추가
         if (condition.getDepartmentId() != null) {
             query.setParameter("departmentId", condition.getDepartmentId());
         }
