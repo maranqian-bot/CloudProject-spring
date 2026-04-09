@@ -28,26 +28,33 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		
-		http
-			.cors(Customizer.withDefaults())
-			.csrf(csrf -> csrf.disable())
-			.authorizeHttpRequests(auth -> auth
-					.dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
-					
-					.requestMatchers(
-						"/api/auth/**",
-						"/swagger-ui/**", 
-						"/v3/api-docs/**"
-					).permitAll()
-					
-					.anyRequest().authenticated()
-				)
-				.addFilterBefore(
-						new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
-						UsernamePasswordAuthenticationFilter.class);
+	    
+	    http
+	        .cors(Customizer.withDefaults())
+	        .csrf(csrf -> csrf.disable())
+	        .authorizeHttpRequests(auth -> auth
+	                .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
+	                
+	                /* [테스트를 위한 로그인 무효화 설정] */
+	                .anyRequest().permitAll() 
+	                
+	                /* 원복 시 아래 주석 해제 및 위 line 삭제
+	                .requestMatchers(
+	                    "/api/auth/**",
+	                    "/swagger-ui/**", 
+	                    "/v3/api-docs/**"
+	                ).permitAll()
+	                .anyRequest().authenticated()
+	                */
+	            ); // <--- 여기서 세미콜론으로 닫아야 합니다.
 
-		return http.build();
+	            /* [테스트를 위해 JWT 필터 일시 비활성화] - 아래는 완전히 주석 처리됨
+	            http.addFilterBefore(
+	                    new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
+	                    UsernamePasswordAuthenticationFilter.class);
+	            */
+
+	    return http.build();
 	}
 	
 	// 패스워드 암호화
@@ -72,4 +79,3 @@ public class SecurityConfig {
 	}
 
 }
-
