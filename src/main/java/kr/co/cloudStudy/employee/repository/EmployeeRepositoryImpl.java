@@ -31,8 +31,13 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
         }
         
         if (StringUtils.hasText(condition.getDepartment())) {
-            // 부서(deptName 또는 deptId) 필드 매칭 (엔티티 필드명에 맞춰 수정 필요)
+            // 부서(deptName) 필드 매칭
             jpql.append(" AND e.department.deptName = :department");
+        }
+
+        if (condition.getDepartmentId() != null) {
+            // 부서(departmentId) 필드 매칭 (엔티티 필드명에 맞춰 로직 추가)
+            jpql.append(" AND e.department.departmentId = :departmentId");
         }
         
         if (StringUtils.hasText(condition.getStatus())) {
@@ -56,6 +61,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
         String countJpql = "SELECT COUNT(e) FROM Employee e WHERE 1=1";
         if (StringUtils.hasText(condition.getKeyword())) countJpql += " AND e.name LIKE :keyword";
         if (StringUtils.hasText(condition.getDepartment())) countJpql += " AND e.department.deptName = :department";
+        if (condition.getDepartmentId() != null) countJpql += " AND e.department.departmentId = :departmentId";
         if (StringUtils.hasText(condition.getStatus())) countJpql += " AND e.status = :status";
         
         TypedQuery<Long> countQuery = em.createQuery(countJpql, Long.class);
@@ -77,6 +83,9 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
         if (StringUtils.hasText(condition.getStatus())) {
             // DB 필드 타입이 Integer라면 Integer.parseInt() 사용
             query.setParameter("status", condition.getStatus());
+        }
+        if (condition.getDepartmentId() != null) {
+            query.setParameter("departmentId", condition.getDepartmentId());
         }
     }
 }
