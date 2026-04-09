@@ -44,8 +44,9 @@ public class DashboardController implements DashboardControllerDocs {
 	@Override
 	@GetMapping("/attendance/history")
 	public ResponseEntity<ApiResponseDTO<DashboardRecentActivityResponseDTO>> getRecentActivities(
-			@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam(defaultValue = "1") Integer page,
-			@RequestParam(defaultValue = "5") Integer size) {
+	        @AuthenticationPrincipal CustomUserDetails userDetails,
+	        @RequestParam(name = "page", defaultValue = "1") Integer page,
+	        @RequestParam(name = "size", defaultValue = "5") Integer size) {
 		DashboardRecentActivityResponseDTO response = dashboardService
 				.getRecentActivities(extractEmployeeNumber(userDetails), page, size);   
 
@@ -64,7 +65,8 @@ public class DashboardController implements DashboardControllerDocs {
 	@Override
 	@PatchMapping("/attendance/{attendanceId}/check-out")
 	public ResponseEntity<ApiResponseDTO<DashboardTodayAttendanceResponseDTO>> checkOut(
-			@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long attendanceId) {
+	        @AuthenticationPrincipal CustomUserDetails userDetails,
+	        @PathVariable("attendanceId") Long attendanceId) {
 		DashboardTodayAttendanceResponseDTO response = dashboardService.checkOut(extractEmployeeNumber(userDetails),
 				attendanceId);
 
