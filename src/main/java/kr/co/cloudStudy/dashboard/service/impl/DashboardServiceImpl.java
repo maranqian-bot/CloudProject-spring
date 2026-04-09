@@ -40,6 +40,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class DashboardServiceImpl implements DashboardService {
 	
+	
 
     private final EmployeeRepository employeeRepository;
     private final AnnualLeaveBalanceRepository annualLeaveBalanceRepository;
@@ -48,24 +49,31 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public DashboardResponseDTO getDashboard(String loginIdentifier) {
+//    	System.out.println("1. dashboard start");
         validateEmployeeNumber(loginIdentifier);
         Employee employee = employeeRepository.findByEmployeeNumber(loginIdentifier)
                 .orElseThrow(() -> new IllegalArgumentException("해당 직원 정보를 찾을 수 없습니다."));
+//        System.out.println("2. employee found: " + employee.getEmployeeNumber());
 
         String employeeNumber = employee.getEmployeeNumber();
+//        System.out.println("3. annual leave start");
+        
 
         BigDecimal availableVacationDays = annualLeaveBalanceRepository
                 .findByEmployee_EmployeeNumberAndYear(employeeNumber, LocalDate.now().getYear())
                 .map(AnnualLeaveBalance::getRemainingDays)
                 .orElse(BigDecimal.ZERO);
-
+        
+//        System.out.println("4. absent count start");
         long absentCount = getAbsentTeamMemberCount(employee);
+        
+//        System.out.println("5. work days start");
         long workDays = getCurrentMonthWorkDays(employee.getEmployeeId());
 
         DashboardSummaryDTO summary = DashboardSummaryDTO.of(absentCount, workDays);
         DashboardCurrentEmployeeDTO currentEmployee =
                 DashboardCurrentEmployeeDTO.of(employee, availableVacationDays);
-
+//        System.out.println("6. vacation requests start");
         List<DashboardVacationRequestDTO> vacationRequests = getDashboardVacationRequests(employeeNumber);
 
         return DashboardResponseDTO.of(summary, currentEmployee, vacationRequests);
@@ -289,4 +297,5 @@ public class DashboardServiceImpl implements DashboardService {
             throw new IllegalArgumentException("근태 기록 ID는 1 이상이어야 합니다.");
         }
     }
+    
 }

@@ -9,9 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import kr.co.cloudStudy.attendance.entity.Attendance;
 import kr.co.cloudStudy.attendance.enums.AttendanceStatus;
+
 
 public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
@@ -45,9 +47,9 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
               and a.attendanceStatus in :statuses
             """)
     long countDistinctByDepartmentAndWorkDateAndStatusInExcludingEmployee(
-            Long departmentId,
-            LocalDate workDate,
-            Long employeeId,
-            Collection<AttendanceStatus> statuses
+    		@Param("departmentId") Long departmentId,
+            @Param("workDate") LocalDate workDate,
+            @Param("employeeId") Long employeeId,
+            @Param("statuses") Collection<AttendanceStatus> statuses
     );
 }
