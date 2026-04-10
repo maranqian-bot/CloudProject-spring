@@ -34,6 +34,7 @@ public class VacationRequestController implements VacationRequestControllerDocs 
                 ApiResponseDTO.success("휴가 신청 대상자 정보 조회 성공", response)
         );
     }
+    
 
     @Override
     @PostMapping
