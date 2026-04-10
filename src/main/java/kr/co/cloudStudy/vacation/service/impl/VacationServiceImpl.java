@@ -93,7 +93,6 @@ public class VacationServiceImpl implements VacationService {
     public VacationRequestEmployeeResponseDTO getVacationRequestEmployee(String employeeNumber, Integer year) {
         validateEmployeeNumber(employeeNumber);
         validateYear(year);
-
         Employee employee = employeeRepository.findWithDepartmentByEmployeeNumber(employeeNumber)
                 .orElseThrow(() -> new IllegalArgumentException("해당 직원 정보를 찾을 수 없습니다."));
 
