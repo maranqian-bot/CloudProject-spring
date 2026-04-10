@@ -78,6 +78,9 @@ public class Employee {
     @Column(name = "profile_img", length = 255)
     private String profileImg;			// 프로필 이미지
     
+    @Column(name = "employee_type", length =20)
+    private	String employeeType;		// 고용형태 (정규직, 계약직...)
+    
     @CreationTimestamp
     @Column(name = "created_at", updatable = false,
             columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

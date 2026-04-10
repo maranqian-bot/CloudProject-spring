@@ -35,24 +35,19 @@ public class SecurityConfig {
 	        .authorizeHttpRequests(auth -> auth
 	                .dispatcherTypeMatchers(DispatcherType.ASYNC, DispatcherType.ERROR).permitAll()
 	                
-	                /* [테스트를 위한 로그인 무효화 설정] */
-	                .anyRequest().permitAll() 
-	                
-	                /* 원복 시 아래 주석 해제 및 위 line 삭제
 	                .requestMatchers(
 	                    "/api/auth/**",
 	                    "/swagger-ui/**", 
 	                    "/v3/api-docs/**"
 	                ).permitAll()
+	                // 그 외 모든 요청은 인증 필요
 	                .anyRequest().authenticated()
-	                */
-	            ); // <--- 여기서 세미콜론으로 닫아야 합니다.
+	            );
 
-	            /* [테스트를 위해 JWT 필터 일시 비활성화] - 아래는 완전히 주석 처리됨
-	            http.addFilterBefore(
-	                    new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
-	                    UsernamePasswordAuthenticationFilter.class);
-	            */
+	    
+	    http.addFilterBefore(
+	            new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
+	            UsernamePasswordAuthenticationFilter.class);
 
 	    return http.build();
 	}
@@ -68,7 +63,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		
-		config.setAllowedOrigins(List.of("http://localhost:5173")); // 리액트 주소 (배포시 설정)
+		config.setAllowedOrigins(List.of("http://localhost:5173")); // 리액트 주소
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
 		config.setAllowCredentials(true); 
