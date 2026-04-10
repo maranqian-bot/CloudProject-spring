@@ -33,9 +33,9 @@ public class VacationRequestListController implements VacationRequestListControl
     @Override
     @GetMapping
     public ResponseEntity<ApiResponseDTO<VacationRequestListResponseDTO>> getVacationRequestList(
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "5") Integer size,
-            @RequestParam(defaultValue = "ALL") String type,
+            @RequestParam(name = "page", defaultValue = "1") Integer page,
+            @RequestParam(name = "size", defaultValue = "5") Integer size,
+            @RequestParam(name = "type", defaultValue = "ALL") String type,
             @Parameter(hidden = true) Principal principal
     ) {
         VacationRequestListResponseDTO response =
@@ -62,7 +62,7 @@ public class VacationRequestListController implements VacationRequestListControl
     @Override
     @PatchMapping("/{vacationId}/approve")
     public ResponseEntity<ApiResponseDTO<VacationDecisionResponseDTO>> approveVacationRequest(
-            @PathVariable Long vacationId,
+            @PathVariable("vacationId") Long vacationId,
             @Parameter(hidden = true) Principal principal
     ) {
         VacationDecisionResponseDTO response =
@@ -76,7 +76,7 @@ public class VacationRequestListController implements VacationRequestListControl
     @Override
     @PatchMapping("/{vacationId}/reject")
     public ResponseEntity<ApiResponseDTO<VacationDecisionResponseDTO>> rejectVacationRequest(
-            @PathVariable Long vacationId,
+            @PathVariable("vacationId") Long vacationId,
             @RequestBody VacationRejectRequestDTO request,
             @Parameter(hidden = true) Principal principal
     ) {
