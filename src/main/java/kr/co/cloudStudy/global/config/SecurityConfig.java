@@ -38,7 +38,9 @@ public class SecurityConfig {
 					.requestMatchers(
 						"/api/auth/**",
 						"/swagger-ui/**", 
-						"/v3/api-docs/**"
+						"/v3/api-docs/**",
+						"/oauth2/**",
+						"/login/oauth2/**"
 					).permitAll()
 					
 					.anyRequest().authenticated()
@@ -70,6 +72,6 @@ public class SecurityConfig {
 		source.registerCorsConfiguration("/**", config);
 		return source;
 	}
-
+//	"https://dxx91bct0u6rt.cloudfront.net"
 }
 
