@@ -101,4 +101,26 @@ public class Attendance {
         this.workMinutes = workMinutes;
         this.attendanceStatus = attendanceStatus;
     }
+    
+    public void setAttendanceStatus(Object status) {
+        if (status == null) return;
+
+        String statusStr = status.toString();
+        try {
+            // 1. DB의 문자열을 Enum으로 변환 시도
+            AttendanceStatus rawStatus = AttendanceStatus.valueOf(statusStr);
+
+            // 2. 언더바 없는 버전들을 표준(언더바 있는 버전)으로 강제 매핑
+            if (rawStatus.name().equals("EARLYLEAVE")) {
+                this.attendanceStatus = AttendanceStatus.EARLY_LEAVE;
+            } else if (rawStatus.name().equals("OVERTIME")) {
+                this.attendanceStatus = AttendanceStatus.OVER_TIME;
+            } else {
+                this.attendanceStatus = rawStatus;
+            }
+        } catch (IllegalArgumentException e) {
+            // 3. 단어장에 없는 글자일 경우 기본값 처리
+            this.attendanceStatus = AttendanceStatus.NORMAL;
+        }
+    }
 }

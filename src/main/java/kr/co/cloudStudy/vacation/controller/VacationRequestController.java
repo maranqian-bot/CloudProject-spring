@@ -24,8 +24,8 @@ public class VacationRequestController implements VacationRequestControllerDocs 
     @Override
     @GetMapping("/employees/{employeeNumber}")
     public ResponseEntity<ApiResponseDTO<VacationRequestEmployeeResponseDTO>> getVacationRequestEmployee(
-            @PathVariable String employeeNumber,
-            @RequestParam Integer year
+            @PathVariable("employeeNumber") String employeeNumber,
+            @RequestParam("year") Integer year
     ) {
         VacationRequestEmployeeResponseDTO response =
                 vacationService.getVacationRequestEmployee(employeeNumber, year);
@@ -34,6 +34,7 @@ public class VacationRequestController implements VacationRequestControllerDocs 
                 ApiResponseDTO.success("휴가 신청 대상자 정보 조회 성공", response)
         );
     }
+    
 
     @Override
     @PostMapping

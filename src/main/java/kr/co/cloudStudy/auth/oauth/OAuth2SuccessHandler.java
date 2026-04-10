@@ -1,6 +1,8 @@
-package kr.co.cloudStudy.auth.oauth;
+ package kr.co.cloudStudy.auth.oauth;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -26,25 +28,39 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 	@Value("${app.frontend.url}")
 	private String frontendUrl;
 	
-	@Override
-	public void onAuthenticationSuccess(
-			HttpServletRequest request,
-			HttpServletResponse response,
-			Authentication authentication
-	) throws IOException, ServletException {
-		
-		OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-		String email = (String) oAuth2User.getAttributes().get("email");
-		
-		Employee employee = employeeRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("소셜 로그인 사용자를 찾을 수 없습니다."));
-	
-		String accessToken = jwtUtil.createAccessToken(
-				employee.getEmployeeId(),
-				employee.getEmployeeNumber(),
-				employee.getName()
-		);
-	}
+//	@Override
+//	public void onAuthenticationSuccess(
+//			HttpServletRequest request,
+//			HttpServletResponse response,
+//			Authentication authentication
+//	) throws IOException, ServletException {
+//		
+//		OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+//		String email = (String) oAuth2User.getAttributes().get("email");
+//		
+//		Employee employee = employeeRepository.findByEmail(email)
+//                .orElseThrow(() -> new IllegalArgumentException("소셜 로그인 사용자를 찾을 수 없습니다."));
+//	
+//		String accessToken = jwtUtil.createAccessToken(
+//				employee.getEmployeeId(),
+//				employee.getEmployeeNumber(),
+//				employee.getName()
+//		);
+//		
+//		String refreshToken = jwtUtil.createRefreshToken(
+//				employee.getEmployeeId(),
+//				employee.getEmployeeNumber()
+//		);
+//		
+//		String redirectUrl = frontendUrl
+//				+ "/oauth-success?accessToken="
+//				+ URLEncoder.encode(accessToken, StandardCharsets.UTF_8)
+//				+ "&refreshToken="
+//				+ URLEncoder.encode(refreshToken, StandardCharsets.UTF_8);
+//		
+//		getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+//				
+//	}
 	
 	
 	

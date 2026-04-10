@@ -17,6 +17,8 @@ public class EmployeeSearchDto {
 	private String keyword;	// 이름이나 사번 통합검색창입력값
 	@Schema(description = "부서명 검색 조건", example = "개발팀")
 	private String department;	// 부서 선택값
+	@Schema(description = "부서ID(PK)로 직원 필터링 하기", example = "DEV-001")
+	private Long departmentId;	// 부서 PK
 	@Schema(description = "재직 상태 조건 (1: 재직, 0: 퇴사)", example = "1")
 	private String status;		// 상태 선택값
 	@Builder.Default

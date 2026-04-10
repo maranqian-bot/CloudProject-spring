@@ -24,9 +24,9 @@ public class VacationManagementController implements VacationManagementControlle
     @Override
     @GetMapping
     public ResponseEntity<ApiResponseDTO<VacationManagementResponseDTO>> getVacationManagementPage(
-            @RequestParam String employeeNumber,
-            @RequestParam String approverEmployeeNumber,
-            @RequestParam Integer year
+            @RequestParam("employeeNumber") String employeeNumber,
+            @RequestParam("approverEmployeeNumber") String approverEmployeeNumber,
+            @RequestParam("year") Integer year
     ) {
         VacationManagementResponseDTO response =
                 vacationService.getVacationManagementPage(employeeNumber, approverEmployeeNumber, year);

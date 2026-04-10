@@ -48,7 +48,7 @@ public class VacationServiceImpl implements VacationService {
         validateEmployeeNumber(employeeNumber);
 
         List<Vacation> vacationList =
-                vacationRepository.findByEmployee_EmployeeNumberOrderByCreatedAtDesc(employeeNumber);
+                vacationRepository.findByEmployee_EmployeeNumberOrderByStartDateDesc(employeeNumber);
 
         return vacationList.stream()
                 .map(MyVacationHistoryDTO::from)
@@ -93,7 +93,6 @@ public class VacationServiceImpl implements VacationService {
     public VacationRequestEmployeeResponseDTO getVacationRequestEmployee(String employeeNumber, Integer year) {
         validateEmployeeNumber(employeeNumber);
         validateYear(year);
-
         Employee employee = employeeRepository.findWithDepartmentByEmployeeNumber(employeeNumber)
                 .orElseThrow(() -> new IllegalArgumentException("해당 직원 정보를 찾을 수 없습니다."));
 

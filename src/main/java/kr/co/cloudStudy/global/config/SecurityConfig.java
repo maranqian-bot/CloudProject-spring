@@ -49,7 +49,13 @@ public class SecurityConfig {
 						new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
 						UsernamePasswordAuthenticationFilter.class);
 
-		return http.build();
+
+	    
+	    http.addFilterBefore(
+	            new JwtAuthenticationFilter(jwtUtil, customUserDetailsService),
+	            UsernamePasswordAuthenticationFilter.class);
+
+	    return http.build();
 	}
 	
 	// 패스워드 암호화
@@ -63,7 +69,7 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 		
-		config.setAllowedOrigins(List.of("http://localhost:5173")); // 리액트 주소 (배포시 설정)
+		config.setAllowedOrigins(List.of("http://localhost:5173")); // 리액트 주소
 		config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 		config.setAllowedHeaders(List.of("*"));
 		config.setAllowCredentials(true); 
@@ -71,7 +77,10 @@ public class SecurityConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
 		return source;
-	}
+	
+
 //	"https://dxx91bct0u6rt.cloudfront.net"
+	}
 }
+
 

@@ -45,4 +45,5 @@ public class ResDeptDTO {
 	@Schema(description = "수정 일시", example = "2026-03-25T15:30:00")
     private LocalDateTime updatedAt;
 	
+	
 }
