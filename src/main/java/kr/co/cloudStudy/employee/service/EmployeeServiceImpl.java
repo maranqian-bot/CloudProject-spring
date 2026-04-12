@@ -83,7 +83,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<EmployeeResDto> getEmployeeList(EmployeeSearchDto condition, Pageable pageable) {
-		Page<Employee> employeePage = employeeRepository.searchEmployees(condition, pageable);
+		Page<Employee> employeePage = employeeRepository.findEmployees(condition, pageable);
 		
 		return employeePage.map(employee -> {
 			try {
