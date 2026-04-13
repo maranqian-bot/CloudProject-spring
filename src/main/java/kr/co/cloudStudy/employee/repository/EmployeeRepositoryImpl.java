@@ -32,7 +32,7 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
 
-	// 직원 검색 메서드 분기 담당 ( keywordContains, deptNameEq, employeeStatusEq)
+	// 직원 검색 메서드 분기 담당 ( keywordContains, deptNameEq, employeeStatusEq, deparmentIdEq )
 
 	// 1. 이름 or 직원사번( 예시: #78244)
 	// - 입력 (포함)하거나, 해당 조건 입력하지 않았을 때.
@@ -74,6 +74,17 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 		return employee.status.eq(status);
 	}
 
+	// 4. 부서 Id 선택하거나, 해당 조건 선택 안했을 떄
+	private BooleanExpression departmentIdEq(Long departmentId) {
+		// null인 경우엔 부서id where조건은 null
+		if( departmentId == null) {
+			return null;
+		}
+		// null이 아닐 때, where = department_id = 매개변수
+		return employee.department.departmentId.eq(departmentId);
+		
+	}
+	
 	@Override
 	// 직원 검색 메서드		: 검색 조건과, 페이징 방식을 전달
 	// - (위에서 만들어 둔 keywordContains, deptNameEq, employeeStatusEq 사용..)
@@ -106,6 +117,8 @@ public class EmployeeRepositoryImpl implements EmployeeRepositoryCustom {
 			
 		return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
 	}
+	
+
 
 	@Override
 	// 고용형태 객체 필드에 :
